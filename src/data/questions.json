@@ -1,0 +1,118 @@
+{
+  "year": {
+    "prompt": "What grade/year are you?",
+    "options": [
+      {
+        "id": "freshman",
+        "label": "Freshman",
+        "homeRoomId": "playroom"
+      },
+      {
+        "id": "sophomore",
+        "label": "Sophomore",
+        "homeRoomId": "bathroom"
+      },
+      {
+        "id": "junior",
+        "label": "Junior",
+        "homeRoomId": "kitchen"
+      },
+      {
+        "id": "senior",
+        "label": "Senior",
+        "homeRoomId": "bedroom"
+      },
+      {
+        "id": "mfa1",
+        "label": "MFA 1",
+        "homeRoomId": "office-room"
+      },
+      {
+        "id": "mfa2",
+        "label": "MFA 2",
+        "homeRoomId": "dining-room"
+      }
+    ]
+  },
+  "interest": {
+    "prompt": "What kind of design are you into?",
+    "options": [
+      {
+        "id": "branding",
+        "label": "Branding & Identity",
+        "hint": "Logos, systems, brand worlds"
+      },
+      {
+        "id": "motion",
+        "label": "Motion Graphics",
+        "hint": "Things that move"
+      },
+      {
+        "id": "interactive",
+        "label": "Interactive / Web / UX",
+        "hint": "Sites, apps, code"
+      },
+      {
+        "id": "typography",
+        "label": "Typography",
+        "hint": "Letters and type design"
+      },
+      {
+        "id": "editorial",
+        "label": "Editorial & Publication",
+        "hint": "Books, magazines, layout"
+      },
+      {
+        "id": "exhibition",
+        "label": "Exhibition & Experience",
+        "hint": "Spaces and events"
+      },
+      {
+        "id": "history",
+        "label": "Design History & Theory",
+        "hint": "Why design looks the way it does"
+      }
+    ]
+  },
+  "program": {
+    "prompt": "What's your favorite design program?",
+    "options": [
+      {
+        "id": "illustrator",
+        "label": "Adobe Illustrator"
+      },
+      {
+        "id": "photoshop",
+        "label": "Adobe Photoshop"
+      },
+      {
+        "id": "indesign",
+        "label": "Adobe InDesign"
+      },
+      {
+        "id": "after-effects",
+        "label": "Adobe After Effects"
+      },
+      {
+        "id": "figma",
+        "label": "Figma"
+      },
+      {
+        "id": "blender",
+        "label": "Blender"
+      },
+      {
+        "id": "canva",
+        "label": "Canva"
+      },
+      {
+        "id": "procreate",
+        "label": "Procreate"
+      },
+      {
+        "id": "other",
+        "label": "Other"
+      }
+    ]
+  }
+}

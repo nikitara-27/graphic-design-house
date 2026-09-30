@@ -1,0 +1,742 @@
+{
+  "sceneAspect": 1.7778,
+  "floors": [
+    {
+      "floor": 4,
+      "label": "Attic"
+    },
+    {
+      "floor": 3,
+      "label": "Upper floor"
+    },
+    {
+      "floor": 2,
+      "label": "Middle floor"
+    },
+    {
+      "floor": 1,
+      "label": "Ground floor"
+    },
+    {
+      "floor": 0,
+      "label": "Basement"
+    }
+  ],
+  "rooms": [
+    {
+      "id": "attic",
+      "name": "Attic",
+      "subtitle": "Other Electives",
+      "floor": 4,
+      "sceneImage": "scenes/attic.png",
+      "sceneAlt": "A sloped attic with a curtained window, a stack of books, a pink teddy bear and an open moving box.",
+      "object": {
+        "label": "Pink teddy bear",
+        "x": 58.75,
+        "y": 77.8,
+        "w": 8.1,
+        "h": 18.9
+      },
+      "exits": [
+        {
+          "toRoomId": "bedroom",
+          "label": "Bedroom",
+          "direction": "down"
+        }
+      ],
+      "courses": [
+        {
+          "id": "AR594",
+          "code": "AR594",
+          "title": "Graphic Design Theory",
+          "active": true,
+          "interests": [
+            "history"
+          ]
+        },
+        {
+          "id": "AR572",
+          "code": "AR572",
+          "title": "Internship",
+          "active": true,
+          "interests": []
+        },
+        {
+          "id": "AR581",
+          "code": "AR581",
+          "title": "Web Design",
+          "active": true,
+          "interests": [
+            "interactive"
+          ]
+        },
+        {
+          "id": "AR582",
+          "code": "AR582",
+          "title": "Web Design 2",
+          "active": true,
+          "interests": [
+            "interactive"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bedroom",
+      "name": "Bedroom",
+      "subtitle": "BFA Senior",
+      "floor": 3,
+      "year": "senior",
+      "sceneImage": "scenes/bedroom.png",
+      "sceneAlt": "A moonlit bedroom with blue curtains framing a starry night window, framed prints on the wall, and an orange cat stretched out on the bed.",
+      "object": {
+        "label": "Cat on the bed",
+        "x": 44,
+        "y": 56,
+        "w": 16,
+        "h": 14.5
+      },
+      "exits": [
+        {
+          "toRoomId": "control-room",
+          "label": "Control Room",
+          "direction": "right"
+        },
+        {
+          "toRoomId": "attic",
+          "label": "Attic",
+          "direction": "up"
+        },
+        {
+          "toRoomId": "kitchen",
+          "label": "Kitchen",
+          "direction": "down"
+        }
+      ],
+      "courses": [
+        {
+          "id": "AR483",
+          "code": "AR483",
+          "title": "Senior Graphic Design",
+          "term": "F",
+          "active": true,
+          "interests": []
+        },
+        {
+          "id": "AR484",
+          "code": "AR484",
+          "title": "Senior Graphic Design",
+          "term": "S",
+          "active": true,
+          "interests": []
+        }
+      ]
+    },
+    {
+      "id": "control-room",
+      "name": "Control Room",
+      "subtitle": "Tech / interactive",
+      "floor": 3,
+      "sceneImage": "scenes/control-room.png",
+      "sceneAlt": "A magenta-lit control room with a wall of monitors showing sky and design software, speakers, a gaming chair and pink headphones.",
+      "object": {
+        "label": "Design app window on the top screen",
+        "x": 43.1,
+        "y": 20,
+        "w": 13.75,
+        "h": 15.6
+      },
+      "exits": [
+        {
+          "toRoomId": "bedroom",
+          "label": "Bedroom",
+          "direction": "left"
+        },
+        {
+          "toRoomId": "studio-room",
+          "label": "Studio Room",
+          "direction": "right"
+        }
+      ],
+      "courses": [
+        {
+          "id": "AR589",
+          "code": "AR589",
+          "title": "Interactive Design",
+          "active": true,
+          "interests": [
+            "interactive"
+          ]
+        },
+        {
+          "id": "AR570",
+          "code": "AR570",
+          "title": "Software Lab",
+          "active": true,
+          "interests": [
+            "interactive"
+          ]
+        },
+        {
+          "id": "AR576",
+          "code": "AR576",
+          "title": "Motion Graphics",
+          "active": true,
+          "interests": [
+            "motion"
+          ]
+        },
+        {
+          "id": "XC475",
+          "code": "XC475",
+          "title": "Spark!",
+          "active": true,
+          "interests": []
+        }
+      ]
+    },
+    {
+      "id": "studio-room",
+      "name": "Studio Room",
+      "subtitle": "Studio electives",
+      "floor": 3,
+      "sceneImage": "scenes/studio-room.png",
+      "sceneAlt": "A photo studio with a white paper backdrop, a softbox light and a wooden stool, next to a moodboard covered in sketches and sticky notes above a worktable.",
+      "object": {
+        "label": "Stool",
+        "x": 25,
+        "y": 70,
+        "w": 10.6,
+        "h": 22.2
+      },
+      "exits": [
+        {
+          "toRoomId": "control-room",
+          "label": "Control Room",
+          "direction": "left"
+        }
+      ],
+      "courses": [
+        {
+          "id": "AR502",
+          "code": "AR502",
+          "title": "Branding",
+          "active": true,
+          "interests": [
+            "branding"
+          ]
+        },
+        {
+          "id": "AR571",
+          "code": "AR571",
+          "title": "Exhibition Design",
+          "active": true,
+          "interests": [
+            "exhibition"
+          ]
+        },
+        {
+          "id": "AR595",
+          "code": "AR595",
+          "title": "Visual Systems",
+          "active": true,
+          "interests": [
+            "branding"
+          ]
+        },
+        {
+          "id": "AR597",
+          "code": "AR597",
+          "title": "Experience Design",
+          "active": true,
+          "interests": [
+            "exhibition"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kitchen",
+      "name": "Kitchen",
+      "subtitle": "BFA Junior",
+      "floor": 2,
+      "year": "junior",
+      "sceneImage": "scenes/kitchen.png",
+      "sceneAlt": "A kitchen with dark green cabinets, a wide window looking out on a tree, a coffee maker, and an orange cat by its bowl.",
+      "object": {
+        "label": "Cabinets below the sink",
+        "x": 30,
+        "y": 66.7,
+        "w": 28.75,
+        "h": 23.3
+      },
+      "exits": [
+        {
+          "toRoomId": "pantry",
+          "label": "Pantry",
+          "direction": "right"
+        },
+        {
+          "toRoomId": "bedroom",
+          "label": "Bedroom",
+          "direction": "up"
+        },
+        {
+          "toRoomId": "bathroom",
+          "label": "Bathroom",
+          "direction": "down"
+        }
+      ],
+      "courses": [
+        {
+          "id": "AR381",
+          "code": "AR381",
+          "title": "Junior Graphic Design",
+          "term": "F",
+          "active": true,
+          "interests": []
+        },
+        {
+          "id": "AR487",
+          "code": "AR487",
+          "title": "Junior Typography",
+          "term": "F",
+          "active": true,
+          "interests": [
+            "typography"
+          ]
+        },
+        {
+          "id": "AR382",
+          "code": "AR382",
+          "title": "Junior Graphic Design",
+          "term": "S",
+          "active": true,
+          "interests": []
+        },
+        {
+          "id": "AR497",
+          "code": "AR497",
+          "title": "Junior Typography",
+          "term": "S",
+          "active": true,
+          "interests": [
+            "typography"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pantry",
+      "name": "Pantry",
+      "subtitle": "Archive of Tools",
+      "floor": 2,
+      "sceneImage": "scenes/pantry.png",
+      "sceneAlt": "A bright pantry with jars on a high shelf, open drawers full of supplies, corner shelves and a window.",
+      "object": {
+        "label": "Loaf of bread",
+        "x": 30.6,
+        "y": 53,
+        "w": 12,
+        "h": 10.5
+      },
+      "exits": [
+        {
+          "toRoomId": "kitchen",
+          "label": "Kitchen",
+          "direction": "left"
+        },
+        {
+          "toRoomId": "library",
+          "label": "Library",
+          "direction": "right"
+        }
+      ],
+      "courses": [
+        {
+          "id": "CS103",
+          "code": "CS103",
+          "title": "Intro to Web Programming",
+          "active": true,
+          "interests": [
+            "interactive"
+          ]
+        },
+        {
+          "id": "AR580",
+          "code": "AR580",
+          "title": "Graphic Design History",
+          "active": true,
+          "interests": [
+            "history"
+          ]
+        },
+        {
+          "id": "AR523",
+          "code": "AR523",
+          "title": "Graphic Design Studio Practice",
+          "active": true,
+          "interests": []
+        }
+      ]
+    },
+    {
+      "id": "library",
+      "name": "Library",
+      "subtitle": "Reading & type",
+      "floor": 2,
+      "sceneImage": "scenes/library.png",
+      "sceneAlt": "A cozy library with tall colorful bookshelves, a rolling ladder, and a cat curled up on a red window seat under an arched sunset window.",
+      "object": {
+        "label": "Cat",
+        "x": 51.25,
+        "y": 58.9,
+        "w": 8.75,
+        "h": 13.3
+      },
+      "exits": [
+        {
+          "toRoomId": "pantry",
+          "label": "Pantry",
+          "direction": "left"
+        },
+        {
+          "toRoomId": "dining-room",
+          "label": "Dining Room",
+          "direction": "right"
+        }
+      ],
+      "courses": [
+        {
+          "id": "AR578",
+          "code": "AR578",
+          "title": "Typeface Design",
+          "active": true,
+          "interests": [
+            "typography"
+          ]
+        },
+        {
+          "id": "AR577",
+          "code": "AR577",
+          "title": "Editorial Publication",
+          "active": true,
+          "interests": [
+            "editorial"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "dining-room",
+      "name": "Dining Room",
+      "subtitle": "MFA 2",
+      "floor": 2,
+      "year": "mfa2",
+      "sceneImage": "scenes/dining-room.png",
+      "sceneAlt": "A dining room with a wooden table and two chairs under a gallery wall of framed pictures, including a cat portrait.",
+      "object": {
+        "label": "Cat picture",
+        "x": 50.6,
+        "y": 14.4,
+        "w": 11.9,
+        "h": 20
+      },
+      "exits": [
+        {
+          "toRoomId": "library",
+          "label": "Library",
+          "direction": "left"
+        },
+        {
+          "toRoomId": "office-room",
+          "label": "Office Room",
+          "direction": "down"
+        }
+      ],
+      "courses": [
+        {
+          "id": "AR883",
+          "code": "AR883",
+          "title": "MFA 2 Graphic Design",
+          "term": "F",
+          "active": true,
+          "interests": []
+        },
+        {
+          "id": "AR596-theory-2",
+          "code": "AR596",
+          "title": "Graphic Design Theory 2",
+          "term": "F",
+          "active": true,
+          "interests": [
+            "history"
+          ]
+        },
+        {
+          "id": "AR884",
+          "code": "AR884",
+          "title": "MFA 2 Graphic Design",
+          "term": "S",
+          "active": true,
+          "interests": []
+        },
+        {
+          "id": "AR596-thesis",
+          "code": "AR596",
+          "title": "Graphic Design Thesis Exhibition",
+          "term": "S",
+          "active": true,
+          "interests": [
+            "exhibition"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bathroom",
+      "name": "Bathroom",
+      "subtitle": "BFA Sophomore",
+      "floor": 1,
+      "year": "sophomore",
+      "sceneImage": "scenes/bathroom.png",
+      "sceneAlt": "A bathroom with a wide mirror over a dark wood double vanity, a vase of pink flowers, a towel and a bathtub.",
+      "object": {
+        "label": "Mirror",
+        "x": 25,
+        "y": 34.4,
+        "w": 43.1,
+        "h": 33.3
+      },
+      "exits": [
+        {
+          "toRoomId": "playroom",
+          "label": "Playroom",
+          "direction": "right"
+        },
+        {
+          "toRoomId": "kitchen",
+          "label": "Kitchen",
+          "direction": "up"
+        }
+      ],
+      "courses": [
+        {
+          "id": "AR225",
+          "code": "AR225",
+          "title": "Sophomore Graphic Design",
+          "term": "F",
+          "active": true,
+          "interests": []
+        },
+        {
+          "id": "AR385",
+          "code": "AR385",
+          "title": "Sophomore Typography",
+          "term": "F",
+          "active": true,
+          "interests": [
+            "typography"
+          ]
+        },
+        {
+          "id": "AR226",
+          "code": "AR226",
+          "title": "Sophomore Graphic Design",
+          "term": "S",
+          "active": true,
+          "interests": []
+        },
+        {
+          "id": "AR386",
+          "code": "AR386",
+          "title": "Sophomore Typography",
+          "term": "S",
+          "active": true,
+          "interests": [
+            "typography"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "playroom",
+      "name": "Playroom",
+      "subtitle": "BFA Freshman",
+      "floor": 1,
+      "year": "freshman",
+      "sceneImage": "scenes/playroom.png",
+      "sceneAlt": "A pink playroom with bunting, two windows, a low toy shelf with a birdcage, a rubber duck, a red toy car and a lilac play tent.",
+      "object": {
+        "label": "Duck",
+        "x": 5.6,
+        "y": 80,
+        "w": 8.1,
+        "h": 15.6
+      },
+      "exits": [
+        {
+          "toRoomId": "bathroom",
+          "label": "Bathroom",
+          "direction": "left"
+        },
+        {
+          "toRoomId": "living-room",
+          "label": "Living Room",
+          "direction": "right"
+        }
+      ],
+      "courses": [
+        {
+          "id": "AR123",
+          "code": "AR123",
+          "title": "Intro to Graphic Design",
+          "active": true,
+          "interests": []
+        }
+      ]
+    },
+    {
+      "id": "living-room",
+      "name": "Living Room",
+      "subtitle": "Lounging Area",
+      "floor": 1,
+      "sceneImage": "scenes/living-room.png",
+      "sceneAlt": "A living room with striped wallpaper, a yellow sofa, a leafy plant, and a bookshelf with a sleeping orange cat on top.",
+      "object": {
+        "label": "Pink picture",
+        "x": 32.5,
+        "y": 25.6,
+        "w": 12.5,
+        "h": 28.9
+      },
+      "hangout": {
+        "x": 46,
+        "y": 50,
+        "w": 15
+      },
+      "exits": [
+        {
+          "toRoomId": "playroom",
+          "label": "Playroom",
+          "direction": "left"
+        },
+        {
+          "toRoomId": "office-room",
+          "label": "Office Room",
+          "direction": "right"
+        },
+        {
+          "toRoomId": "basement",
+          "label": "Basement",
+          "direction": "down"
+        }
+      ],
+      "courses": []
+    },
+    {
+      "id": "office-room",
+      "name": "Office Room",
+      "subtitle": "MFA 1",
+      "floor": 1,
+      "year": "mfa1",
+      "sceneImage": "scenes/office-room.png",
+      "sceneAlt": "A calm office with a white bookshelf, a floating shelf with a plant, vase and books, a desk with a monitor and a brown office chair, and a large abstract painting.",
+      "object": {
+        "label": "Desktop screen",
+        "x": 41.25,
+        "y": 46.7,
+        "w": 17.5,
+        "h": 20
+      },
+      "exits": [
+        {
+          "toRoomId": "living-room",
+          "label": "Living Room",
+          "direction": "left"
+        },
+        {
+          "toRoomId": "dining-room",
+          "label": "Dining Room",
+          "direction": "up"
+        }
+      ],
+      "courses": [
+        {
+          "id": "AR881",
+          "code": "AR881",
+          "title": "MFA 1 Graphic Design",
+          "term": "F",
+          "active": true,
+          "interests": []
+        },
+        {
+          "id": "AR601",
+          "code": "AR601",
+          "title": "Graduate Typography",
+          "term": "F",
+          "active": true,
+          "interests": [
+            "typography"
+          ]
+        },
+        {
+          "id": "AR882",
+          "code": "AR882",
+          "title": "MFA 1 Graphic Design",
+          "term": "S",
+          "active": true,
+          "interests": []
+        },
+        {
+          "id": "AR594-theory-1",
+          "code": "AR594",
+          "title": "Graphic Design Theory 1",
+          "term": "S",
+          "active": true,
+          "interests": [
+            "history"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "basement",
+      "name": "Basement",
+      "subtitle": "Not Active Classes",
+      "floor": 0,
+      "sceneImage": "scenes/basement.png",
+      "sceneAlt": "A dim basement with pipes and cobwebs, an old washing machine, a fuse box, and dusty shelves of storage boxes.",
+      "object": {
+        "label": "Washing machine",
+        "x": 6.9,
+        "y": 58.9,
+        "w": 15.6,
+        "h": 33.3
+      },
+      "exits": [
+        {
+          "toRoomId": "living-room",
+          "label": "Living Room",
+          "direction": "up"
+        }
+      ],
+      "courses": [
+        {
+          "id": "AR545",
+          "code": "AR545",
+          "title": "Performative Text",
+          "active": false,
+          "interests": []
+        },
+        {
+          "id": "AR587",
+          "code": "AR587",
+          "title": "Information Design",
+          "active": false,
+          "interests": []
+        }
+      ]
+    }
+  ]
+}

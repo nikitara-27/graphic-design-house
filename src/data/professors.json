@@ -1,0 +1,167 @@
+{
+  "host": {
+    "id": "host",
+    "name": "GD House Host",
+    "image": "",
+    "bio": "Your guide to the house.",
+    "specialties": [],
+    "courses": []
+  },
+  "professors": [
+    {
+      "id": "claire-bula",
+      "name": "Claire Bula",
+      "image": "professors/claire-bula.png",
+      "bio": "",
+      "specialties": [
+        "branding"
+      ],
+      "courses": []
+    },
+    {
+      "id": "nick-rock",
+      "name": "Nick Rock",
+      "image": "professors/nick-rock.png",
+      "bio": "",
+      "specialties": [
+        "branding",
+        "exhibition"
+      ],
+      "courses": []
+    },
+    {
+      "id": "brockett-horne",
+      "name": "Brockett Horne",
+      "image": "professors/brockett-horne.png",
+      "bio": "",
+      "specialties": [
+        "motion",
+        "typography",
+        "exhibition"
+      ],
+      "courses": []
+    },
+    {
+      "id": "james-grady",
+      "name": "James Grady",
+      "image": "professors/james-grady.png",
+      "bio": "",
+      "specialties": [
+        "motion",
+        "interactive"
+      ],
+      "courses": []
+    },
+    {
+      "id": "halim-lee",
+      "name": "Halim Lee",
+      "image": "professors/halim-lee.png",
+      "bio": "",
+      "specialties": [
+        "interactive"
+      ],
+      "courses": []
+    },
+    {
+      "id": "christopher-sleboda",
+      "name": "Christopher Sleboda",
+      "image": "professors/christopher-sleboda.png",
+      "bio": "",
+      "specialties": [
+        "typography",
+        "editorial"
+      ],
+      "courses": []
+    },
+    {
+      "id": "kristen-coogan",
+      "name": "Kristen Coogan",
+      "image": "professors/kristen-coogan.png",
+      "bio": "",
+      "specialties": [
+        "history"
+      ],
+      "courses": []
+    }
+  ],
+  "_assignmentsNote": "Design interest (Q2) -> favorite program (Q3) -> professor id. Every interest needs all 9 programs.",
+  "assignments": {
+    "branding": {
+      "illustrator": "claire-bula",
+      "photoshop": "claire-bula",
+      "indesign": "nick-rock",
+      "after-effects": "nick-rock",
+      "figma": "nick-rock",
+      "blender": "claire-bula",
+      "canva": "claire-bula",
+      "procreate": "claire-bula",
+      "other": "nick-rock"
+    },
+    "motion": {
+      "illustrator": "brockett-horne",
+      "photoshop": "james-grady",
+      "indesign": "brockett-horne",
+      "after-effects": "brockett-horne",
+      "figma": "james-grady",
+      "blender": "james-grady",
+      "canva": "brockett-horne",
+      "procreate": "brockett-horne",
+      "other": "james-grady"
+    },
+    "interactive": {
+      "illustrator": "halim-lee",
+      "photoshop": "halim-lee",
+      "indesign": "halim-lee",
+      "after-effects": "james-grady",
+      "figma": "james-grady",
+      "blender": "james-grady",
+      "canva": "james-grady",
+      "procreate": "halim-lee",
+      "other": "halim-lee"
+    },
+    "typography": {
+      "illustrator": "christopher-sleboda",
+      "photoshop": "brockett-horne",
+      "indesign": "christopher-sleboda",
+      "after-effects": "brockett-horne",
+      "figma": "brockett-horne",
+      "blender": "christopher-sleboda",
+      "canva": "brockett-horne",
+      "procreate": "brockett-horne",
+      "other": "christopher-sleboda"
+    },
+    "editorial": {
+      "illustrator": "christopher-sleboda",
+      "photoshop": "christopher-sleboda",
+      "indesign": "christopher-sleboda",
+      "after-effects": "christopher-sleboda",
+      "figma": "christopher-sleboda",
+      "blender": "christopher-sleboda",
+      "canva": "christopher-sleboda",
+      "procreate": "christopher-sleboda",
+      "other": "christopher-sleboda"
+    },
+    "exhibition": {
+      "illustrator": "nick-rock",
+      "photoshop": "nick-rock",
+      "indesign": "brockett-horne",
+      "after-effects": "brockett-horne",
+      "figma": "nick-rock",
+      "blender": "brockett-horne",
+      "canva": "brockett-horne",
+      "procreate": "brockett-horne",
+      "other": "nick-rock"
+    },
+    "history": {
+      "illustrator": "kristen-coogan",
+      "photoshop": "kristen-coogan",
+      "indesign": "kristen-coogan",
+      "after-effects": "kristen-coogan",
+      "figma": "kristen-coogan",
+      "blender": "kristen-coogan",
+      "canva": "kristen-coogan",
+      "procreate": "kristen-coogan",
+      "other": "kristen-coogan"
+    }
+  }
+}
