@@ -772,6 +772,11 @@
         "w": 12.5,
         "h": 28.9
       },
+      "greeter": {
+        "label": "Cat on the bookshelf",
+        "x": 74.4,
+        "y": 42.5
+      },
       "exits": [
         {
           "toRoomId": "playroom",

@@ -7,7 +7,8 @@ import { cleanName } from "./name";
  * channel. Nothing is stored in a database; each browser only shares its own little payload
  * while the tab is open.
  */
-export const CHANNEL = "gd-house";
+// Local development uses its own channel so testing never shows up on the live site.
+export const CHANNEL = import.meta.env.DEV ? "gd-house-dev" : "gd-house";
 
 /** What each visitor shares. Only this, nothing else. */
 export interface PeerInfo { name: string; hostId: string; year: Year; interest: Interest; room: string }
@@ -68,11 +69,10 @@ export function flattenPresence(state: Record<string, unknown[]>, selfId: string
   return out;
 }
 
-// Avatar footprint in % of the scene (about 6% wide; feet on a line 80% down, high enough that
-// name labels clear the downstairs buttons along the bottom edge).
+// Avatar footprint in % of the scene: about 6% wide, feet on a line 84% down, name label above the head.
 const AV_W = 6;
 const AV_H = 11;
-export const FEET_Y = 80;
+export const FEET_Y = 84;
 const LABEL_H = 4;
 
 /**
@@ -84,8 +84,8 @@ export function standingSpots(object: SceneObject): number[] {
   for (let x = 12; x <= 88; x += 6.5) {
     const left = x - AV_W / 2 - 1;
     const right = x + AV_W / 2 + 1;
-    const top = FEET_Y - AV_H;
-    const bottom = FEET_Y + LABEL_H;
+    const top = FEET_Y - AV_H - LABEL_H; // name label sits above the head
+    const bottom = FEET_Y;
     const overlaps = left < object.x + object.w && right > object.x && top < object.y + object.h && bottom > object.y;
     if (!overlaps) spots.push(Math.round(x * 10) / 10);
   }

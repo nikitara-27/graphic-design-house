@@ -29,6 +29,8 @@ export interface Room {
   sceneImage: string;
   sceneAlt: string;
   object: SceneObject;
+  /** Something in the scene that greets the user with a speech bubble (the Living Room cat). x/y is where the bubble's tail points, in %. */
+  greeter?: { label: string; x: number; y: number };
   /** Where this room sits in the house map image, in % (top-left + size). */
   mapArea: { x: number; y: number; w: number; h: number };
   exits: Exit[];

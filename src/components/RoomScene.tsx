@@ -2,6 +2,7 @@ import type { Room } from "../types";
 import type { Peer } from "../lib/presence";
 import { asset } from "../lib/data";
 import { PeopleLayer } from "./People";
+import { GreeterBubble } from "./GreeterBubble";
 
 interface Props {
   room: Room;
@@ -12,9 +13,13 @@ interface Props {
   onOpenClasses: () => void;
   onPickPerson: (p: Peer) => void;
   onMorePeople: (rest: Peer[]) => void;
+  /** The user's name, for the greeter's speech bubble. */
+  name: string;
+  greeting: boolean;
+  onDismissGreeting: () => void;
 }
 
-export function RoomScene({ room, people, pulse, onOpenClasses, onPickPerson, onMorePeople }: Props) {
+export function RoomScene({ room, people, pulse, onOpenClasses, onPickPerson, onMorePeople, name, greeting, onDismissGreeting }: Props) {
   const o = room.object;
   const n = room.courses.length;
   return (
@@ -22,6 +27,8 @@ export function RoomScene({ room, people, pulse, onOpenClasses, onPickPerson, on
       <img className="scene-art" src={asset(room.sceneImage)} alt={room.sceneAlt} draggable={false} />
 
       <PeopleLayer room={room} people={people} onPick={onPickPerson} onMore={onMorePeople} />
+
+      {room.greeter && greeting && <GreeterBubble greeter={room.greeter} name={name} onDismiss={onDismissGreeting} />}
 
       {/* Positioned by its center so the 44px minimum grows evenly around small objects. */}
       <button

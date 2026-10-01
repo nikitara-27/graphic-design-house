@@ -37,9 +37,8 @@ export function PeopleLayer({ room, people, onPick, onMore }: LayerProps) {
           onClick={() => onPick(p)}
           aria-label={p.self ? `You (${p.name}): open your profile` : `${p.name}: show details`}
         >
-          {p.self && <span className="person-you" aria-hidden="true">You</span>}
+          <span className="person-name" aria-hidden="true">{p.self ? `${p.name} (you)` : p.name}</span>
           <Avatar professor={hostFor(p.hostId)} size="sm" decorative />
-          <span className="person-name" aria-hidden="true">{p.name}</span>
         </button>
       ))}
       {rest.length > 0 && (

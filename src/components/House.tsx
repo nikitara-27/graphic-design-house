@@ -55,6 +55,11 @@ export function House({ answers, professor, roomId, panel, courseId, nav, name, 
   const counts: Record<string, number> = {};
   for (const p of people) counts[p.room] = (counts[p.room] ?? 0) + 1;
 
+  // The Living Room cat greets you every time you come in; tap it (or anywhere) to hide it.
+  const [greeting, setGreeting] = useState(true);
+  const dismissGreeting = useCallback(() => setGreeting(false), []);
+  useEffect(() => setGreeting(true), [roomId]);
+
   // Tapping someone: a small card with their details (or the "+N more" list).
   const [card, setCard] = useState<{ peerId?: string; list?: Peer[] } | null>(null);
   const closeCard = useCallback(() => setCard(null), []);
@@ -122,10 +127,11 @@ export function House({ answers, professor, roomId, panel, courseId, nav, name, 
     const el = scroller.current;
     if (!el) return;
     const max = el.scrollWidth - el.clientWidth;
-    // Through a side door: start at the wall you came in by. Otherwise: centre on your own avatar.
-    const you = standingSpots(room.object)[0] ?? 50;
-    const centred = Math.min(max, Math.max(0, (you / 100) * el.scrollWidth - el.clientWidth / 2));
-    el.scrollLeft = transition === "right" ? 0 : transition === "left" ? max : centred;
+    // A room with a greeter (the Living Room cat) always opens on it so you see the welcome.
+    // Otherwise: through a side door, start at the wall you came in by; else centre on your own avatar.
+    const focus = room.greeter?.x ?? standingSpots(room.object)[0] ?? 50;
+    const centred = Math.min(max, Math.max(0, (focus / 100) * el.scrollWidth - el.clientWidth / 2));
+    el.scrollLeft = room.greeter ? centred : transition === "right" ? 0 : transition === "left" ? max : centred;
     startScroll.current = el.scrollLeft;
     measure();
   }, [roomId, transition]);
@@ -204,6 +210,9 @@ export function House({ answers, professor, roomId, panel, courseId, nav, name, 
                 people={here}
                 onPickPerson={pickPerson}
                 onMorePeople={(rest) => setCard({ list: rest })}
+                name={name}
+                greeting={greeting}
+                onDismissGreeting={dismissGreeting}
                 pulse={pulsing}
                 onOpenClasses={nav.openClasses}
               />
