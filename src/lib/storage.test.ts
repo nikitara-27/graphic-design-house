@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { clearAnswers, loadAnswers, loadFlag, saveAnswers, saveFlag } from "./storage";
+import { clearAnswers, loadAnswers, loadFlag, loadName, saveAnswers, saveFlag, saveName } from "./storage";
 
 const blocked = () => {
   throw new DOMException("The operation is insecure.", "SecurityError");
@@ -15,6 +15,8 @@ describe("storage", () => {
     expect(() => clearAnswers()).not.toThrow();
     expect(loadFlag("x")).toBe(false);
     expect(() => saveFlag("x")).not.toThrow();
+    expect(loadName()).toBe("");
+    expect(() => saveName("Niki")).not.toThrow();
   });
 
   it("round-trips valid answers and ignores tampered ones", () => {
@@ -28,7 +30,9 @@ describe("storage", () => {
     expect(loadAnswers()).toEqual({ year: "junior", interest: "branding", program: "figma" });
     mem.set("gd-house:answers", JSON.stringify({ year: "wizard", interest: "branding", program: "figma" }));
     expect(loadAnswers()).toBeNull();
+    saveName("  Niki  ");
+    expect(loadName()).toBe("Niki");
     clearAnswers();
-    expect(mem.size).toBe(0);
+    expect([...mem.keys()]).toEqual(["gd-house:name"]); // retake keeps the name
   });
 });

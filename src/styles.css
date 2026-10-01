@@ -104,7 +104,7 @@ h1, h2, h3, p { margin: 0; }
 .progress span.on { background: var(--plum); }
 .progress-text { margin-left: 6px; font-weight: 800; font-size: 14px; }
 .quiz-prompt { font-family: var(--font-display); font-size: 30px; font-weight: 900; line-height: 1.1; color: var(--plum); margin-bottom: 18px; }
-.quiz-prompt:focus { outline: none; box-shadow: none; }
+.quiz-prompt:focus, .title:focus { outline: none; box-shadow: none; }
 
 .options { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .options-program { grid-template-columns: 1fr 1fr; }
@@ -123,6 +123,29 @@ h1, h2, h3, p { margin: 0; }
 .options-program .option-label { font-size: 14px; }
 
 .reveal { justify-content: center; }
+
+/* Name step */
+.name-step { display: flex; flex-direction: column; gap: 16px; }
+.name-input {
+  width: 100%; min-height: 56px; padding: 10px 14px;
+  font: inherit; font-size: 20px; font-weight: 700; color: var(--forest);
+  background: var(--cream); border: 3px solid var(--forest); border-radius: 0; box-shadow: 3px 3px 0 var(--forest);
+}
+.name-input::placeholder { color: var(--forest); opacity: 0.55; }
+.name-input:focus-visible { outline: 3px solid var(--plum); outline-offset: 2px; box-shadow: 3px 3px 0 var(--forest); }
+.name-input-sm { min-height: 44px; font-size: 16px; padding: 6px 10px; }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: var(--shadow); }
+
+/* Name row in the profile */
+.name-value { display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
+.link-btn {
+  min-height: 44px; padding: 0 2px; background: none; border: 0;
+  font-size: 14px; font-weight: 800; color: var(--plum); text-decoration: underline; text-underline-offset: 3px;
+}
+.profile-facts .name-edit-row { flex-direction: column; align-items: stretch; gap: 6px; }
+.name-edit-row dd { text-align: left; }
+.name-edit { display: flex; flex-direction: column; gap: 8px; }
+.name-edit-actions { display: flex; justify-content: flex-end; gap: 8px; }
 
 /* ---------- Avatar, profile ---------- */
 
@@ -286,9 +309,9 @@ h1, h2, h3, p { margin: 0; }
 .hangout { position: absolute; pointer-events: none; z-index: 1; }
 .hangout .avatar { width: 100%; }
 .speech {
-  position: absolute; right: -40%; top: -4%; padding: 4px 8px;
-  background: var(--cream); border: 2px solid var(--forest);
-  font-size: clamp(10px, 1.3cqi, 15px); font-weight: 800; white-space: nowrap;
+  position: absolute; left: 70%; bottom: 100%; width: max-content; max-width: 13em; padding: 5px 9px;
+  background: var(--cream); border: 2px solid var(--forest); box-shadow: 2px 2px 0 var(--forest);
+  font-size: clamp(11px, 1.3cqi, 15px); font-weight: 800; line-height: 1.25; color: var(--plum);
 }
 
 /* ---------- Sheets (dialogs) ---------- */

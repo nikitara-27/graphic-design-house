@@ -29,6 +29,8 @@ interface Props {
   panel: Panel | null;
   courseId?: string;
   nav: HouseNav;
+  name: string;
+  onSaveName: (name: string) => void;
   onRetake: () => void;
 }
 
@@ -37,7 +39,7 @@ const ARROWS: Record<string, Direction> = { ArrowLeft: "left", ArrowRight: "righ
 const PULSE_MS = 2600;
 const HINT_KEY = "look-hint-seen";
 
-export function House({ answers, professor, roomId, panel, courseId, nav, onRetake }: Props) {
+export function House({ answers, professor, roomId, panel, courseId, nav, name, onSaveName, onRetake }: Props) {
   const year = yearOption(answers.year)!;
   const homeRoomId = year.homeRoomId;
 
@@ -183,6 +185,7 @@ export function House({ answers, professor, roomId, panel, courseId, nav, onReta
               <RoomScene
                 room={room}
                 answers={answers}
+                name={name}
                 professor={professor}
                 pulse={pulsing}
                 onOpenClasses={nav.openClasses}
@@ -251,7 +254,7 @@ export function House({ answers, professor, roomId, panel, courseId, nav, onReta
       </Sheet>
 
       <Sheet open={panel === "profile"} onClose={nav.closePanel} title="Your profile">
-        <ProfileCard answers={answers} professor={professor} />
+        <ProfileCard answers={answers} professor={professor} name={name} onSaveName={onSaveName} />
         <div className="actions">
           {!isHome && (
             <button type="button" className="btn btn-primary" onClick={() => go(homeRoomId, "fade")}>

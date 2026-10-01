@@ -50,6 +50,8 @@ and missing or invalid links open it too; the user's year room keeps its "Your r
 
 Quiz answers (year, interest, program) are saved in `localStorage`. The host professor is never saved;
 it's recalculated from the answers on every load, so edits to the `assignments` table apply right away.
+The user's first name (asked before Q1, max 30 characters) is stored under its own key, only in their browser;
+nothing is sent anywhere. "Retake quiz" clears the answers but keeps the name pre-filled, and the profile panel has "Edit name".
 "Retake quiz" clears the answers. If storage is blocked (some private-browsing modes), the site still works,
 it just won't remember answers after a refresh. Routing logic is in `src/lib/router.ts`.
 

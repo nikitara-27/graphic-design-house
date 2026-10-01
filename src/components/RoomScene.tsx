@@ -6,12 +6,13 @@ interface Props {
   room: Room;
   professor: Professor;
   answers: Answers;
+  name: string;
   /** First visit: pulse the object so people learn it's tappable. */
   pulse: boolean;
   onOpenClasses: () => void;
 }
 
-export function RoomScene({ room, professor, pulse, onOpenClasses }: Props) {
+export function RoomScene({ room, professor, name, pulse, onOpenClasses }: Props) {
   const o = room.object;
   const n = room.courses.length;
   return (
@@ -21,7 +22,7 @@ export function RoomScene({ room, professor, pulse, onOpenClasses }: Props) {
       {room.hangout && (
         <div className="hangout" style={{ left: `${room.hangout.x}%`, top: `${room.hangout.y}%`, width: `${room.hangout.w}%` }}>
           <Avatar professor={professor} decorative />
-          <span className="speech" aria-hidden="true">Take a break!</span>
+          <span className="speech">{name ? `Hi ${name}, welcome to the GD House!` : "Welcome to the GD House!"}</span>
         </div>
       )}
 

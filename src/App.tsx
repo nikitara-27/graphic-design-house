@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Answers } from "./types";
 import { assignments, entryRoomId, hostProfessor, professors } from "./lib/data";
 import { matchProfessor } from "./lib/match";
-import { clearAnswers, loadAnswers, saveAnswers } from "./lib/storage";
+import { clearAnswers, loadAnswers, loadName, saveAnswers, saveName } from "./lib/storage";
 import { classesHash, resolve, roomHash, type NavState } from "./lib/router";
 import { Landing } from "./components/Landing";
 import { Quiz } from "./components/Quiz";
@@ -20,6 +20,12 @@ function writeHistory(hash: string, state: NavState | null, replace = false) {
 
 export default function App() {
   const [answers, setAnswers] = useState<Answers | null>(loadAnswers);
+  // Stored only in this browser. Survives "Retake quiz" so it comes back pre-filled.
+  const [name, setName] = useState(loadName);
+  const updateName = (n: string) => {
+    saveName(n);
+    setName(n);
+  };
   const [loc, setLoc] = useState(readLocation);
 
   // Back/forward buttons and hand-edited URLs.
@@ -61,6 +67,8 @@ export default function App() {
     return (
       <Quiz
         initial={answers ?? undefined}
+        initialName={name}
+        onName={updateName}
         onBack={() => navigate(answers ? roomHash(entryRoomId) : "", null, true)}
         onComplete={(a) => {
           saveAnswers(a);
@@ -76,6 +84,7 @@ export default function App() {
       <Reveal
         answers={answers}
         professor={professor}
+        name={name}
         onEnter={() => navigate(roomHash(entryRoomId), { room: entryRoomId })}
         onRetake={retake}
       />
@@ -104,6 +113,8 @@ export default function App() {
         panel={route.panel}
         courseId={route.courseId}
         nav={nav}
+        name={name}
+        onSaveName={updateName}
         onRetake={retake}
       />
     );

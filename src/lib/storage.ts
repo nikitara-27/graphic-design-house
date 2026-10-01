@@ -1,5 +1,6 @@
 import type { Answers } from "../types";
 import { questions } from "./data";
+import { cleanName } from "./name";
 
 // localStorage is a convenience only: every access can throw (private mode, blocked storage),
 // so each one is wrapped and the app carries on without it.
@@ -33,6 +34,27 @@ export function clearAnswers() {
   try {
     localStorage.removeItem(KEY);
     for (const k of OLD_KEYS) localStorage.removeItem(k);
+  } catch {
+    /* app works without storage */
+  }
+}
+
+// The name lives under its own key so "Retake quiz" can clear the answers but keep the name.
+// It's only ever stored in this browser; nothing is sent anywhere.
+const NAME_KEY = "gd-house:name";
+
+export function loadName(): string {
+  try {
+    const raw = localStorage.getItem(NAME_KEY);
+    return typeof raw === "string" ? cleanName(raw) : "";
+  } catch {
+    return "";
+  }
+}
+
+export function saveName(name: string) {
+  try {
+    localStorage.setItem(NAME_KEY, cleanName(name));
   } catch {
     /* app works without storage */
   }
