@@ -27,6 +27,10 @@ Small arrow buttons on the left and right edges lead to the next room; you can a
 **Clickable object.** Each room has exactly one: `object` in `rooms.json` (`label`, `x`, `y`, `w`, `h`, as percentages of the 1600×900 scene, measured from the top-left).
 Tapping it opens the room's class list. It glows on the first visit, and the tap target never shrinks below 44×44px. Everything else in the scene is decoration.
 
+**House map.** The Map panel shows the team's cross-section illustration (`public/map.webp`, made from `MAP.png` at 1234px wide).
+Each room's tappable area on it is `mapArea` in `rooms.json` (percentages of the map image). If the illustration changes,
+re-export it and update those numbers.
+
 **Courses.** Each course needs a unique `id`. It's usually the code, with a suffix when a code appears twice (AR594, AR596).
 Professors refer to courses by `id`.
 

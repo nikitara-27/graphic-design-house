@@ -31,6 +31,8 @@ export interface Room {
   /** Where the user's avatar hangs out in the scene (% of scene; height follows the avatar's aspect). */
   hangout?: { x: number; y: number; w: number };
   object: SceneObject;
+  /** Where this room sits in the house map image, in % (top-left + size). */
+  mapArea: { x: number; y: number; w: number; h: number };
   exits: Exit[];
   courses: Course[];
 }
@@ -40,6 +42,8 @@ export interface HouseData {
   sceneAspect: number;
   /** Where everyone starts when they enter the house (not their year's room). */
   entryRoomId: string;
+  /** The illustrated cross-section shown in the Map panel (path under /public, pixel size, alt text). */
+  map: { image: string; width: number; height: number; alt: string };
   floors: Floor[];
   rooms: Room[];
 }

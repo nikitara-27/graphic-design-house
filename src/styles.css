@@ -349,31 +349,35 @@ h1, h2, h3, p { margin: 0; }
   background: none; border: 0; font-weight: 800; color: var(--plum); text-decoration: underline; text-underline-offset: 3px;
 }
 
-/* ---------- Aerial map ---------- */
+/* ---------- House map (illustrated cross-section) ---------- */
 
-.aerial { display: flex; flex-direction: column; }
-.roof { height: 36px; background: var(--pink); clip-path: polygon(50% 0, 100% 100%, 0 100%); margin: 0 -2px; }
-.floor { background: var(--sage); border: 3px solid var(--forest); border-top: 0; padding: 6px; }
-.floor-4 { border-top: 3px solid var(--forest); }
-.floor-0 { background: var(--lavender); }
-.floor-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--forest); margin: 0 0 4px 2px; }
-.floor-rooms { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
-.map-room {
-  width: 100%; height: 100%; min-height: 76px; padding: 6px 4px;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
-  background: var(--cream); border: 2px solid var(--pink); text-align: center;
+/* Fit the whole house in the sheet: as wide as possible without exceeding the sheet's height. */
+.housemap {
+  position: relative; margin: 0 auto;
+  width: min(100%, calc((88vh - 120px) * 1234 / 1844));
+  width: min(100%, calc((88dvh - 120px) * 1234 / 1844));
 }
-.map-room-name { font-family: var(--font-display); font-weight: 900; font-size: 13px; line-height: 1.05; color: var(--plum); }
-.map-room-sub { font-size: 11px; color: var(--forest); line-height: 1.15; }
-.map-dots { display: flex; flex-wrap: wrap; justify-content: center; gap: 3px; min-height: 8px; }
-.map-dots i { width: 8px; height: 8px; border-radius: 50%; background: var(--cream); border: 2px solid var(--pink); }
-.map-dots i.off { border-color: var(--lavender); background: var(--lavender); }
-.map-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 3px; }
-.map-tags .tag { margin: 0; font-size: 10px; padding: 1px 4px; }
-.map-room.is-current { background: var(--plum); border-color: var(--forest); }
-.map-room.is-current .map-room-name, .map-room.is-current .map-room-sub { color: var(--cream); }
-.map-room.is-current .tag-here { border-color: var(--cream); }
-.map-room.is-home { box-shadow: inset 0 0 0 3px var(--butter); }
+.housemap-art { display: block; width: 100%; height: 100%; image-rendering: pixelated; user-select: none; }
+.map-spot {
+  position: absolute; transform: translate(-50%, -50%);
+  padding: 0; border: 0; background: transparent; cursor: pointer;
+  display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start;
+}
+.map-spot:hover, .map-spot:focus-visible { box-shadow: inset 0 0 0 3px var(--butter), 0 0 14px 2px rgba(235, 212, 143, 0.8); }
+.map-spot.is-current { box-shadow: inset 0 0 0 3px var(--plum), 0 0 0 2px var(--cream); }
+.map-spot-tags { display: flex; flex-wrap: wrap; gap: 3px; padding: 4px; position: relative; z-index: 1; }
+.map-spot-tags .tag { margin: 0; font-size: 10px; padding: 1px 4px; }
+.map-spot-tags .tag-here { border-color: var(--cream); }
+/* Room names appear on hover/focus (the narrow rooms are too small to label permanently). */
+.map-spot-name {
+  margin: auto 4px 4px; padding: 1px 5px;
+  background: rgba(243, 237, 232, 0.92); border: 1px solid var(--forest);
+  font-family: var(--font-display); font-size: 12px; font-weight: 900; color: var(--plum); white-space: nowrap;
+  opacity: 0; transition: opacity 120ms;
+}
+.map-spot:hover .map-spot-name, .map-spot:focus-visible .map-spot-name { opacity: 1; }
+.map-spot:hover, .map-spot:focus-visible { z-index: 2; }
+.housemap-hint { margin-top: 10px; text-align: center; font-size: 13px; font-weight: 600; }
 
 /* ---------- Landscape & desktop: show the whole room ---------- */
 
@@ -392,8 +396,6 @@ h1, h2, h3, p { margin: 0; }
   .hud-title p { font-size: 14px; }
   .door { width: 64px; }
   .door-label { font-size: 11px; }
-  .map-room-name { font-size: 17px; }
-  .map-room-sub { font-size: 12px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

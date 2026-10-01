@@ -1,51 +1,47 @@
-import { house, rooms } from "../lib/data";
+import { asset, house, rooms } from "../lib/data";
 
 interface Props { currentRoomId: string; homeRoomId: string; onJump: (id: string) => void }
 
-/** Floor plan as a vertical stack of floors (Attic → Basement), readable at 375px. */
+const floorLabel = new Map(house.floors.map((f) => [f.floor, f.label]));
+
+/** The team's illustrated cross-section of the house, with every room tappable. */
 export function AerialMap({ currentRoomId, homeRoomId, onJump }: Props) {
-  const floors = [...house.floors].sort((a, b) => b.floor - a.floor);
+  const { map } = house;
   return (
-    <div className="aerial">
-      <div className="roof" aria-hidden="true" />
-      {floors.map((f) => {
-        const onFloor = rooms.filter((r) => r.floor === f.floor);
-        return (
-          <section key={f.floor} className={`floor floor-${f.floor}`} aria-label={f.label}>
-            <h3 className="floor-label">{f.label}</h3>
-            <ul className="floor-rooms" style={{ gridTemplateColumns: `repeat(${onFloor.length}, minmax(0, 1fr))` }}>
-              {onFloor.map((r) => {
-                const current = r.id === currentRoomId;
-                const home = r.id === homeRoomId;
-                return (
-                  <li key={r.id}>
-                    <button
-                      type="button"
-                      className={`map-room${current ? " is-current" : ""}${home ? " is-home" : ""}`}
-                      aria-current={current ? "location" : undefined}
-                      onClick={() => onJump(r.id)}
-                    >
-                      <span className="map-room-name">{r.name}</span>
-                      <span className="map-room-sub">{r.subtitle}</span>
-                      <span className="map-dots" aria-label={`${r.courses.length} classes`}>
-                        {r.courses.map((c) => (
-                          <i key={c.id} className={c.active ? "" : "off"} />
-                        ))}
-                      </span>
-                      {(current || home) && (
-                        <span className="map-tags">
-                          {current && <span className="tag tag-here">You're here</span>}
-                          {home && <span className="tag tag-home">Your room</span>}
-                        </span>
-                      )}
-                    </button>
-                  </li>
-                );
-              })}
-            </ul>
-          </section>
-        );
-      })}
-    </div>
+    <>
+      <div className="housemap" style={{ aspectRatio: `${map.width} / ${map.height}` }}>
+        <img className="housemap-art" src={asset(map.image)} alt={map.alt} draggable={false} />
+        {rooms.map((r) => {
+          const a = r.mapArea;
+          const current = r.id === currentRoomId;
+          const home = r.id === homeRoomId;
+          return (
+            <button
+              key={r.id}
+              type="button"
+              className={`map-spot${current ? " is-current" : ""}${home ? " is-home" : ""}`}
+              style={{
+                left: `${a.x + a.w / 2}%`,
+                top: `${a.y + a.h / 2}%`,
+                width: `max(44px, ${a.w}%)`,
+                height: `max(44px, ${a.h}%)`,
+              }}
+              aria-current={current ? "location" : undefined}
+              aria-label={`${r.name}, ${r.subtitle}, ${floorLabel.get(r.floor)}${current ? ". You're here" : ""}${home ? ". Your room" : ""}`}
+              onClick={() => onJump(r.id)}
+            >
+              {(current || home) && (
+                <span className="map-spot-tags" aria-hidden="true">
+                  {current && <span className="tag tag-here">You're here</span>}
+                  {home && <span className="tag tag-home">Your room</span>}
+                </span>
+              )}
+              <span className="map-spot-name" aria-hidden="true">{r.name}</span>
+            </button>
+          );
+        })}
+      </div>
+      <p className="housemap-hint">Tap a room to go there.</p>
+    </>
   );
 }

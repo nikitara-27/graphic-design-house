@@ -1,6 +1,12 @@
 {
   "sceneAspect": 1.7778,
   "entryRoomId": "living-room",
+  "map": {
+    "image": "map.webp",
+    "width": 1234,
+    "height": 1844,
+    "alt": "Cross-section of the house with all 13 rooms: the attic on top, three floors of rooms, and the basement at the bottom."
+  },
   "floors": [
     {
       "floor": 4,
@@ -90,7 +96,13 @@
             "interactive"
           ]
         }
-      ]
+      ],
+      "mapArea": {
+        "x": 1.79,
+        "y": 10.22,
+        "w": 96.23,
+        "h": 15.22
+      }
     },
     {
       "id": "bedroom",
@@ -146,7 +158,13 @@
           "active": true,
           "interests": []
         }
-      ]
+      ],
+      "mapArea": {
+        "x": 1.79,
+        "y": 26.64,
+        "w": 29.34,
+        "h": 17.5
+      }
     },
     {
       "id": "control-room",
@@ -224,7 +242,13 @@
           "active": true,
           "interests": []
         }
-      ]
+      ],
+      "mapArea": {
+        "x": 33.33,
+        "y": 26.64,
+        "w": 32.84,
+        "h": 17.5
+      }
     },
     {
       "id": "studio-room",
@@ -299,7 +323,13 @@
             "exhibition"
           ]
         }
-      ]
+      ],
+      "mapArea": {
+        "x": 68.68,
+        "y": 26.64,
+        "w": 29.24,
+        "h": 17.5
+      }
     },
     {
       "id": "kitchen",
@@ -370,7 +400,13 @@
             "typography"
           ]
         }
-      ]
+      ],
+      "mapArea": {
+        "x": 1.69,
+        "y": 45.42,
+        "w": 29.44,
+        "h": 17.77
+      }
     },
     {
       "id": "pantry",
@@ -439,7 +475,13 @@
           "active": true,
           "interests": []
         }
-      ]
+      ],
+      "mapArea": {
+        "x": 33.33,
+        "y": 45.42,
+        "w": 15.32,
+        "h": 17.77
+      }
     },
     {
       "id": "library",
@@ -501,7 +543,13 @@
             "editorial"
           ]
         }
-      ]
+      ],
+      "mapArea": {
+        "x": 50.45,
+        "y": 45.42,
+        "w": 15.62,
+        "h": 17.77
+      }
     },
     {
       "id": "dining-room",
@@ -572,7 +620,13 @@
             "exhibition"
           ]
         }
-      ]
+      ],
+      "mapArea": {
+        "x": 68.57,
+        "y": 45.42,
+        "w": 29.44,
+        "h": 17.77
+      }
     },
     {
       "id": "bathroom",
@@ -643,7 +697,13 @@
             "typography"
           ]
         }
-      ]
+      ],
+      "mapArea": {
+        "x": 1.69,
+        "y": 64.25,
+        "w": 29.44,
+        "h": 17.77
+      }
     },
     {
       "id": "playroom",
@@ -690,7 +750,13 @@
           "active": true,
           "interests": []
         }
-      ]
+      ],
+      "mapArea": {
+        "x": 33.33,
+        "y": 64.25,
+        "w": 10.91,
+        "h": 17.77
+      }
     },
     {
       "id": "living-room",
@@ -733,7 +799,13 @@
           "direction": "down"
         }
       ],
-      "courses": []
+      "courses": [],
+      "mapArea": {
+        "x": 46.04,
+        "y": 64.25,
+        "w": 19.83,
+        "h": 17.77
+      }
     },
     {
       "id": "office-room",
@@ -804,7 +876,13 @@
             "history"
           ]
         }
-      ]
+      ],
+      "mapArea": {
+        "x": 68.57,
+        "y": 64.25,
+        "w": 29.44,
+        "h": 17.77
+      }
     },
     {
       "id": "basement",
@@ -842,7 +920,13 @@
           "active": false,
           "interests": []
         }
-      ]
+      ],
+      "mapArea": {
+        "x": 1.79,
+        "y": 83.43,
+        "w": 96.33,
+        "h": 15.42
+      }
     }
   ]
 }
