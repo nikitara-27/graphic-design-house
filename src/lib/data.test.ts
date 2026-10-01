@@ -45,6 +45,17 @@ describe("content", () => {
     expect(bathroom[2].description).toContain("Form--content relationships");
     expect(bathroom[0].hubAreas).toEqual(["Aesthetic Exploration", "Digital/Multimedia Expression"]);
   });
+  it("has full details for the Kitchen classes", () => {
+    const kitchen = rooms.find((r) => r.id === "kitchen")!.courses;
+    expect(kitchen.map((c) => [c.code, c.title, c.term, c.credits, c.prerequisites])).toEqual([
+      ["AR381", "Junior Graphic Design 1", "F", 4, undefined],
+      ["AR487", "Junior Typography", "F", 2, undefined],
+      ["AR382", "Junior Graphic Design 2", "S", 4, "CFA AR 381"],
+      ["AR497", "Junior Type: Motion + Interactivity", "S", 2, undefined],
+    ]);
+    expect(kitchen[0].hubAreas).toEqual(["Research and Information Literacy", "Teamwork/Collaboration"]);
+    expect(kitchen[3].note).toBe("Open to undergraduate junior graphic design students. This is a required course for graphic design majors.");
+  });
   it("marks every basement course inactive and nothing else", () => {
     for (const r of rooms) for (const c of r.courses) expect(c.active).toBe(r.id !== "basement");
   });

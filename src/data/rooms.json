@@ -377,9 +377,15 @@
         {
           "id": "AR381",
           "code": "AR381",
-          "title": "Junior Graphic Design",
+          "title": "Junior Graphic Design 1",
           "term": "F",
           "active": true,
+          "credits": 4,
+          "description": "This course exercises a student's knowledge of graphic design fundamentals, including form development and communication strategies to solve more complex design problems. Variables such as audience, context, authorship, and issues relevant to contemporary practice will be investigated and discussed. Context-driven platforms for communication will be explored as students consider how to reach both narrow and broad audiences across multiple mediums.",
+          "hubAreas": [
+            "Research and Information Literacy",
+            "Teamwork/Collaboration"
+          ],
           "interests": []
         },
         {
@@ -388,6 +394,8 @@
           "title": "Junior Typography",
           "term": "F",
           "active": true,
+          "credits": 2,
+          "description": "Junior level typography is an advanced examination into the theory and practice of denotative and connotative typography. Students will learn how to design a complex typographic system over a sequence of pages; and how to control complex hierarchal systems as a means of conveying visual language and verbal meaning. Students will gain a deeper understanding of the function of design principles in creating typographic contrast, hierarchy, meaning and expression. Students will address how variables such as rate, pace and sound impact typographic narrative in a time-based context.",
           "interests": [
             "typography"
           ]
@@ -395,17 +403,23 @@
         {
           "id": "AR382",
           "code": "AR382",
-          "title": "Junior Graphic Design",
+          "title": "Junior Graphic Design 2",
           "term": "S",
           "active": true,
+          "credits": 4,
+          "prerequisites": "CFA AR 381",
+          "description": "Students examine design as cultural practice as they explore their own design sensibilities and interests through a sequence of self-authored projects in preparation for senior year. Projects and discussion focus on how narrow and broad social contexts/environments impact the way in which graphic design lives and functions.",
           "interests": []
         },
         {
           "id": "AR497",
           "code": "AR497",
-          "title": "Junior Typography",
+          "title": "Junior Type: Motion + Interactivity",
           "term": "S",
           "active": true,
+          "credits": 2,
+          "description": "Junior Type: Motion + Interactivity is the only typography course that solely addresses dynamic typography. Students will learn how to translate fundamental typographic variables such as form, weight, scale and space into dynamic environments, type-based narrative sequences, kinetic type, and type in an interactive format. Students will learn how pacing, rhythm, sequencing and interactivity impact hierarchy and communication. Focus on refinement, craft, typographic complexity, denotative and connotative typography is emphasized. Creative concepting, visual storytelling and hierarchy will be emphasized. Tutorials in After Effects and other interactive type tools are included.",
+          "note": "Open to undergraduate junior graphic design students. This is a required course for graphic design majors.",
           "interests": [
             "typography"
           ]
