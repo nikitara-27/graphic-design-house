@@ -1,5 +1,5 @@
-import type { Interest, SceneObject, Year } from "../types";
-import { hostProfessor, house, professors, questions, roomById } from "./data";
+import type { Interest, Year } from "../types";
+import { hostProfessor, professors, questions, roomById } from "./data";
 import { cleanName } from "./name";
 
 /**
@@ -67,45 +67,6 @@ export function flattenPresence(state: Record<string, unknown[]>, selfId: string
     if (info) out.push({ ...info, id, self: id === selfId });
   }
   return out;
-}
-
-// Avatar size, in % of the scene. Width matches the original Living Room host (15% of the room's
-// width), which works out to ~28% of the room's height in the 16:9 artwork. Feet sit 86.5% down. The character art has
-// empty margins, so spacing and collisions use the narrower body width.
-export const AV_WIDTH = 15;
-const AV_BODY_W = 12.6; // the drawn figure fills ~84% of its image width
-const AV_H = AV_WIDTH * house.sceneAspect * (2000 / 1925);
-const LABEL_H = 4; // name label above the head
-const LABEL_W = 7; // a typical first name, centred over the figure
-/** Top of an avatar's name label, in % of the scene height. */
-export const FEET_Y = 86.5; // just above the downstairs buttons
-/** Top of an avatar's name label, in % of the scene height. */
-export const AVATAR_TOP = FEET_Y - AV_H - LABEL_H;
-const SPACING = 13.5; // just more than a figure's width, so neighbours don't overlap
-
-type Box = { x: number; y: number; w: number; h: number };
-const hits = (a: Box, b: Box) => a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
-
-/** Space kept free under avatars' feet for the downstairs buttons, in px. */
-export const BOTTOM_CLEARANCE_PX = 66;
-
-/**
- * Where avatars can stand in a room (feet on `floorY`, % of scene height): spots along the floor, kept away from the edges (side
- * arrows), the room's clickable object, and any greeter (the Living Room cat and its bubble).
- * Ordered from the middle outwards.
- */
-export function standingSpots(object: SceneObject, greeter?: { x: number; y: number }, floorY = FEET_Y): number[] {
-  const avoid: Box[] = [object];
-  // The cat sits just under the bubble's tail; keep heads off it (the bubble itself is higher up).
-  if (greeter) avoid.push({ x: greeter.x - 7, y: greeter.y - 2, w: 14, h: 14 });
-  const spots: number[] = [];
-  for (let x = 14; x <= 86; x += SPACING) {
-    // The figure, plus the (much narrower) name label above its head.
-    const body = { x: x - AV_BODY_W / 2, y: floorY - AV_H, w: AV_BODY_W, h: AV_H };
-    const label = { x: x - LABEL_W / 2, y: floorY - AV_H - LABEL_H, w: LABEL_W, h: LABEL_H };
-    if (!avoid.some((b) => hits(body, b) || hits(label, b))) spots.push(x);
-  }
-  return spots.sort((a, b) => Math.abs(a - 50) - Math.abs(b - 50));
 }
 
 /** Random id for this tab, kept across refreshes so a refresh doesn't look like a new visitor. */

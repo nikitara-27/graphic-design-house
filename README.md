@@ -67,6 +67,12 @@ For the live site, add the same values as GitHub repository **variables** `SUPAB
 The build refuses secret/service_role keys. Without these values (or if Supabase is unreachable) the site works
 normally, just without other people. Code: `src/lib/presence.ts`, `src/lib/usePresence.ts`, `src/components/People.tsx`.
 
+Everyone in a room is shown (no limit): each person gets a stable spot from their id, people spread across
+the room before overlapping like a crowd, lower on screen is drawn in front, and you're always on top.
+Feet are placed inside each room's floor band, `floorTop`–`floorBottom` in `rooms.json` (% of the room image's
+height); people further back are drawn at ~90%. Avatars stay off the clickable object, the Living Room cat,
+and (when the whole room fits on screen) the arrows. Placement logic: `src/lib/crowd.ts`.
+
 For local testing without real visitors, add `?fakePeers=8` to the dev URL (development only).
 
 ## Still needed from the team (`TODO (team)`)

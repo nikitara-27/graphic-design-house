@@ -202,7 +202,7 @@ h1, h2, h3, p { margin: 0; }
 .stage { position: relative; container-type: size; overflow: hidden; }
 
 .scene-scroller {
-  position: absolute; inset: 0; display: flex; align-items: center;
+  position: absolute; inset: 0; z-index: 0; /* own stacking context: crowd z-indexes stay under the arrows */ display: flex; align-items: center;
   overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain;
   -webkit-overflow-scrolling: touch; scrollbar-width: none;
 }
@@ -228,33 +228,33 @@ h1, h2, h3, p { margin: 0; }
 @keyframes from-top { from { opacity: 0; transform: translateY(-40px); } }
 @keyframes from-bottom { from { opacity: 0; transform: translateY(40px); } }
 
-/* People in the room (live presence). Each avatar stands with its feet on the floor line. */
-.person, .person-more {
-  position: absolute; z-index: 1; transform: translate(-50%, -100%);
+/* People in the room (live presence). Each avatar is anchored by its FEET at (left, top);
+   people further back (higher on the floor) are drawn slightly smaller via --s. */
+.person {
+  position: absolute; width: max(44px, 15cqi); /* 15% of the room's width */
   padding: 0; border: 0; background: transparent; cursor: pointer;
+  transform: translate(-50%, -100%) scale(var(--s, 1)); transform-origin: 50% 100%;
   animation: person-in 260ms ease-out;
 }
-@keyframes person-in { from { opacity: 0; transform: translate(-50%, calc(-100% + 8px)); } }
-.person { display: flex; flex-direction: column; align-items: center; width: max(44px, 15cqi); } /* 15% of the room's width = AV_WIDTH */
+@keyframes person-in { from { opacity: 0; } }
 .person .avatar { width: 100%; filter: drop-shadow(0 3px 0 rgba(56, 91, 72, 0.35)); }
+.person.is-self .avatar { filter: drop-shadow(2px 0 0 var(--plum)) drop-shadow(-2px 0 0 var(--plum)) drop-shadow(0 2px 0 var(--plum)) drop-shadow(0 -2px 0 var(--plum)); }
+.person:hover .avatar, .person:focus-visible .avatar { filter: drop-shadow(0 0 6px var(--butter)) drop-shadow(0 3px 0 rgba(56, 91, 72, 0.35)); }
+
+/* Names live in their own layer above every figure (same front-to-back order), so a name is
+   never hidden behind someone's head. Your name is always on top. */
+.person-names { position: absolute; inset: 0; pointer-events: none; z-index: 200000; }
 .person-name {
-  position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 3px;
+  position: absolute; transform: translate(-50%, calc(-100% - 3px));
   max-width: 16ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   padding: 1px 7px; background: rgba(243, 237, 232, 0.94); border: 1.5px solid var(--forest);
   font-size: clamp(11px, 1.15cqi, 14px); font-weight: 800; line-height: 1.3; color: var(--forest);
 }
-.person.is-self .person-name { background: var(--plum); border-color: var(--plum); color: var(--cream); }
-.person.is-self .avatar { filter: drop-shadow(0 0 0 var(--plum)) drop-shadow(2px 0 0 var(--plum)) drop-shadow(-2px 0 0 var(--plum)) drop-shadow(0 2px 0 var(--plum)); }
-.person:hover .person-name, .person:focus-visible .person-name { background: var(--butter); color: var(--forest); border-color: var(--forest); }
-.person-more {
-  min-width: 44px; min-height: 44px; padding: 6px 10px; margin-top: -8px;
-  background: var(--cream); border: 2px solid var(--forest); box-shadow: 2px 2px 0 var(--forest);
-  font-size: 13px; font-weight: 800; color: var(--plum); white-space: nowrap;
-}
+.person-name.is-self { background: var(--plum); border-color: var(--plum); color: var(--cream); }
 
 /* The Living Room cat's welcome. The tail (::after) points down at the cat. */
 .greeter-bubble {
-  position: absolute; z-index: 3; transform: translate(-50%, calc(-100% - 14px)); transform-origin: 50% calc(100% + 14px);
+  position: absolute; z-index: 300000; transform: translate(-50%, calc(-100% - 14px)); transform-origin: 50% calc(100% + 14px);
   width: max-content; max-width: min(240px, 70vw); padding: 10px 14px;
   background: var(--cream); border: 3px solid var(--forest); box-shadow: 3px 3px 0 var(--forest);
   font-family: var(--font-display); font-size: 16px; font-weight: 900; line-height: 1.2; color: var(--forest); text-align: center;
@@ -283,13 +283,6 @@ h1, h2, h3, p { margin: 0; }
 .person-detail p { font-size: 14px; font-weight: 600; }
 .person-detail-name { font-family: var(--font-display); font-size: 22px !important; font-weight: 900 !important; color: var(--plum); line-height: 1.1; }
 .person-detail-host { color: var(--forest); opacity: 0.85; font-size: 13px !important; }
-.people-card-title { font-family: var(--font-display); font-size: 20px; font-weight: 900; color: var(--plum); margin-bottom: 6px; }
-.people-list { list-style: none; margin: 0; padding: 0 44px 0 0; max-height: 40vh; overflow-y: auto; }
-.people-list button {
-  width: 100%; min-height: 44px; text-align: left; padding: 6px 4px;
-  background: none; border: 0; border-bottom: 2px solid var(--sage); font-weight: 700; color: var(--forest);
-}
-.people-list button:hover { background: var(--blush); }
 
 /* Doors: small arrows pinned to the edges of the room, over the artwork. */
 .door {

@@ -28,6 +28,9 @@ export interface Room {
   /** Path under /public, e.g. "scenes/kitchen.png". Empty = generated placeholder scene. */
   sceneImage: string;
   sceneAlt: string;
+  /** Where avatars' feet can go: a band of floor, as % of the scene height (top < bottom). */
+  floorTop: number;
+  floorBottom: number;
   object: SceneObject;
   /** Something in the scene that greets the user with a speech bubble (the Living Room cat). x/y is where the bubble's tail points, in %. */
   greeter?: { label: string; x: number; y: number };

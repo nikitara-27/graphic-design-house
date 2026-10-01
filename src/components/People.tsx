@@ -1,67 +1,62 @@
 import { useEffect, useRef } from "react";
-import type { Room } from "../types";
 import { hostProfessor, interestOption, professors, yearOption } from "../lib/data";
-import { standingSpots, type Peer } from "../lib/presence";
+import type { Peer } from "../lib/presence";
+import { labelTop, type Placement } from "../lib/crowd";
 import { Avatar } from "./Avatar";
 
-const MAX_SHOWN = 6;
 export const hostFor = (id: string) => professors.find((p) => p.id === id) ?? hostProfessor;
 
-/** Sort so you come first, then everyone else alphabetically (stable as people come and go). */
-const order = (a: Peer, b: Peer) => Number(b.self) - Number(a.self) || a.name.localeCompare(b.name) || a.id.localeCompare(b.id);
-
 interface LayerProps {
-  room: Room;
   people: Peer[];
-  /** Where feet go, in % of the scene height (measured: see useFloorLine). */
-  floorY: number;
+  /** Where each person stands (from placePeople), keyed by id. */
+  placements: Map<string, Placement>;
   onPick: (p: Peer) => void;
-  onMore: (rest: Peer[]) => void;
 }
 
-/** Everyone in this room, standing along the floor. Crowds collapse into a "+N" bubble. */
-export function PeopleLayer({ room, people, floorY, onPick, onMore }: LayerProps) {
-  const spots = standingSpots(room.object, room.greeter, floorY);
-  const sorted = [...people].sort(order);
-  const capacity = Math.min(spots.length, MAX_SHOWN);
-  const overflow = sorted.length > capacity;
-  const shown = overflow ? sorted.slice(0, capacity - 1) : sorted;
-  const rest = overflow ? sorted.slice(capacity - 1) : [];
+/**
+ * Everyone in this room, feet on the floor. Avatars may overlap like a crowd: lower on screen is
+ * drawn in front, and you're always on top. Names sit in their own layer above all the figures,
+ * in the same order, so a name is never hidden behind someone's head.
+ */
+export function PeopleLayer({ people, placements, onPick }: LayerProps) {
+  const placed = people
+    .map((p) => ({ p, at: placements.get(p.id)! }))
+    .filter((e) => e.at)
+    .sort((a, b) => a.at.z - b.at.z);
 
   return (
     <>
-      {shown.map((p, i) => (
+      {placed.map(({ p, at }) => (
         <button
           key={p.id}
           type="button"
           className={`person${p.self ? " is-self" : ""}`}
-          style={{ left: `${spots[i]}%`, top: `${floorY}%` }}
+          style={{ left: `${at.x}%`, top: `${at.y}%`, zIndex: 10 + at.z, ["--s" as string]: at.scale }}
           onClick={() => onPick(p)}
           aria-label={p.self ? `You (${p.name}): open your profile` : `${p.name}: show details`}
         >
-          <span className="person-name" aria-hidden="true">{p.self ? `${p.name} (you)` : p.name}</span>
           <Avatar professor={hostFor(p.hostId)} size="sm" decorative />
         </button>
       ))}
-      {rest.length > 0 && (
-        <button
-          type="button"
-          className="person-more"
-          style={{ left: `${spots[capacity - 1]}%`, top: `${floorY}%` }}
-          onClick={() => onMore(rest)}
-          aria-label={`${rest.length} more people here: show the list`}
-        >
-          +{rest.length} more
-        </button>
-      )}
+      <div className="person-names" aria-hidden="true">
+        {placed.map(({ p, at }) => (
+          <span
+            key={p.id}
+            className={`person-name${p.self ? " is-self" : ""}`}
+            style={{ left: `${at.x}%`, top: `${labelTop(at)}%`, zIndex: at.z }}
+          >
+            {p.self ? `${p.name} (you)` : p.name}
+          </span>
+        ))}
+      </div>
     </>
   );
 }
 
-interface CardProps { peer?: Peer; list?: Peer[]; onPick: (p: Peer) => void; onClose: () => void }
+interface CardProps { peer: Peer; onClose: () => void }
 
-/** Small floating card: one person's details, or the list behind "+N more". */
-export function PeopleCard({ peer, list, onPick, onClose }: CardProps) {
+/** Small floating card with one person's details. */
+export function PeopleCard({ peer, onClose }: CardProps) {
   const closeRef = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     closeRef.current?.focus();
@@ -71,38 +66,22 @@ export function PeopleCard({ peer, list, onPick, onClose }: CardProps) {
   }, [onClose]);
 
   return (
-    <div className="people-card" role="dialog" aria-label={peer ? `${peer.name}'s details` : "More people here"}>
+    <div className="people-card" role="dialog" aria-label={`${peer.name}'s details`}>
       <button ref={closeRef} type="button" className="icon-btn people-card-close" onClick={onClose} aria-label="Close">
         ✕
       </button>
-      {peer ? (
-        <div className="person-detail">
-          <div className="person-detail-avatar">
-            <Avatar professor={hostFor(peer.hostId)} size="sm" decorative />
-          </div>
-          <div>
-            <p className="person-detail-name">{peer.name}</p>
-            <p>
-              {yearOption(peer.year)?.label} · {interestOption(peer.interest)?.label}
-            </p>
-            <p className="person-detail-host">Host: {hostFor(peer.hostId).name}</p>
-          </div>
+      <div className="person-detail">
+        <div className="person-detail-avatar">
+          <Avatar professor={hostFor(peer.hostId)} size="sm" decorative />
         </div>
-      ) : (
-        <>
-          <p className="people-card-title">Also here</p>
-          <ul className="people-list">
-            {list?.map((p) => (
-              <li key={p.id}>
-                <button type="button" onClick={() => onPick(p)}>
-                  {p.name}
-                  {p.self && " (you)"}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
+        <div>
+          <p className="person-detail-name">{peer.name}</p>
+          <p>
+            {yearOption(peer.year)?.label} · {interestOption(peer.interest)?.label}
+          </p>
+          <p className="person-detail-host">Host: {hostFor(peer.hostId).name}</p>
+        </div>
+      </div>
     </div>
   );
 }

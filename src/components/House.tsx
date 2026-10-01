@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import type { Answers, Direction, Professor } from "../types";
 import type { Panel } from "../lib/router";
-import { BOTTOM_CLEARANCE_PX, FEET_Y, standingSpots, type Peer } from "../lib/presence";
+import type { Peer } from "../lib/presence";
+import { placePeople, type Box, type CrowdOptions } from "../lib/crowd";
 import { PeopleCard } from "./People";
 import { house, roomById, yearOption } from "../lib/data";
 import { Avatar } from "./Avatar";
@@ -60,12 +61,12 @@ export function House({ answers, professor, roomId, panel, courseId, nav, name, 
   const dismissGreeting = useCallback(() => setGreeting(false), []);
   useEffect(() => setGreeting(true), [roomId]);
 
-  // Tapping someone: a small card with their details (or the "+N more" list).
-  const [card, setCard] = useState<{ peerId?: string; list?: Peer[] } | null>(null);
-  const closeCard = useCallback(() => setCard(null), []);
-  useEffect(() => setCard(null), [roomId]);
-  const cardPeer = card?.peerId ? here.find((p) => p.id === card.peerId) : undefined;
-  const pickPerson = (p: Peer) => (p.self ? (setCard(null), nav.openPanel("profile")) : setCard({ peerId: p.id }));
+  // Tapping someone: a small card with their details. Tapping yourself opens your profile.
+  const [cardId, setCardId] = useState<string | null>(null);
+  const closeCard = useCallback(() => setCardId(null), []);
+  useEffect(() => setCardId(null), [roomId]);
+  const cardPeer = cardId ? here.find((p) => p.id === cardId) : undefined;
+  const pickPerson = (p: Peer) => (p.self ? (setCardId(null), nav.openPanel("profile")) : setCardId(p.id));
   const course = courseId ? room.courses.find((c) => c.id === courseId) ?? null : null;
   const exit = (d: Direction) => room.exits.find((e) => e.direction === d);
   const isHome = roomId === homeRoomId;
@@ -115,25 +116,35 @@ export function House({ answers, professor, roomId, panel, courseId, nav, name, 
   // Start where you "walked in": at the left wall if you came through a right-hand door, and vice versa.
   const scroller = useRef<HTMLDivElement>(null);
 
-  // Where avatars' feet go. Normally FEET_Y, but in wide windows the art's bottom is trimmed, so
-  // lift them to stay above the downstairs buttons in the part of the room you can see.
-  const [floorY, setFloorY] = useState(FEET_Y);
+  // Where people can stand: keep feet inside the part of the room you can see (wide windows trim
+  // the art's bottom), and, when the whole room fits on screen, keep them out from under the arrows.
+  const [crowdOpts, setCrowdOpts] = useState<CrowdOptions>({});
   useLayoutEffect(() => {
     const el = scroller.current;
     if (!el) return;
     const measure = () => {
       const scene = el.querySelector(".scene");
-      if (!scene) return;
+      const stage = el.parentElement;
+      if (!scene || !stage) return;
       const s = scene.getBoundingClientRect();
-      const visibleBottom = el.getBoundingClientRect().bottom - s.top - BOTTOM_CLEARANCE_PX;
-      const y = Math.min(FEET_Y, (visibleBottom / s.height) * 100);
-      setFloorY((prev) => (Math.abs(prev - y) > 0.2 ? Math.round(y * 10) / 10 : prev));
+      const toPct = (r: DOMRect): Box => ({
+        x: ((r.left - s.left) / s.width) * 100,
+        y: ((r.top - s.top) / s.height) * 100,
+        w: (r.width / s.width) * 100,
+        h: (r.height / s.height) * 100,
+      });
+      const floorLimit = Math.round(((el.getBoundingClientRect().bottom - s.top - 6) / s.height) * 1000) / 10;
+      // On phones the room pans under fixed arrows, so there's no fixed spot to avoid.
+      const pans = el.scrollWidth > el.clientWidth + 1;
+      const obstacles = pans ? [] : [...stage.querySelectorAll(".door, .stair")].map((n) => toPct(n.getBoundingClientRect()));
+      setCrowdOpts((prev) => (JSON.stringify(prev) === JSON.stringify({ floorLimit, obstacles }) ? prev : { floorLimit, obstacles }));
     };
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(el);
     return () => ro.disconnect();
   }, [roomId]);
+  const placements = useMemo(() => placePeople(room, here, crowdOpts), [room, here, crowdOpts]);
   const [pan, setPan] = useState({ x: 0, w: 1 });
   const [hintVisible, setHintVisible] = useState(() => !loadFlag(HINT_KEY));
   const startScroll = useRef(0);
@@ -149,7 +160,7 @@ export function House({ answers, professor, roomId, panel, courseId, nav, name, 
     const max = el.scrollWidth - el.clientWidth;
     // A room with a greeter (the Living Room cat) always opens on it so you see the welcome.
     // Otherwise: through a side door, start at the wall you came in by; else centre on your own avatar.
-    const focus = room.greeter?.x ?? standingSpots(room.object, room.greeter, floorY)[0] ?? 50;
+    const focus = room.greeter?.x ?? placements.get(here.find((p) => p.self)?.id ?? "")?.x ?? 50;
     const centred = Math.min(max, Math.max(0, (focus / 100) * el.scrollWidth - el.clientWidth / 2));
     el.scrollLeft = room.greeter ? centred : transition === "right" ? 0 : transition === "left" ? max : centred;
     startScroll.current = el.scrollLeft;
@@ -228,9 +239,8 @@ export function House({ answers, professor, roomId, panel, courseId, nav, name, 
               <RoomScene
                 room={room}
                 people={here}
-                floorY={floorY}
+                placements={placements}
                 onPickPerson={pickPerson}
-                onMorePeople={(rest) => setCard({ list: rest })}
                 name={name}
                 greeting={greeting}
                 onDismissGreeting={dismissGreeting}
@@ -259,7 +269,7 @@ export function House({ answers, professor, roomId, panel, courseId, nav, name, 
           </div>
         )}
 
-        {card && (cardPeer || card.list) && <PeopleCard peer={cardPeer} list={card.list} onPick={pickPerson} onClose={closeCard} />}
+        {cardPeer && <PeopleCard peer={cardPeer} onClose={closeCard} />}
 
         <div className="stage-bottom">
           {pans && (

@@ -37,6 +37,8 @@
       "floor": 4,
       "sceneImage": "scenes/attic.png",
       "sceneAlt": "A sloped attic with a curtained window, a stack of books, a pink teddy bear and an open moving box.",
+      "floorTop": 86,
+      "floorBottom": 97,
       "object": {
         "label": "Pink teddy bear",
         "x": 58.75,
@@ -112,6 +114,8 @@
       "year": "senior",
       "sceneImage": "scenes/bedroom.png",
       "sceneAlt": "A moonlit bedroom with blue curtains framing a starry night window, framed prints on the wall, and an orange cat stretched out on the bed.",
+      "floorTop": 92,
+      "floorBottom": 98,
       "object": {
         "label": "Cat on the bed",
         "x": 44,
@@ -173,6 +177,8 @@
       "floor": 3,
       "sceneImage": "scenes/control-room.png",
       "sceneAlt": "A magenta-lit control room with a wall of monitors showing sky and design software, speakers, a gaming chair and pink headphones.",
+      "floorTop": 93,
+      "floorBottom": 98,
       "object": {
         "label": "Design app window on the top screen",
         "x": 43.1,
@@ -257,6 +263,8 @@
       "floor": 3,
       "sceneImage": "scenes/studio-room.png",
       "sceneAlt": "A photo studio with a white paper backdrop, a softbox light and a wooden stool, next to a moodboard covered in sketches and sticky notes above a worktable.",
+      "floorTop": 92,
+      "floorBottom": 98,
       "object": {
         "label": "Stool",
         "x": 25,
@@ -339,6 +347,8 @@
       "year": "junior",
       "sceneImage": "scenes/kitchen.png",
       "sceneAlt": "A kitchen with dark green cabinets, a wide window looking out on a tree, a coffee maker, and an orange cat by its bowl.",
+      "floorTop": 92,
+      "floorBottom": 98,
       "object": {
         "label": "Cabinets below the sink",
         "x": 30,
@@ -415,6 +425,8 @@
       "floor": 2,
       "sceneImage": "scenes/pantry.png",
       "sceneAlt": "A bright pantry with jars on a high shelf, open drawers full of supplies, corner shelves and a window.",
+      "floorTop": 87,
+      "floorBottom": 97,
       "object": {
         "label": "Loaf of bread",
         "x": 30.6,
@@ -490,6 +502,8 @@
       "floor": 2,
       "sceneImage": "scenes/library.png",
       "sceneAlt": "A cozy library with tall colorful bookshelves, a rolling ladder, and a cat curled up on a red window seat under an arched sunset window.",
+      "floorTop": 92,
+      "floorBottom": 98,
       "object": {
         "label": "Cat",
         "x": 51.25,
@@ -559,6 +573,8 @@
       "year": "mfa2",
       "sceneImage": "scenes/dining-room.png",
       "sceneAlt": "A dining room with a wooden table and two chairs under a gallery wall of framed pictures, including a cat portrait.",
+      "floorTop": 93,
+      "floorBottom": 98,
       "object": {
         "label": "Cat picture",
         "x": 50.6,
@@ -636,6 +652,8 @@
       "year": "sophomore",
       "sceneImage": "scenes/bathroom.png",
       "sceneAlt": "A bathroom with a wide mirror over a dark wood double vanity, a vase of pink flowers, a towel and a bathtub.",
+      "floorTop": 92,
+      "floorBottom": 98,
       "object": {
         "label": "Mirror",
         "x": 25,
@@ -713,6 +731,8 @@
       "year": "freshman",
       "sceneImage": "scenes/playroom.png",
       "sceneAlt": "A pink playroom with bunting, two windows, a low toy shelf with a birdcage, a rubber duck, a red toy car and a lilac play tent.",
+      "floorTop": 92,
+      "floorBottom": 98,
       "object": {
         "label": "Duck",
         "x": 5.6,
@@ -765,6 +785,8 @@
       "floor": 1,
       "sceneImage": "scenes/living-room.png",
       "sceneAlt": "A living room with striped wallpaper, a yellow sofa, a leafy plant, and a bookshelf with a sleeping orange cat on top.",
+      "floorTop": 93,
+      "floorBottom": 98,
       "object": {
         "label": "Pink picture",
         "x": 32.5,
@@ -815,6 +837,8 @@
       "year": "mfa1",
       "sceneImage": "scenes/office-room.png",
       "sceneAlt": "A calm office with a white bookshelf, a floating shelf with a plant, vase and books, a desk with a monitor and a brown office chair, and a large abstract painting.",
+      "floorTop": 93,
+      "floorBottom": 98,
       "object": {
         "label": "Desktop screen",
         "x": 41.25,
@@ -891,6 +915,8 @@
       "floor": 0,
       "sceneImage": "scenes/basement.png",
       "sceneAlt": "A dim basement with pipes and cobwebs, an old washing machine, a fuse box, and dusty shelves of storage boxes.",
+      "floorTop": 91,
+      "floorBottom": 98,
       "object": {
         "label": "Washing machine",
         "x": 6.9,
