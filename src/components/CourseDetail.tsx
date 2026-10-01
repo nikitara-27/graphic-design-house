@@ -13,6 +13,7 @@ export function CourseDetail({ course, answers }: { course: Course; room: Room; 
   const facts = [
     course.term && { label: "Term", value: TERM[course.term] },
     course.credits !== undefined && { label: "Credits", value: String(course.credits) },
+    course.prerequisites && { label: "Prerequisites", value: course.prerequisites },
     teacher && { label: "Professor", value: teacher.name },
   ].filter(Boolean) as { label: string; value: string }[];
 

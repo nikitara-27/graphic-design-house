@@ -11,6 +11,8 @@ export interface Course {
   active: boolean;
   /** Optional details, shown when a class is tapped in the class list. */
   credits?: number;
+  /** e.g. "CFA AR 225"; shown above the description. */
+  prerequisites?: string;
   description?: string;
   /** BU Hub areas, shown as small tags. */
   hubAreas?: string[];

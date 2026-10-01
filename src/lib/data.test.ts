@@ -34,6 +34,17 @@ describe("content", () => {
     expect(ar587.credits).toBe(2);
     expect(ar587.note).toBe("Open to undergraduate and graduate graphic design students.");
   });
+  it("has full details for the Bathroom classes", () => {
+    const bathroom = rooms.find((r) => r.id === "bathroom")!.courses;
+    expect(bathroom.map((c) => [c.code, c.title, c.term, c.credits, c.prerequisites])).toEqual([
+      ["AR225", "Sophomore Graphic Design", "F", 4, undefined],
+      ["AR385", "Typography 1: Rules of Typography", "F", 2, "CFA AR 225"],
+      ["AR226", "Sophomore Graphic Design 2", "S", 4, "CFA AR 225"],
+      ["AR386", "Sophomore Type Spring: Hierarchy, Composition", "S", 2, "CFA AR 226"],
+    ]);
+    expect(bathroom[2].description).toContain("Form--content relationships");
+    expect(bathroom[0].hubAreas).toEqual(["Aesthetic Exploration", "Digital/Multimedia Expression"]);
+  });
   it("marks every basement course inactive and nothing else", () => {
     for (const r of rooms) for (const c of r.courses) expect(c.active).toBe(r.id !== "basement");
   });

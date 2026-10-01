@@ -686,14 +686,23 @@
           "title": "Sophomore Graphic Design",
           "term": "F",
           "active": true,
+          "credits": 4,
+          "description": "Sophomore Graphic Design focuses on form making and conceptual problem solving. Image making techniques will be explored and integrated into graphic design contexts. Conceptual problem solving will be examined according to how forms suggest meaning. A student is expected to build upon the skills developed during foundation year to generate innovative and inventive form in both analog and digital formats. Emphasis will be on form making and typography using generative and iterative methods to explore new tools, design processes, and media.",
+          "hubAreas": [
+            "Aesthetic Exploration",
+            "Digital/Multimedia Expression"
+          ],
           "interests": []
         },
         {
           "id": "AR385",
           "code": "AR385",
-          "title": "Sophomore Typography",
+          "title": "Typography 1: Rules of Typography",
           "term": "F",
           "active": true,
+          "credits": 2,
+          "prerequisites": "CFA AR 225",
+          "description": "In this introductory course for sophomore graphic design majors, students will study the fundamentals of typography, from its history and anatomy to organizational structures, legibility and hierarchy. Legibility and hierarchy will be examined with increasing complexity from the letterform, to the word, sentence, paragraph and page. Students will learn characteristics of major type families, how to create and use a typographic grid and to work with type in a dynamic environment.",
           "interests": [
             "typography"
           ]
@@ -701,17 +710,24 @@
         {
           "id": "AR226",
           "code": "AR226",
-          "title": "Sophomore Graphic Design",
+          "title": "Sophomore Graphic Design 2",
           "term": "S",
           "active": true,
+          "credits": 4,
+          "prerequisites": "CFA AR 225",
+          "description": "Students will investigate how ideas and messages can be interpreted visually through a variety of projects. Form--content relationships will be the context for all projects. Students will study the broad concepts of denotation and connotation through projects including information design, communication through proxy and juxtaposition and communication through symbols, metaphor and metonymy. Static and dynamic design solutions will be explored.",
+          "note": "Open to undergraduate sophomore graphic design students. This is a required course for graphic design majors.",
           "interests": []
         },
         {
           "id": "AR386",
           "code": "AR386",
-          "title": "Sophomore Typography",
+          "title": "Sophomore Type Spring: Hierarchy, Composition",
           "term": "S",
           "active": true,
+          "credits": 2,
+          "prerequisites": "CFA AR 226",
+          "description": "In the second sequence of sophomore typography, students will learn (1) aspects of working with and refining bodies of text, from letter spacing, word spacing and line spacing, (2) basic ideas associated with connotative typography and visible language and (3) how to create a simple typographic system and apply it to a sequence of pages. Students will develop a sensitivity toward defining and controlling multiple typographic hierarchies. Students will explore dynamic typographic variables like rate, pace and sound to express an abstract concept typographically.",
           "interests": [
             "typography"
           ]
