@@ -56,4 +56,12 @@ describe("flattenPresence", () => {
       { ...base, name: "B", room: "attic", id: "them", self: false },
     ]);
   });
+  it("uses the newest entry by timestamp, whatever order they arrive in", () => {
+    const base = { name: "A", hostId: "nick-rock", year: "senior", interest: "motion" };
+    const peers = flattenPresence(
+      { them: [{ ...base, room: "kitchen", at: 200 }, { ...base, room: "attic", at: 100 }] },
+      "me",
+    );
+    expect(peers.map((p) => p.room)).toEqual(["kitchen"]);
+  });
 });

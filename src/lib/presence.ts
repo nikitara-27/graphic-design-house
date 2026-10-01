@@ -62,11 +62,19 @@ export function sanitize(raw: unknown): PeerInfo | null {
   return { name, hostId, year: r.year as Year, interest: r.interest as Interest, ...(program && { program }), room: r.room };
 }
 
-/** Turns Supabase's presenceState() into one entry per visitor (their latest payload). */
+/** When a payload was sent (each send includes `at`, a timestamp), for picking the newest. */
+const sentAt = (m: unknown) => (m && typeof m === "object" && typeof (m as { at?: unknown }).at === "number" ? (m as { at: number }).at : -1);
+
+/**
+ * Turns Supabase's presenceState() into one entry per visitor. If a visitor has more than one
+ * entry (e.g. while an update is replacing the old one), the newest one wins.
+ */
 export function flattenPresence(state: Record<string, unknown[]>, selfId: string): Peer[] {
   const out: Peer[] = [];
   for (const [id, metas] of Object.entries(state)) {
-    const latest = metas[metas.length - 1];
+    if (!Array.isArray(metas) || metas.length === 0) continue;
+    // Newest by timestamp; ties (and older versions without one) go to the last entry.
+    const latest = metas.reduce((best, m) => (sentAt(m) >= sentAt(best) ? m : best));
     const info = sanitize(latest);
     if (info) out.push({ ...info, id, self: id === selfId });
   }
