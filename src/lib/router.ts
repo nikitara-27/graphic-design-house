@@ -1,9 +1,9 @@
 import type { Answers } from "../types";
-import { questions, roomById, yearOption } from "./data";
+import { entryRoomId, roomById } from "./data";
 
 /**
  * Hash routes (hash, not paths, so a refresh never 404s on GitHub Pages):
- *   (none)                         landing (no saved answers) / home room (saved answers)
+ *   (none)                         landing (no saved answers) / the entry room, the Living Room (saved answers)
  *   #/quiz                         the quiz
  *   #/welcome                      profile reveal right after the quiz
  *   #/room/<roomId>                inside a room
@@ -39,12 +39,11 @@ export function resolve(hash: string, state: NavState | null, answers: Answers |
   if (a === "quiz" && !b) return { route: { screen: "quiz" }, hash: "#/quiz" };
   if (!answers) return { route: { screen: "landing" }, hash: "" };
 
-  const home = yearOption(answers.year)?.homeRoomId ?? questions.year.options[0].homeRoomId;
   const toRoom = (id: string) => ({ route: { screen: "house" as const, roomId: id, panel: null }, hash: roomHash(id) });
 
   if (a === "welcome" && !b) return { route: { screen: "welcome" }, hash: "#/welcome" };
   if ((a === "map" || a === "profile") && !b) {
-    const behind = state?.room && roomById.has(state.room) ? state.room : home;
+    const behind = state?.room && roomById.has(state.room) ? state.room : entryRoomId;
     return { route: { screen: "house", roomId: behind, panel: a }, hash: `#/${a}` };
   }
   if (a === "room" && b && roomById.has(b) && !extra) {
@@ -57,6 +56,6 @@ export function resolve(hash: string, state: NavState | null, answers: Answers |
         : { route: { screen: "house", roomId: b, panel: "classes" }, hash: classesHash(b) };
     }
   }
-  // Missing or invalid: go to the user's home room.
-  return toRoom(home);
+  // Missing or invalid: start at the entry room (not the user's year room).
+  return toRoom(entryRoomId);
 }

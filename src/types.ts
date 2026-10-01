@@ -36,7 +36,13 @@ export interface Room {
 }
 
 export interface Floor { floor: number; label: string }
-export interface HouseData { sceneAspect: number; floors: Floor[]; rooms: Room[] }
+export interface HouseData {
+  sceneAspect: number;
+  /** Where everyone starts when they enter the house (not their year's room). */
+  entryRoomId: string;
+  floors: Floor[];
+  rooms: Room[];
+}
 
 export interface Professor {
   id: string;

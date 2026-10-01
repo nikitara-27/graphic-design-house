@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { Answers } from "./types";
-import { assignments, hostProfessor, professors, yearOption } from "./lib/data";
+import { assignments, entryRoomId, hostProfessor, professors } from "./lib/data";
 import { matchProfessor } from "./lib/match";
 import { clearAnswers, loadAnswers, saveAnswers } from "./lib/storage";
 import { classesHash, resolve, roomHash, type NavState } from "./lib/router";
@@ -61,7 +61,7 @@ export default function App() {
     return (
       <Quiz
         initial={answers ?? undefined}
-        onBack={() => navigate(answers ? roomHash(yearOption(answers.year)!.homeRoomId) : "", null, true)}
+        onBack={() => navigate(answers ? roomHash(entryRoomId) : "", null, true)}
         onComplete={(a) => {
           saveAnswers(a);
           setAnswers(a);
@@ -71,8 +71,15 @@ export default function App() {
     );
   }
   if (route.screen === "welcome" && answers) {
-    const home = yearOption(answers.year)!.homeRoomId;
-    return <Reveal answers={answers} professor={professor} onEnter={() => navigate(roomHash(home), { room: home })} onRetake={retake} />;
+    // Everyone enters through the Living Room; their year room keeps its "Your room" tag.
+    return (
+      <Reveal
+        answers={answers}
+        professor={professor}
+        onEnter={() => navigate(roomHash(entryRoomId), { room: entryRoomId })}
+        onRetake={retake}
+      />
+    );
   }
   if (route.screen === "house" && answers) {
     const { roomId } = route;

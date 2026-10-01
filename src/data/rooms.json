@@ -1,5 +1,6 @@
 {
   "sceneAspect": 1.7778,
+  "entryRoomId": "living-room",
   "floors": [
     {
       "floor": 4,

@@ -6,6 +6,7 @@ import type { Assignments, HouseData, Professor, Questions, Room } from "../type
 export const house = roomsJson as HouseData;
 export const rooms: Room[] = house.rooms;
 export const roomById = new Map(rooms.map((r) => [r.id, r]));
+export const entryRoomId = house.entryRoomId;
 export const questions = questionsJson as Questions;
 export const hostProfessor = professorsJson.host as Professor;
 export const professors = professorsJson.professors as Professor[];
@@ -37,6 +38,7 @@ export function validateContent(): string[] {
       if (!roomById.has(e.toRoomId)) problems.push(`${room.name}: exit leads to unknown room "${e.toRoomId}"`);
     }
   }
+  if (!roomById.has(house.entryRoomId)) problems.push(`entryRoomId "${house.entryRoomId}" is not a room`);
   for (const y of questions.year.options) {
     if (!roomById.has(y.homeRoomId)) problems.push(`Year "${y.id}" has unknown home room "${y.homeRoomId}"`);
   }

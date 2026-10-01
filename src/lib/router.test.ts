@@ -10,21 +10,25 @@ describe("resolve", () => {
     expect(resolve("#/room/kitchen", null, null).route).toEqual({ screen: "landing" });
     expect(resolve("#/quiz", null, null).route).toEqual({ screen: "quiz" });
   });
-  it("skips the quiz and opens the home room when answers are saved", () => {
-    expect(resolve("", null, junior)).toEqual({ route: { screen: "house", roomId: "kitchen", panel: null }, hash: "#/room/kitchen" });
+  it("skips the quiz and opens the Living Room (not the year room) when answers are saved", () => {
+    expect(resolve("", null, junior)).toEqual({ route: { screen: "house", roomId: "living-room", panel: null }, hash: "#/room/living-room" });
+  });
+  it("keeps a valid room on refresh, including the user's year room", () => {
+    expect(resolve("#/room/kitchen", null, junior).route).toMatchObject({ roomId: "kitchen" });
+    expect(resolve("#/room/basement", null, junior).route).toMatchObject({ roomId: "basement" });
   });
   it("opens the exact room, class list, or class", () => {
     expect(resolve("#/room/attic", null, junior).route).toMatchObject({ roomId: "attic", panel: null });
     expect(resolve("#/room/attic/classes", null, junior).route).toMatchObject({ roomId: "attic", panel: "classes" });
     expect(resolve("#/room/dining-room/classes/AR596-thesis", null, junior).route).toMatchObject({ courseId: "AR596-thesis" });
   });
-  it("puts map and profile over the room you were in, or your home room", () => {
+  it("puts map and profile over the room you were in, or the Living Room", () => {
     expect(resolve("#/map", { room: "library" }, junior).route).toMatchObject({ roomId: "library", panel: "map" });
-    expect(resolve("#/profile", null, junior).route).toMatchObject({ roomId: "kitchen", panel: "profile" });
+    expect(resolve("#/profile", null, junior).route).toMatchObject({ roomId: "living-room", panel: "profile" });
   });
-  it("falls back to the home room for invalid hashes", () => {
+  it("falls back to the Living Room for invalid hashes", () => {
     for (const h of ["#/room/nope", "#/garage", "#/room/attic/oops", "#/room/kitchen/classes/x/y", "#/%E0%A4%A"]) {
-      expect(resolve(h, null, junior).hash).toBe("#/room/kitchen");
+      expect(resolve(h, null, junior).hash).toBe("#/room/living-room");
     }
   });
   it("drops an unknown class but keeps the class list open", () => {

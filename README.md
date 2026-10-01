@@ -41,7 +41,8 @@ The logic is in `src/lib/match.ts`. Q1 (year) sets the home room and is kept for
 
 The current view lives in the URL hash, so refreshing or sharing a link opens the same place:
 `#/room/kitchen`, `#/room/kitchen/classes`, `#/room/kitchen/classes/AR381`, `#/map`, `#/profile`, `#/quiz`, `#/welcome`.
-Hash routes never 404 on GitHub Pages. Invalid links fall back to the user's home room.
+Hash routes never 404 on GitHub Pages. Everyone enters the house in the Living Room (`entryRoomId` in `rooms.json`),
+and missing or invalid links open it too; the user's year room keeps its "Your room" tag.
 
 Quiz answers (year, interest, program) are saved in `localStorage`. The host professor is never saved;
 it's recalculated from the answers on every load, so edits to the `assignments` table apply right away.
