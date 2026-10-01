@@ -30,7 +30,7 @@
 
 * { box-sizing: border-box; }
 html, body { margin: 0; background: var(--cream); }
-body { min-height: 100dvh; overflow-x: hidden; }
+body { min-height: 100vh; min-height: 100dvh; overflow-x: hidden; }
 button { font: inherit; color: inherit; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 h1, h2, h3, p { margin: 0; }
 
@@ -87,7 +87,7 @@ h1, h2, h3, p { margin: 0; }
 /* ---------- Screens (landing, quiz, reveal) ---------- */
 
 .screen {
-  min-height: 100dvh; max-width: 480px; margin: 0 auto;
+  min-height: 100vh; min-height: 100dvh; max-width: 480px; margin: 0 auto;
   padding: calc(24px + var(--safe-t)) calc(16px + var(--safe-r)) calc(24px + var(--safe-b)) calc(16px + var(--safe-l));
   display: flex; flex-direction: column;
 }
@@ -148,7 +148,7 @@ h1, h2, h3, p { margin: 0; }
 /* ---------- House ---------- */
 
 .house {
-  height: 100dvh; display: grid; grid-template-rows: auto minmax(0, 1fr);
+  height: 100vh; height: 100dvh; display: grid; grid-template-rows: auto minmax(0, 1fr);
   background: var(--forest); overflow: hidden;
 }
 
@@ -279,7 +279,7 @@ h1, h2, h3, p { margin: 0; }
 /* ---------- Sheets (dialogs) ---------- */
 
 .sheet {
-  width: 100%; max-width: 560px; max-height: 88dvh;
+  width: 100%; max-width: 560px; max-height: 88vh; max-height: 88dvh;
   margin: auto auto 0; padding: 0;
   border: 3px solid var(--forest); border-bottom: 0; background: var(--cream); color: var(--forest);
   transition: transform 180ms ease-out;
@@ -293,11 +293,13 @@ h1, h2, h3, p { margin: 0; }
   padding: 6px 16px 12px; border-bottom: 2px solid var(--sage);
 }
 .sheet-header h2 { font-family: var(--font-display); font-size: 28px; font-weight: 900; line-height: 1.1; color: var(--plum); }
-.sheet-body { flex: 1; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 14px 16px calc(20px + var(--safe-b)); }
+/* flex-basis must be auto, not 0: the map/profile sheets have no fixed height, and Safari
+   collapses a 0-basis body inside an auto-height dialog to nothing. */
+.sheet-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 14px 16px calc(20px + var(--safe-b)); }
 .sheet .profile-card { box-shadow: none; border: 0; padding: 0; }
 
 /* Class list sheet: ~70% of the screen on phones. */
-.sheet-classes { height: 70dvh; }
+.sheet-classes { height: 70vh; height: 70dvh; }
 .heading-room { font-family: var(--font-display); }
 .heading-sub { font-family: var(--font-body); font-size: 16px; font-weight: 700; color: var(--forest); white-space: nowrap; }
 
@@ -375,7 +377,7 @@ h1, h2, h3, p { margin: 0; }
   .sheet[open] { animation: fade-in 200ms ease-out; }
   .sheet-grab { display: none; }
   .sheet-header { padding-top: 14px; }
-  .sheet-classes { height: auto; max-height: 80dvh; }
+  .sheet-classes { height: auto; max-height: 80vh; max-height: 80dvh; }
   .hud { padding-inline: 20px; }
   .hud-title h1 { font-size: 24px; }
   .hud-title p { font-size: 14px; }
