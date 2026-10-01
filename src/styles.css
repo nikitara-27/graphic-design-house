@@ -140,8 +140,16 @@ h1, h2, h3, p { margin: 0; }
 .btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: var(--shadow); }
 
 /* The user's name heading in the profile panel */
-.profile-who { display: flex; flex-direction: column; align-items: center; }
-.profile-who .profile-name { overflow-wrap: anywhere; }
+/* Name centred under the avatar, pencil to its right (the empty first column keeps the name centred). */
+.profile-who { width: 100%; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 2px; }
+.profile-who .profile-name { grid-column: 2; overflow-wrap: anywhere; }
+.edit-name-btn {
+  grid-column: 3; justify-self: start;
+  width: 44px; height: 44px; display: grid; place-items: center; padding: 0;
+  background: none; border: 0; color: var(--forest); transition: color 120ms;
+}
+.edit-name-btn:hover { color: var(--plum); }
+.edit-name-btn:active { transform: translate(1px, 1px); }
 .link-btn {
   min-height: 44px; padding: 0 2px; background: none; border: 0;
   font-size: 14px; font-weight: 800; color: var(--plum); text-decoration: underline; text-underline-offset: 3px;

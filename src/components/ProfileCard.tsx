@@ -124,6 +124,9 @@ function NameHeading({ name, onSave }: { name: string; onSave?: (name: string) =
             {NAME_MESSAGES[check]}
           </p>
         )}
+        <p className="name-note">
+          This site is public. Your name will be visible to others in the house, so feel free to use a nickname.
+        </p>
         <div className="name-edit-actions">
           <button type="button" className="btn btn-sm" onClick={() => setEditing(false)}>
             Cancel
@@ -143,15 +146,44 @@ function NameHeading({ name, onSave }: { name: string; onSave?: (name: string) =
         <button
           ref={editRef}
           type="button"
-          className="link-btn"
+          className="edit-name-btn"
+          aria-label="Edit name"
+          title="Edit name"
           onClick={() => {
             setValue(name);
             setEditing(true);
           }}
         >
-          Edit name
+          <PencilIcon />
         </button>
       )}
     </div>
+  );
+}
+
+// Pixel pencil, drawn row by row: # = solid, + = light (the metal band and the wooden cone).
+const PENCIL_ROWS = [
+  ".........###.",
+  "........####.",
+  ".......++++..",
+  "......#..#...",
+  ".....#..#....",
+  "....#..#.....",
+  "...#..#......",
+  "..####.......",
+  ".+++.........",
+  ".++..........",
+  "##...........",
+];
+
+function PencilIcon() {
+  return (
+    <svg viewBox="0 0 13 11" width="26" height="22" aria-hidden="true" shapeRendering="crispEdges">
+      {PENCIL_ROWS.flatMap((row, y) =>
+        [...row].map((c, x) =>
+          c === "." ? null : <rect key={`${x}-${y}`} x={x} y={y} width="1" height="1" fill="currentColor" opacity={c === "+" ? 0.45 : 1} />,
+        ),
+      )}
+    </svg>
   );
 }
