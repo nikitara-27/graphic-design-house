@@ -255,6 +255,11 @@
           "toRoomId": "library",
           "label": "Library",
           "direction": "down"
+        },
+        {
+          "toRoomId": "dining-room",
+          "label": "Dining Room",
+          "direction": "down"
         }
       ],
       "courses": [
@@ -523,6 +528,11 @@
           "toRoomId": "office-room",
           "label": "Office Room",
           "direction": "down"
+        },
+        {
+          "toRoomId": "studio-room",
+          "label": "Studio Room",
+          "direction": "up"
         }
       ],
       "courses": [
@@ -812,23 +822,8 @@
       },
       "exits": [
         {
-          "toRoomId": "bathroom",
-          "label": "Bathroom",
-          "direction": "up"
-        },
-        {
-          "toRoomId": "playroom",
-          "label": "Playroom",
-          "direction": "up"
-        },
-        {
           "toRoomId": "living-room",
           "label": "Living Room",
-          "direction": "up"
-        },
-        {
-          "toRoomId": "office-room",
-          "label": "Office Room",
           "direction": "up"
         }
       ],

@@ -9,10 +9,13 @@ describe("content", () => {
     expect(rooms).toHaveLength(13);
     for (const r of rooms) expect(r.sceneImage).not.toBe("");
   });
-  it("makes every staircase two-way and keeps at most one door per side", () => {
+  it("makes every staircase two-way (except the one-way trips into the Basement) and keeps at most one door per side", () => {
     const opposite = { up: "down", down: "up", left: "right", right: "left" } as const;
+    // The team's exception: these rooms go down to the Basement, but the Basement only leads back up to the Living Room.
+    const oneWay = new Set(["bathroom->basement", "playroom->basement", "office-room->basement"]);
     for (const r of rooms) {
       for (const e of r.exits) {
+        if (oneWay.has(`${r.id}->${e.toRoomId}`)) continue;
         const back = rooms.find((x) => x.id === e.toRoomId)!.exits;
         expect(back.some((x) => x.toRoomId === r.id && x.direction === opposite[e.direction]), `${r.id} -> ${e.toRoomId}`).toBe(true);
       }
