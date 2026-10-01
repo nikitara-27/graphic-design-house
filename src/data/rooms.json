@@ -629,38 +629,35 @@
         {
           "id": "AR883",
           "code": "AR883",
-          "title": "MFA 2 Graphic Design",
+          "title": "Graduate Graphic Design 2",
           "term": "F",
           "active": true,
-          "interests": []
+          "interests": [],
+          "credits": 8,
+          "description": "A continuation of Graduate Graphic Design 1, emphasizing the thesis—an advanced and extensive individual project proposed by the student in consultation with the graphic design faculty. The thesis project is explored in depth and presented in a major exhibit at the end of the second year. Independent contact with faculty members is stressed."
         },
         {
           "id": "AR596-theory-2",
           "code": "AR596",
-          "title": "Graphic Design Theory 2",
+          "title": "Graphic Design Theory II",
           "term": "F",
           "active": true,
           "interests": [
             "history"
-          ]
+          ],
+          "credits": 2,
+          "description": "This seminar course builds on the critical insight students develop in Design Theory I, and challenges students to develop their own theoretical perspective, methodology, and critical practice. Students use this discourse as the foundation for their Thesis inquiry, further defining what they think, how it applies to the work they make and their future professional trajectory. This course will consist of both reading and writing, students will discuss the readings and consider weekly readings and brief written / visual responses."
         },
         {
           "id": "AR884",
           "code": "AR884",
-          "title": "MFA 2 Graphic Design",
+          "title": "Graduate Graphic Design 2",
           "term": "S",
           "active": true,
-          "interests": []
-        },
-        {
-          "id": "AR596-thesis",
-          "code": "AR596",
-          "title": "Graphic Design Thesis Exhibition",
-          "term": "S",
-          "active": true,
-          "interests": [
-            "exhibition"
-          ]
+          "interests": [],
+          "credits": 8,
+          "prerequisites": "CFA AR 883",
+          "description": "A continuation of CFA AR 883. Emphasizes the thesis - an advanced and extensive individual project proposed by the student in consultation with the graphic design faculty. The thesis project is explored in depth and presented in a major exhibit at the end of the second year. Independent contact with faculty members is stressed."
         }
       ],
       "mapArea": {

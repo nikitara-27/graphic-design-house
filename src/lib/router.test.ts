@@ -20,7 +20,7 @@ describe("resolve", () => {
   it("opens the exact room, class list, or class", () => {
     expect(resolve("#/room/attic", null, junior).route).toMatchObject({ roomId: "attic", panel: null });
     expect(resolve("#/room/attic/classes", null, junior).route).toMatchObject({ roomId: "attic", panel: "classes" });
-    expect(resolve("#/room/dining-room/classes/AR596-thesis", null, junior).route).toMatchObject({ courseId: "AR596-thesis" });
+    expect(resolve("#/room/dining-room/classes/AR596-theory-2", null, junior).route).toMatchObject({ courseId: "AR596-theory-2" });
   });
   it("puts map and profile over the room you were in, or the Living Room", () => {
     expect(resolve("#/map", { room: "library" }, junior).route).toMatchObject({ roomId: "library", panel: "map" });
