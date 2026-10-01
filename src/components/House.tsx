@@ -178,7 +178,6 @@ export function House({ answers, professor, roomId, panel, courseId, nav, onReta
       <main className="stage" style={{ ["--aspect" as string]: house.sceneAspect }}>
         <div className="scene-scroller" ref={scroller} onScroll={onScroll} onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
           <div key={roomId} className={`scene-track enter-${transition}`}>
-            {left ? <Door side="left" label={left.label} onClick={() => go(left.toRoomId, "left")} /> : <div className="wall-end" />}
             <div className="scene" role="group" aria-label={`${room.name} scene`}>
               <RoomScene
                 room={room}
@@ -188,9 +187,11 @@ export function House({ answers, professor, roomId, panel, courseId, nav, onReta
                 onOpenClasses={nav.openClasses}
               />
             </div>
-            {right ? <Door side="right" label={right.label} onClick={() => go(right.toRoomId, "right")} /> : <div className="wall-end" />}
           </div>
         </div>
+
+        {left && <Door side="left" label={left.label} onClick={() => go(left.toRoomId, "left")} />}
+        {right && <Door side="right" label={right.label} onClick={() => go(right.toRoomId, "right")} />}
 
         {hintVisible && pans && (
           <div className="look-hint" aria-hidden="true">
@@ -266,10 +267,8 @@ export function House({ answers, professor, roomId, panel, courseId, nav, onReta
 function Door({ side, label, onClick }: { side: "left" | "right"; label: string; onClick: () => void }) {
   return (
     <button type="button" className={`door door-${side}`} onClick={onClick} aria-label={`Go ${side} to ${label}`}>
-      <span className="door-frame" aria-hidden="true">
-        <span className="door-arrow">{side === "left" ? "←" : "→"}</span>
-      </span>
-      <span className="door-label">{label}</span>
+      <span className="door-arrow" aria-hidden="true">{side === "left" ? "←" : "→"}</span>
+      <span className="door-label" aria-hidden="true">{label}</span>
     </button>
   );
 }

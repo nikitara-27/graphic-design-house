@@ -22,7 +22,7 @@ Everything lives in `src/data/`. In dev, broken references are logged to the con
 
 **Rooms.** `sceneImage` is a path under `public/` (for example `scenes/kitchen.png`). Leave it `""` to get a generated placeholder scene.
 Scenes are 16:9, set by `sceneAspect`. On phones (portrait) the room fills the screen height and you scroll sideways to look around.
-Doorways sit at each end of the room: tap one, or keep swiping past the end, to walk through. In landscape or on desktop the whole room fits on screen.
+Small arrow buttons on the left and right edges lead to the next room; you can also keep swiping past the end of the room. On every screen the room fills the space edge to edge (very wide windows trim a little from the top and bottom).
 
 **Clickable object.** Each room has exactly one: `object` in `rooms.json` (`label`, `x`, `y`, `w`, `h`, as percentages of the 1600×900 scene, measured from the top-left).
 Tapping it opens the room's class list. It glows on the first visit, and the tap target never shrinks below 44×44px. Everything else in the scene is decoration.

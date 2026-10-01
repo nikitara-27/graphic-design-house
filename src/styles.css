@@ -172,9 +172,10 @@ h1, h2, h3, p { margin: 0; }
   background: var(--sage); border: 3px solid var(--forest); box-shadow: 3px 3px 0 var(--forest);
 }
 
-/* The stage is the room. Mobile first: the scene is full height and wider than the
-   screen, so people scroll sideways to look around. Doors sit at each end of the room. */
-.stage { position: relative; container-type: size; overflow: hidden; --door: 76px; }
+/* The stage is the room, full bleed: the scene always covers the whole stage (like
+   object-fit: cover). Extra width scrolls sideways so people can look around; extra height
+   (very wide windows) is trimmed evenly from the top and bottom. Doors are small arrows on top. */
+.stage { position: relative; container-type: size; overflow: hidden; }
 
 .scene-scroller {
   position: absolute; inset: 0; display: flex; align-items: center;
@@ -183,14 +184,14 @@ h1, h2, h3, p { margin: 0; }
 }
 .scene-scroller::-webkit-scrollbar { display: none; }
 
-.scene-track { display: flex; flex: none; height: 100%; margin-inline: auto; }
+.scene-track { display: flex; flex: none; margin-inline: auto; }
 .scene {
   position: relative; flex: none;
-  height: 100cqh; width: calc(100cqh * var(--aspect));
+  width: max(100cqw, calc(100cqh * var(--aspect)));
+  aspect-ratio: var(--aspect);
   container-type: inline-size;
 }
 .scene-art { position: absolute; inset: 0; width: 100%; height: 100%; display: block; image-rendering: pixelated; user-select: none; -webkit-user-drag: none; }
-.wall-end { flex: none; width: 10px; background: var(--forest); }
 
 .enter-fade { animation: fade-in 260ms ease-out; }
 .enter-right { animation: from-right 320ms ease-out; }
@@ -203,19 +204,20 @@ h1, h2, h3, p { margin: 0; }
 @keyframes from-top { from { opacity: 0; transform: translateY(-40px); } }
 @keyframes from-bottom { from { opacity: 0; transform: translateY(40px); } }
 
-/* Doorways at the ends of the room */
+/* Doors: small arrows pinned to the edges of the room, over the artwork. */
 .door {
-  flex: none; width: var(--door); padding: 0 8px;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px;
-  background: var(--forest); border: 0; color: var(--cream);
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 3;
+  width: 52px; min-height: 52px; padding: 6px 4px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  background: rgba(243, 237, 232, 0.92); border: 2px solid var(--forest); box-shadow: 2px 2px 0 var(--forest);
+  color: var(--forest);
 }
-.door-frame {
-  width: 100%; height: 38%; min-height: 110px; display: grid; place-items: center;
-  background: var(--sage); border: 3px solid var(--pink); border-bottom-width: 0;
-}
-.door-arrow { font-size: 26px; font-weight: 800; color: var(--forest); }
-.door-label { font-family: var(--font-display); font-size: 14px; font-weight: 800; line-height: 1.15; text-align: center; }
-.door:hover .door-frame, .door:focus-visible .door-frame { background: var(--butter); }
+.door-left { left: calc(8px + var(--safe-l)); }
+.door-right { right: calc(8px + var(--safe-r)); }
+.door-arrow { font-size: 20px; font-weight: 800; line-height: 1; }
+.door-label { font-size: 10px; font-weight: 700; line-height: 1.1; text-align: center; }
+.door:hover, .door:focus-visible { background: var(--butter); }
+.door:active { transform: translate(1px, calc(-50% + 1px)); box-shadow: 1px 1px 0 var(--forest); }
 
 /* First-visit hint */
 .look-hint {
@@ -363,16 +365,10 @@ h1, h2, h3, p { margin: 0; }
 /* ---------- Landscape & desktop: show the whole room ---------- */
 
 @media (orientation: landscape) {
-  .scene-track { height: auto; }
-  .scene {
-    height: auto; aspect-ratio: var(--aspect);
-    width: min(calc(100cqh * var(--aspect)), calc(100cqw - 2 * var(--door)));
-  }
   .look-hint { display: none; }
 }
 
 @media (min-width: 768px) {
-  .stage { --door: 104px; }
   .sheet { margin: auto; border-bottom: 3px solid var(--forest); box-shadow: 8px 8px 0 var(--forest); }
   .sheet[open] { animation: fade-in 200ms ease-out; }
   .sheet-grab { display: none; }
@@ -381,7 +377,8 @@ h1, h2, h3, p { margin: 0; }
   .hud { padding-inline: 20px; }
   .hud-title h1 { font-size: 24px; }
   .hud-title p { font-size: 14px; }
-  .door-label { font-size: 14px; }
+  .door { width: 64px; }
+  .door-label { font-size: 11px; }
   .toolbar-row { max-width: 640px; width: 100%; margin: 0 auto; }
   .map-room-name { font-size: 17px; }
   .map-room-sub { font-size: 12px; }
