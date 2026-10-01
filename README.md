@@ -25,7 +25,17 @@ Scenes are 16:9, set by `sceneAspect`. On phones (portrait) the room fills the s
 Small arrow buttons on the left and right edges lead to the next room; you can also keep swiping past the end of the room. On every screen the room fills the space edge to edge (very wide windows trim a little from the top and bottom).
 
 **Clickable object.** Each room has exactly one: `object` in `rooms.json` (`label`, `x`, `y`, `w`, `h`, as percentages of the 1600×900 scene, measured from the top-left).
-Tapping it opens the room's class list (or, with `"objectOpens": "resources"`, the Design Resources board: the Living Room's pink picture). It glows on the first visit, and the tap target never shrinks below 44×44px. Everything else in the scene is decoration.
+Tapping it opens the room's class list (or, with `"objectOpens": "resources"`, the Design Resources board: the Living Room's pink picture). The tap target never shrinks below 44×44px. Everything else in the scene is decoration.
+
+How objects show they're tappable (`.object-art` in `src/styles.css`):
+- **Mouse/trackpad:** on hover the object brightens a little with a soft pink-and-cream glow around its outline.
+- **Touch screens:** every 4–6 seconds a soft shine sweeps across the object; tapping gives a quick press.
+  With "reduce motion" on, there's no shine, just a gentle steady highlight.
+- **Keyboard:** a plum focus outline, plus the same highlight.
+
+These effects follow each object's outline, using a cut-out of the object from its scene: `public/objects/<room>.png`,
+positioned by `src/data/object-art.json`. Both are made by `python3 scripts/cut-objects.py` (needs Pillow).
+**Re-run it after changing a scene image or a room's `object` box.** `npm test` fails if a cut-out is missing.
 
 **House map.** The Map panel shows the team's cross-section illustration (`public/map.webp`, made from `MAP.png` at 1234px wide).
 Each room's tappable area on it is `mapArea` in `rooms.json` (percentages of the map image). If the illustration changes,

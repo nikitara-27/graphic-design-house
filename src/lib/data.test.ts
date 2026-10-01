@@ -1,4 +1,6 @@
+import { existsSync } from "node:fs";
 import { describe, expect, it } from "vitest";
+import objectArt from "../data/object-art.json";
 import { professors, rooms, validateContent } from "./data";
 
 describe("content", () => {
@@ -70,5 +72,16 @@ describe("content", () => {
   });
   it("gives every host professor a profile image", () => {
     for (const p of professors) expect(p.image).not.toBe("");
+  });
+  it("has a cut-out of every room's clickable object, overlapping its tap area", () => {
+    const art: Record<string, { image: string; x: number; y: number; w: number; h: number }> = objectArt;
+    for (const r of rooms) {
+      const a = art[r.id];
+      expect(a, r.id).toBeDefined();
+      expect(existsSync(new URL(`../../public/${a.image}`, import.meta.url)), a.image).toBe(true);
+      const o = r.object;
+      const overlaps = a.x < o.x + o.w && a.x + a.w > o.x && a.y < o.y + o.h && a.y + a.h > o.y;
+      expect(overlaps, `${r.id}: re-run scripts/cut-objects.py`).toBe(true);
+    }
   });
 });

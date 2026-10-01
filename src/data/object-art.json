@@ -1,0 +1,93 @@
+{
+  "attic": {
+    "image": "objects/attic.png",
+    "x": 57.5,
+    "y": 77.778,
+    "w": 9.375,
+    "h": 18.889
+  },
+  "bedroom": {
+    "image": "objects/bedroom.png",
+    "x": 46.25,
+    "y": 56.667,
+    "w": 13.75,
+    "h": 12.222
+  },
+  "control-room": {
+    "image": "objects/control-room.png",
+    "x": 43.125,
+    "y": 20.0,
+    "w": 13.75,
+    "h": 15.556
+  },
+  "studio-room": {
+    "image": "objects/studio-room.png",
+    "x": 25.0,
+    "y": 70.0,
+    "w": 10.625,
+    "h": 22.222
+  },
+  "kitchen": {
+    "image": "objects/kitchen.png",
+    "x": 18.125,
+    "y": 52.222,
+    "w": 5.625,
+    "h": 11.111
+  },
+  "pantry": {
+    "image": "objects/pantry.png",
+    "x": 30.625,
+    "y": 53.333,
+    "w": 11.875,
+    "h": 8.889
+  },
+  "library": {
+    "image": "objects/library.png",
+    "x": 51.875,
+    "y": 58.889,
+    "w": 7.5,
+    "h": 14.444
+  },
+  "dining-room": {
+    "image": "objects/dining-room.png",
+    "x": 50.625,
+    "y": 14.444,
+    "w": 11.875,
+    "h": 20.0
+  },
+  "bathroom": {
+    "image": "objects/bathroom.png",
+    "x": 25.0,
+    "y": 34.444,
+    "w": 43.125,
+    "h": 33.222
+  },
+  "playroom": {
+    "image": "objects/playroom.png",
+    "x": 5.625,
+    "y": 80.0,
+    "w": 8.125,
+    "h": 14.444
+  },
+  "living-room": {
+    "image": "objects/living-room.png",
+    "x": 32.5,
+    "y": 25.556,
+    "w": 12.5,
+    "h": 29.0
+  },
+  "office-room": {
+    "image": "objects/office-room.png",
+    "x": 41.25,
+    "y": 46.667,
+    "w": 17.5,
+    "h": 20.0
+  },
+  "basement": {
+    "image": "objects/basement.png",
+    "x": 6.875,
+    "y": 58.889,
+    "w": 15.625,
+    "h": 33.333
+  }
+}

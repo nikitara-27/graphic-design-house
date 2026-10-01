@@ -43,15 +43,11 @@ interface Props {
 
 type Transition = Direction | "fade";
 const ARROWS: Record<string, Direction> = { ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down" };
-const PULSE_MS = 2600;
 const HINT_KEY = "look-hint-seen";
 
 export function House({ answers, professor, roomId, panel, courseId, nav, name, people, onSaveName, onRetake }: Props) {
   const year = yearOption(answers.year)!;
   const homeRoomId = year.homeRoomId;
-
-  const [visited] = useState(() => new Set<string>());
-  const [pulsing, setPulsing] = useState(false);
 
   const room = roomById.get(roomId)!;
   const here = people.filter((p) => p.room === roomId);
@@ -89,20 +85,6 @@ export function House({ answers, professor, roomId, panel, courseId, nav, name, 
     },
     [nav],
   );
-
-  // First visit: pulse the object so people learn what's tappable.
-  useEffect(() => {
-    if (visited.has(roomId)) {
-      setPulsing(false);
-      return;
-    }
-    setPulsing(true);
-    const t = window.setTimeout(() => {
-      visited.add(roomId);
-      setPulsing(false);
-    }, PULSE_MS);
-    return () => window.clearTimeout(t);
-  }, [roomId, visited]);
 
   // Arrow keys walk between rooms (not while a dialog is open).
   useEffect(() => {
@@ -250,7 +232,6 @@ export function House({ answers, professor, roomId, panel, courseId, nav, name, 
                 name={name}
                 greeting={greeting}
                 onDismissGreeting={dismissGreeting}
-                pulse={pulsing}
                 onOpenClasses={nav.openClasses}
               />
             </div>

@@ -4,6 +4,7 @@ import { interestOption, programOption, yearOption } from "../lib/data";
 import { NAME_MAX, cleanName } from "../lib/name";
 import { NAME_MESSAGES, checkName } from "../lib/nameFilter";
 import { Avatar } from "./Avatar";
+import { PencilIcon } from "./PencilIcon";
 
 interface Props {
   answers: Answers;
@@ -158,32 +159,5 @@ function NameHeading({ name, onSave }: { name: string; onSave?: (name: string) =
         </button>
       )}
     </div>
-  );
-}
-
-// Pixel pencil, drawn row by row: # = solid, + = light (the metal band and the wooden cone).
-const PENCIL_ROWS = [
-  ".........###.",
-  "........####.",
-  ".......++++..",
-  "......#..#...",
-  ".....#..#....",
-  "....#..#.....",
-  "...#..#......",
-  "..####.......",
-  ".+++.........",
-  ".++..........",
-  "##...........",
-];
-
-function PencilIcon() {
-  return (
-    <svg viewBox="0 0 13 11" width="26" height="22" aria-hidden="true" shapeRendering="crispEdges">
-      {PENCIL_ROWS.flatMap((row, y) =>
-        [...row].map((c, x) =>
-          c === "." ? null : <rect key={`${x}-${y}`} x={x} y={y} width="1" height="1" fill="currentColor" opacity={c === "+" ? 0.45 : 1} />,
-        ),
-      )}
-    </svg>
   );
 }

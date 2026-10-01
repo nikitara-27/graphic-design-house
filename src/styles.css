@@ -355,21 +355,50 @@ h1, h2, h3, p { margin: 0; }
   .stairs-many .stair-label { font-size: 13px; white-space: normal; text-align: center; }
 }
 
-/* The room's one clickable object. Invisible over the artwork; a soft glow pulses on the
-   first visit, and hover/focus show the same glow. */
+/* The room's one clickable object. The button is invisible over the artwork; the effects are drawn
+   on .object-art, a cut-out of the object (so they follow its shape), placed under the people. */
 .room-object {
   position: absolute; transform: translate(-50%, -50%); z-index: 250000; /* above the crowd, so it's always tappable */
-  padding: 0; border: 0; border-radius: 10px; background: transparent; cursor: pointer;
-  transition: box-shadow 160ms, background-color 160ms;
+  padding: 0; border: 0; background: transparent; cursor: pointer;
 }
-.room-object:hover, .room-object:focus-visible {
-  background: rgba(243, 237, 232, 0.22);
-  box-shadow: 0 0 0 3px rgba(235, 212, 143, 0.95), 0 0 18px 6px rgba(235, 212, 143, 0.6);
+.room-object:focus-visible { outline: 3px solid var(--plum); outline-offset: 4px; box-shadow: 0 0 0 7px var(--cream); border-radius: 4px; }
+
+.object-art { position: absolute; z-index: 1; pointer-events: none; }
+.object-art img {
+  display: block; width: 100%; height: 100%; image-rendering: pixelated;
+  opacity: 0; transition: opacity 180ms ease-out, filter 180ms ease-out, transform 120ms ease-out;
 }
-.room-object.is-pulsing { animation: glow 1.4s ease-in-out 3; }
-@keyframes glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(235, 212, 143, 0); background: transparent; }
-  50% { box-shadow: 0 0 0 3px rgba(235, 212, 143, 0.95), 0 0 22px 8px rgba(235, 212, 143, 0.7); background: rgba(243, 237, 232, 0.25); }
+.object-shine {
+  position: absolute; inset: 0; opacity: 0;
+  -webkit-mask: var(--mask) 0 0 / 100% 100% no-repeat; mask: var(--mask) 0 0 / 100% 100% no-repeat;
+  background: linear-gradient(115deg, transparent 38%, rgba(255, 251, 240, 0.65) 50%, transparent 62%) no-repeat;
+  background-size: 260% 100%; background-position: 160% 0;
+}
+/* Highlighted look: a little brighter and warmer, with a soft pink-and-cream glow around the shape. */
+.room-object:focus-visible ~ .object-art img {
+  opacity: 1; filter: brightness(1.15) sepia(0.15) drop-shadow(0 0 2px var(--cream)) drop-shadow(0 0 7px rgba(239, 141, 179, 0.8));
+}
+
+@media (hover: hover) {
+  .room-object:hover ~ .object-art img {
+    opacity: 1; filter: brightness(1.15) sepia(0.15) drop-shadow(0 0 2px var(--cream)) drop-shadow(0 0 7px rgba(239, 141, 179, 0.8));
+  }
+}
+
+@media (hover: none) {
+  /* Every 4–6 s a soft shine sweeps across the object (~0.8 s), like light catching it. */
+  .object-shine { animation: glisten var(--shine-every, 5s) ease-in-out var(--shine-delay, 1s) infinite; }
+  .room-object:active ~ .object-art img { opacity: 1; filter: brightness(1.15); transform: scale(0.97); }
+}
+@keyframes glisten {
+  0% { opacity: 1; background-position: 160% 0; }
+  16% { opacity: 1; background-position: -60% 0; }
+  16.1%, 100% { opacity: 0; background-position: -60% 0; }
+}
+
+/* Reduced motion on touch screens: no shine, just a gentle steady highlight so the object still stands out. */
+@media (hover: none) and (prefers-reduced-motion: reduce) {
+  .object-art img { opacity: 1; filter: brightness(1.07) drop-shadow(0 0 4px rgba(239, 141, 179, 0.7)); }
 }
 
 
