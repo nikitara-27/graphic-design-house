@@ -81,7 +81,9 @@
           "code": "AR572",
           "title": "Internship",
           "active": true,
-          "interests": []
+          "interests": [],
+          "credits": 2,
+          "description": "This course is for juniors and seniors pursuing an internship for college credit. Internship hours range from 80-150 hours during the course of 6-14 weeks. Students meet in consultation with an Internship and Faculty advisor for critiques of internship work. A final presentation of work is required at the end of the semester."
         },
         {
           "id": "AR581",
@@ -90,7 +92,9 @@
           "active": true,
           "interests": [
             "interactive"
-          ]
+          ],
+          "credits": 2,
+          "description": "This course addresses the principles, problems, and applications of web design. HTML and CSS will be taught, giving the students the ability to control the design and presentation of online information in its most basic form. Emphasis is on content, usability, site architecture, navigation and interactivity."
         },
         {
           "id": "AR582",
@@ -99,7 +103,9 @@
           "active": true,
           "interests": [
             "interactive"
-          ]
+          ],
+          "credits": "varies",
+          "description": "This course will explore web design through various web technologies (HTML, CSS, JavaScript and Figma). While applying your design skills to this medium, you will develop an understanding of the technology behind the web and understand how to navigate the constraints and opportunities of the medium, and become comfortable executing your ideas in code."
         }
       ],
       "mapArea": {
@@ -233,7 +239,9 @@
           "active": true,
           "interests": [
             "interactive"
-          ]
+          ],
+          "credits": 2,
+          "description": "This course opens the door to different ways of thinking and making forms, and adding interactivity through computer programming and looks at how it can be used for creative projects by creating a new context or extending what we already know. Class time will be split between lectures, work sessions, discussions, presentations and critiques."
         },
         {
           "id": "AR570",
@@ -242,7 +250,9 @@
           "active": true,
           "interests": [
             "interactive"
-          ]
+          ],
+          "credits": 2,
+          "description": "The use of new software plays an important role in expanding our visual vocabulary and ideas, creating more opportunities in graphic design. \"Software Lab\" is an experimental laboratory that explores the potential of various digital applications. This course consists of several small workshops designed to help students explore diverse programs, as well as three main projects. Students are encouraged to play, take risks, and experiment boldly with newly learned tools as they discover and develop their own design approaches."
         },
         {
           "id": "AR576",
@@ -251,14 +261,18 @@
           "active": true,
           "interests": [
             "motion"
-          ]
+          ],
+          "credits": 2,
+          "description": "Introduction to methods and processes of creating motion graphics for broadcast and cinema. The focus is on story-telling in a time-based context through ambient and linear narratives. Students will consider how design elements--such as type, image, framing, pacing, rhythm, sequencing and sound--influence time-based narratives. Students will broaden their individual aesthetic by exploring a variety of mediums from analog to digital formats and animate with Flash and After Effects."
         },
         {
           "id": "XC475",
           "code": "XC475",
-          "title": "Spark!",
+          "title": "Spark! Innovation Program",
           "active": true,
-          "interests": []
+          "interests": [],
+          "credits": 4,
+          "description": "The Spark! Innovation Fellowship program supports student innovators passionate about solving problems through technology. The course provides a structured process where students advance a technology project of their own creation, or an innovative solution for a problem sponsored by an external partner. The goal is to design, develop, and deploy a working prototype in one semester with the support of industry mentors. Students can participate as part of a pre-formed team or they can be assigned to a team. There are two participant tracks for each team: developers and designers."
         }
       ],
       "mapArea": {
@@ -314,7 +328,9 @@
           "active": true,
           "interests": [
             "branding"
-          ]
+          ],
+          "credits": 2,
+          "description": "The goal of this course is to develop formal and analytical skills to expand upon the ways a brand identity can be conceived. Students will develop logos as a point of entry to a brand identity and apply the identity system to a series of hypothetical scenarios for a target audience. This course will explore various aspects of designing identities including logo lockups, typographic systems, positioning, brand strategy, and application methods. The emphasis will be on developing form and content relationships applied across various media and communication platforms."
         },
         {
           "id": "AR571",
@@ -323,7 +339,9 @@
           "active": true,
           "interests": [
             "exhibition"
-          ]
+          ],
+          "credits": 2,
+          "description": "Projects, lectures and field trips are ways in which students will investigate the topic of exhibit design. Projects include the experience of designing an exhibit. A curatorial point of view is the concept driving the design. Students will explore the design holistically, from a prototype of the physical space, to a form for presenting objects, media and information, exhibit signage, wayfinding and promotion. Critiques will emphasize how fluidly the graphic and material form relates to the curatorial concept. Lectures focus on defining contemporary exhibit design in the context of a more expectant and informed public. The changing role museums, galleries and project spaces play in the dissemination of curated objects/ideas/media will be a common theme. Field trips will be used as a tool to teach students about the exhibit experience, from the standpoint of a designer and visitor."
         },
         {
           "id": "AR595",
@@ -332,7 +350,9 @@
           "active": true,
           "interests": [
             "branding"
-          ]
+          ],
+          "credits": 2,
+          "description": "This course is focused on research and application of visual systems. Student investigations of components, modules, relatedness and grids will form how visual systems direct and influence a creative process. While most design assignments require a visual or typographic system, this course will address systems as a conceptual inquiry. Students will conduct a holistic exploration of abstract and physical systems to consider speculative solutions grounding visual systems in context. Design problems will approach analysis of systems and form as a visual response related to object, material and space."
         },
         {
           "id": "AR597",
@@ -341,7 +361,9 @@
           "active": true,
           "interests": [
             "exhibition"
-          ]
+          ],
+          "credits": 2,
+          "description": "Students will study and design interactive experiences in physical space. Emphasis is on how user experience shapes design. Projects include designing usable, interactive environments across a range of scales from mobile devices to social networks to museum displays and finally full scale architectural spaces. Work will be generated and discussed in terms of: concept development, media production, prototyping and implementation."
         }
       ],
       "mapArea": {

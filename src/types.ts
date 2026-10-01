@@ -10,7 +10,8 @@ export interface Course {
   term?: "F" | "S";
   active: boolean;
   /** Optional details, shown when a class is tapped in the class list. */
-  credits?: number;
+  /** A number, or "varies" (shown as "Credits: Vary"). */
+  credits?: number | "varies";
   /** e.g. "CFA AR 225"; shown above the description. */
   prerequisites?: string;
   description?: string;
