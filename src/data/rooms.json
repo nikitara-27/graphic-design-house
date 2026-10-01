@@ -215,6 +215,11 @@
           "toRoomId": "control-room",
           "label": "Control Room",
           "direction": "left"
+        },
+        {
+          "toRoomId": "dining-room",
+          "label": "Dining Room",
+          "direction": "down"
         }
       ],
       "courses": [
@@ -453,6 +458,11 @@
           "toRoomId": "office-room",
           "label": "Office Room",
           "direction": "down"
+        },
+        {
+          "toRoomId": "studio-room",
+          "label": "Studio Room",
+          "direction": "up"
         }
       ],
       "courses": [
