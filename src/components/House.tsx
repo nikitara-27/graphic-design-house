@@ -2,6 +2,9 @@ import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } fr
 import type { Answers, Direction, Professor } from "../types";
 import type { Panel } from "../lib/router";
 import type { Peer } from "../lib/presence";
+import type { ReactionId } from "../lib/reactions";
+import type { ShownReactions } from "../lib/usePresence";
+import { ReactButton } from "./Reactions";
 import { placePeople, type Box, type CrowdOptions } from "../lib/crowd";
 import { PeopleCard } from "./People";
 import { house, roomById, yearOption } from "../lib/data";
@@ -37,6 +40,10 @@ interface Props {
   name: string;
   /** Everyone in the house right now (including you), from live presence. */
   people: Peer[];
+  /** Reactions showing above people's heads right now. */
+  reactions: ShownReactions;
+  /** Sends a reaction; missing while live presence isn't connected (the button is hidden). */
+  onReact?: (type: ReactionId) => boolean;
   onSaveName: (name: string) => void;
   onRetake: () => void;
 }
@@ -45,7 +52,7 @@ type Transition = Direction | "fade";
 const ARROWS: Record<string, Direction> = { ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down" };
 const HINT_KEY = "look-hint-seen";
 
-export function House({ answers, professor, roomId, panel, courseId, nav, name, people, onSaveName, onRetake }: Props) {
+export function House({ answers, professor, roomId, panel, courseId, nav, name, people, reactions, onReact, onSaveName, onRetake }: Props) {
   const year = yearOption(answers.year)!;
   const homeRoomId = year.homeRoomId;
 
@@ -227,6 +234,7 @@ export function House({ answers, professor, roomId, panel, courseId, nav, name, 
               <RoomScene
                 room={room}
                 people={here}
+                reactions={reactions}
                 placements={placements}
                 onPickPerson={pickPerson}
                 name={name}
@@ -255,6 +263,8 @@ export function House({ answers, professor, roomId, panel, courseId, nav, name, 
             Swipe to look around
           </div>
         )}
+
+        {onReact && <ReactButton onSend={onReact} />}
 
         {cardPeer && <PeopleCard peer={cardPeer} onClose={closeCard} />}
 

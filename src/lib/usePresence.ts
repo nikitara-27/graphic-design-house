@@ -2,8 +2,18 @@ import { useEffect, useRef, useState } from "react";
 import type { RealtimeChannel, SupabaseClient } from "@supabase/supabase-js";
 import { CHANNEL, flattenPresence, sessionId, type Peer, type PeerInfo } from "./presence";
 import { getSupabase } from "./supabase";
+import {
+  REACTION_COOLDOWN_MS,
+  REACTION_EVENT,
+  REACTION_SHOW_MS,
+  sanitizeReaction,
+  type ReactionId,
+  type ReactionMessage,
+} from "./reactions";
 
 export type PresenceStatus = "off" | "connecting" | "live" | "error";
+/** The reaction currently showing above each person's head, by person id. `key` changes on every new one. */
+export type ShownReactions = Record<string, { type: ReactionId; room: string; key: number }>;
 
 const DEBOUNCE_MS = 200; // clicking through rooms quickly sends only the room you stop in
 const RETRY_MS = 2000; // a failed send is retried
@@ -18,7 +28,13 @@ const SYNC_EVERY_MS = 150; // batch incoming changes before re-rendering
  * after a reconnect or when the tab comes back into view. If Supabase isn't configured or can't be
  * reached, it returns no peers and the site carries on normally.
  */
-export function usePresence(me: PeerInfo | null): { peers: Peer[]; status: PresenceStatus; selfId: string } {
+export function usePresence(me: PeerInfo | null): {
+  peers: Peer[];
+  status: PresenceStatus;
+  selfId: string;
+  reactions: ShownReactions;
+  sendReaction: (type: ReactionId) => boolean;
+} {
   const [selfId] = useState(sessionId);
   const [peers, setPeers] = useState<Peer[]>([]);
   const [status, setStatus] = useState<PresenceStatus>("off");
@@ -35,6 +51,56 @@ export function usePresence(me: PeerInfo | null): { peers: Peer[]; status: Prese
   const lastSent = useRef(""); // JSON of the last state the server confirmed
   const timer = useRef<number>(undefined);
   const sending = useRef(false);
+
+  // Reactions: what's showing, when each disappears, and the sending/receiving limits.
+  const [reactions, setReactions] = useState<ShownReactions>({});
+  const reactionTimers = useRef(new Map<string, number>());
+  const reactionKey = useRef(0);
+  const lastReactionAt = useRef(new Map<string, number>());
+  const lastSentReaction = useRef(0);
+
+  const showReaction = (from: string, room: string, type: ReactionId) => {
+    reactionKey.current += 1;
+    // A new reaction from the same person replaces their last one.
+    setReactions((prev) => ({ ...prev, [from]: { type, room, key: reactionKey.current } }));
+    window.clearTimeout(reactionTimers.current.get(from));
+    reactionTimers.current.set(
+      from,
+      window.setTimeout(() => {
+        reactionTimers.current.delete(from);
+        setReactions(({ [from]: _, ...rest }) => rest);
+      }, REACTION_SHOW_MS),
+    );
+  };
+
+  const receiveReaction = (channel: RealtimeChannel, raw: unknown) => {
+    const msg: ReactionMessage | null = sanitizeReaction(raw);
+    const here = meRef.current?.room;
+    if (!msg || msg.from === selfId || msg.room !== here) return;
+    // Only from someone who's actually present, in that room right now.
+    const sender = flattenPresence({ [msg.from]: (channel.presenceState()[msg.from] ?? []) as unknown[] }, selfId)[0];
+    if (!sender || sender.room !== msg.room) return;
+    // Ignore anyone sending faster than the site allows (a modified browser could try).
+    const now = Date.now();
+    if (now - (lastReactionAt.current.get(msg.from) ?? 0) < REACTION_COOLDOWN_MS - 500) return;
+    lastReactionAt.current.set(msg.from, now);
+    showReaction(msg.from, msg.room, msg.type);
+  };
+  const receiveRef = useRef(receiveReaction);
+  receiveRef.current = receiveReaction;
+
+  /** Sends a reaction to the room you're in. False if not connected or within 2 s of the last one. */
+  const sendReaction = (type: ReactionId): boolean => {
+    const channel = channelRef.current;
+    const room = meRef.current?.room;
+    const now = Date.now();
+    if (!channel || !subscribed.current || !room || now - lastSentReaction.current < REACTION_COOLDOWN_MS) return false;
+    lastSentReaction.current = now;
+    const message: ReactionMessage = { from: selfId, room, type };
+    channel.send({ type: "broadcast", event: REACTION_EVENT, payload: message }).catch(() => {});
+    showReaction(selfId, room, type); // you see your own right away
+    return true;
+  };
 
   // Send the latest state now (if connected and it changed, or `force`).
   const flush = async (force = false) => {
@@ -87,7 +153,8 @@ export function usePresence(me: PeerInfo | null): { peers: Peer[]; status: Prese
       .then((c) => {
         if (cancelled) return;
         client = c;
-        const channel = c.channel(CHANNEL, { config: { presence: { key: selfId } } });
+        // Broadcast "self: false": your own reactions are shown locally, not echoed back.
+        const channel = c.channel(CHANNEL, { config: { presence: { key: selfId }, broadcast: { self: false } } });
         channelRef.current = channel;
         // Every sync: rebuild everyone (and their rooms) from the full presence state.
         channel.on("presence", { event: "sync" }, () => {
@@ -95,6 +162,9 @@ export function usePresence(me: PeerInfo | null): { peers: Peer[]; status: Prese
           syncTimer = window.setTimeout(() => {
             if (!cancelled) setPeers(flattenPresence(channel.presenceState() as Record<string, unknown[]>, selfId));
           }, SYNC_EVERY_MS);
+        });
+        channel.on("broadcast", { event: REACTION_EVENT }, ({ payload }) => {
+          if (!cancelled) receiveRef.current(channel, payload);
         });
         channel.subscribe((s) => {
           if (cancelled) return;
@@ -141,6 +211,9 @@ export function usePresence(me: PeerInfo | null): { peers: Peer[]; status: Prese
       document.removeEventListener("visibilitychange", onVisible);
       leave();
       setPeers([]);
+      for (const t of reactionTimers.current.values()) window.clearTimeout(t);
+      reactionTimers.current.clear();
+      setReactions({});
     };
   }, [active, selfId, generation]);
 
@@ -152,5 +225,5 @@ export function usePresence(me: PeerInfo | null): { peers: Peer[]; status: Prese
     timer.current = window.setTimeout(() => void flushRef.current(), DEBOUNCE_MS);
   }, [meJson]);
 
-  return { peers, status, selfId };
+  return { peers, status, selfId, reactions, sendReaction };
 }

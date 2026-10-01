@@ -66,7 +66,7 @@ export default function App() {
     () => (inHouse && answers ? { name: name || "Guest", hostId: professor.id, year: answers.year, interest: answers.interest, program: answers.program, room: inHouse } : null),
     [inHouse, answers, name, professor.id],
   );
-  const { peers, selfId } = usePresence(me);
+  const { peers, selfId, status, reactions, sendReaction } = usePresence(me);
   const people: Peer[] = me
     ? [{ ...me, id: selfId, self: true }, ...peers.filter((p) => p.id !== selfId), ...(import.meta.env.DEV ? fakePeers(me.room) : [])]
     : [];
@@ -129,6 +129,8 @@ export default function App() {
         nav={nav}
         name={name}
         people={people}
+        reactions={reactions}
+        onReact={status === "live" ? sendReaction : undefined}
         onSaveName={updateName}
         onRetake={retake}
       />

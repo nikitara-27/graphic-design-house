@@ -1,5 +1,6 @@
 import type { Room } from "../types";
 import type { Peer } from "../lib/presence";
+import type { ShownReactions } from "../lib/usePresence";
 import type { Placement } from "../lib/crowd";
 import { useMemo } from "react";
 import { asset } from "../lib/data";
@@ -11,6 +12,7 @@ interface Props {
   room: Room;
   /** Everyone in this room right now, including you. */
   people: Peer[];
+  reactions: ShownReactions;
   placements: Map<string, Placement>;
   onOpenClasses: () => void;
   onPickPerson: (p: Peer) => void;
@@ -22,7 +24,7 @@ interface Props {
 
 const ART: Record<string, { image: string; x: number; y: number; w: number; h: number }> = objectArt;
 
-export function RoomScene({ room, people, placements, onOpenClasses, onPickPerson, name, greeting, onDismissGreeting }: Props) {
+export function RoomScene({ room, people, reactions, placements, onOpenClasses, onPickPerson, name, greeting, onDismissGreeting }: Props) {
   const o = room.object;
   const n = room.courses.length;
   const art = ART[room.id];
@@ -32,7 +34,7 @@ export function RoomScene({ room, people, placements, onOpenClasses, onPickPerso
     <>
       <img className="scene-art" src={asset(room.sceneImage)} alt={room.sceneAlt} draggable={false} />
 
-      <PeopleLayer people={people} placements={placements} onPick={onPickPerson} />
+      <PeopleLayer people={people} reactions={reactions} roomId={room.id} placements={placements} onPick={onPickPerson} />
 
       {room.greeter && greeting && <GreeterBubble greeter={room.greeter} name={name} onDismiss={onDismissGreeting} />}
 

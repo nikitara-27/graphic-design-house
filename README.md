@@ -101,6 +101,14 @@ and (when the whole room fits on screen) the arrows. Placement logic: `src/lib/c
 
 For local testing without real visitors, add `?fakePeers=8` to the dev URL (development only).
 
+**Reactions.** The smiley button (bottom right of a room, shown only while live presence is connected) opens six
+reactions: "hi", 👋, 💻, 😴, 🍕, 📚. The pick shows in a bubble above the sender's name for about 3 seconds, for everyone
+in that room (and the sender). A new one from the same person replaces the old one. They're sent as Realtime
+broadcast messages on the same channel, with only the sender id, room and reaction id; nothing is saved.
+Received messages are ignored unless the reaction is one of the six, the room is the viewer's room, and the sender
+is present in that room. One reaction every 2 seconds per person. Code: `src/lib/reactions.ts`,
+`src/components/Reactions.tsx`, `src/lib/usePresence.ts`.
+
 ## Design Resources board (Living Room)
 
 Tapping the Living Room's pink picture opens a shared board of design links. Anyone can read it and add to it;

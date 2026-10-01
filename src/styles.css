@@ -279,6 +279,50 @@ h1, h2, h3, p { margin: 0; }
 }
 @keyframes bubble-pop { from { opacity: 0; transform: translate(-50%, calc(-100% - 14px)) scale(0.6); } }
 
+/* Reactions: a smiley button (bottom right, above the stairs) with a small picker, and a bubble
+   above the sender's name for ~3 s. */
+.react { position: absolute; right: calc(10px + var(--safe-r)); bottom: calc(72px + var(--safe-b)); z-index: 5; }
+.react-btn {
+  width: 48px; height: 48px; display: grid; place-items: center; padding: 0;
+  background: var(--cream); border: 3px solid var(--forest); box-shadow: 3px 3px 0 var(--forest);
+}
+.react-btn:hover { background: var(--butter); }
+.react-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--forest); }
+.react-btn[aria-expanded="true"] { background: var(--butter); }
+.react-picker {
+  position: absolute; right: 0; bottom: calc(100% + 8px);
+  display: grid; grid-template-columns: repeat(3, 44px); gap: 6px; padding: 8px;
+  background: var(--cream); border: 3px solid var(--forest); box-shadow: 4px 4px 0 var(--forest);
+  animation: fade-in 120ms ease-out;
+}
+.react-option {
+  width: 44px; height: 44px; display: grid; place-items: center; padding: 0;
+  background: var(--cream); border: 2px solid var(--sage); font-size: 22px; line-height: 1;
+}
+.react-option.is-text { font-family: var(--font-display); font-size: 20px; font-weight: 900; color: var(--plum); }
+.react-option:hover:not(:disabled), .react-option:focus-visible { background: var(--blush); border-color: var(--forest); }
+.react-option:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.reaction-bubble {
+  position: absolute; transform: translate(-50%, calc(-100% - 30px)); /* above the name label */
+  padding: 3px 9px; background: var(--cream); border: 2px solid var(--forest); box-shadow: 2px 2px 0 var(--forest);
+  font-size: clamp(18px, 2cqi, 26px); line-height: 1.2; white-space: nowrap; pointer-events: none;
+  animation: reaction-pop 3s ease-out forwards;
+}
+.reaction-bubble.is-text { font-family: var(--font-display); font-weight: 900; color: var(--plum); }
+@keyframes reaction-pop {
+  0% { opacity: 0; transform: translate(-50%, calc(-100% - 24px)) scale(0.6); }
+  8% { opacity: 1; transform: translate(-50%, calc(-100% - 30px)) scale(1.08); }
+  14% { transform: translate(-50%, calc(-100% - 30px)) scale(1); }
+  80% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, calc(-100% - 44px)); }
+}
+@keyframes reaction-fade {
+  0% { opacity: 0; }
+  10%, 80% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
 /* Small card for a person's details or the "+N more" list. */
 .people-card {
   position: absolute; z-index: 6; left: 50%; bottom: calc(76px + var(--safe-b)); transform: translateX(-50%);
@@ -587,5 +631,7 @@ h1, h2, h3, p { margin: 0; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
+  /* Reactions still fade in and out (no pop or float), so they don't vanish abruptly. */
+  .reaction-bubble { animation: reaction-fade 3s linear forwards !important; transform: translate(-50%, calc(-100% - 30px)); }
   .scene-scroller { scroll-behavior: auto; }
 }

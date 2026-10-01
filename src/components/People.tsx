@@ -3,11 +3,18 @@ import { hostProfessor, interestOption, professors, programOption } from "../lib
 import type { Peer } from "../lib/presence";
 import { labelTop, type Placement } from "../lib/crowd";
 import { Avatar } from "./Avatar";
+import { REACTIONS, reactionText } from "../lib/reactions";
+
+const REACTION_LABEL = Object.fromEntries(REACTIONS.map((r) => [r.id, r.id === "hi" ? "hi" : r.label.toLowerCase()]));
+import type { ShownReactions } from "../lib/usePresence";
 
 export const hostFor = (id: string) => professors.find((p) => p.id === id) ?? hostProfessor;
 
 interface LayerProps {
   people: Peer[];
+  /** Reactions showing right now, by person id; only ones sent in this room are shown. */
+  reactions: ShownReactions;
+  roomId: string;
   /** Where each person stands (from placePeople), keyed by id. */
   placements: Map<string, Placement>;
   onPick: (p: Peer) => void;
@@ -18,7 +25,7 @@ interface LayerProps {
  * drawn in front, and you're always on top. Names sit in their own layer above all the figures,
  * in the same order, so a name is never hidden behind someone's head.
  */
-export function PeopleLayer({ people, placements, onPick }: LayerProps) {
+export function PeopleLayer({ people, reactions, roomId, placements, onPick }: LayerProps) {
   const placed = people
     .map((p) => ({ p, at: placements.get(p.id)! }))
     .filter((e) => e.at)
@@ -48,7 +55,30 @@ export function PeopleLayer({ people, placements, onPick }: LayerProps) {
             {p.self ? `${p.name} (you)` : p.name}
           </span>
         ))}
+        {/* Reactions float above the name. The key restarts the animation when one is replaced. */}
+        {placed.map(({ p, at }) => {
+          const r = reactions[p.id];
+          if (!r || r.room !== roomId) return null;
+          return (
+            <span
+              key={`${p.id}-${r.key}`}
+              className={`reaction-bubble${r.type === "hi" ? " is-text" : ""}`}
+              style={{ left: `${at.x}%`, top: `${labelTop(at)}%`, zIndex: 1000 + at.z }}
+            >
+              {reactionText(r.type)}
+            </span>
+          );
+        })}
       </div>
+      {/* Screen readers hear the newest reaction from someone else in the room. */}
+      <p className="sr-only" aria-live="polite">
+        {(() => {
+          const newest = placed
+            .filter(({ p }) => !p.self && reactions[p.id]?.room === roomId)
+            .sort((a, b) => reactions[b.p.id].key - reactions[a.p.id].key)[0];
+          return newest ? `${newest.p.name} reacted: ${REACTION_LABEL[reactions[newest.p.id].type]}` : "";
+        })()}
+      </p>
     </>
   );
 }
