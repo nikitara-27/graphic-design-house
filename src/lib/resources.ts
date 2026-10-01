@@ -5,7 +5,7 @@ import { hasBlockedWords, safeName } from "./nameFilter";
  * set up by supabase/resources.sql); this file holds the rules both sides agree on.
  */
 
-export const CATEGORIES = ["Typography", "Motion Graphics", "UI/UX", "Media", "Other"] as const;
+export const CATEGORIES = ["Typography", "UI/UX", "Motion Graphics", "Color", "Inspiration", "Tools", "Mockups", "Tutorials", "Other"] as const;
 export type Category = (typeof CATEGORIES)[number];
 
 export const TITLE_MAX = 60;

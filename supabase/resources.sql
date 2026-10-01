@@ -16,7 +16,7 @@ create table if not exists public.resources (
   url         text not null check (url ~* '^https?://[^/\s]+' and url !~ '\s' and char_length(url) <= 500),
   title       text not null check (char_length(btrim(title)) between 1 and 60),
   description text check (description is null or char_length(description) <= 140),
-  category    text not null check (category in ('Typography', 'Motion Graphics', 'UI/UX', 'Media', 'Other')),
+  category    text not null check (category in ('Typography', 'UI/UX', 'Motion Graphics', 'Color', 'Inspiration', 'Tools', 'Mockups', 'Tutorials', 'Other')),
   shared_by   text not null default 'Guest' check (char_length(shared_by) between 1 and 30),
   created_at  timestamptz not null default now(),
   hidden      boolean not null default false,
@@ -61,6 +61,10 @@ begin
     new.hidden := false;
     new.reported := false;
     new.title := btrim(new.title);
+    -- "GD House" is reserved for the site's own picks.
+    if lower(regexp_replace(btrim(new.shared_by), '\s+', ' ', 'g')) = 'gd house' then
+      new.shared_by := 'Guest';
+    end if;
     new.description := nullif(btrim(coalesce(new.description, '')), '');
     if (select count(*) from resource_submissions
         where submitter = who and created_at > now() - interval '1 hour') >= 5 then
@@ -148,18 +152,20 @@ exception when duplicate_object then null;
 end;
 $$;
 
--- 5. Categories and cleanup (for a board created with an earlier version of this file) ----------
+-- 5. Categories (also updates a board created with an earlier version of this file) ------------
 
--- Categories: Typography, Motion Graphics, UI/UX, Media, Other. Cards in a category that no
--- longer exists move to Other.
+-- Typography, UI/UX, Motion Graphics, Color, Inspiration, Tools, Mockups, Tutorials, Other.
+-- Cards in a category that no longer exists move to Other.
 alter table public.resources drop constraint if exists resources_category_check;
-update public.resources set category = 'Other' where category not in ('Typography', 'Motion Graphics', 'UI/UX', 'Media', 'Other');
+update public.resources set category = 'Other' where category not in ('Typography', 'UI/UX', 'Motion Graphics', 'Color', 'Inspiration', 'Tools', 'Mockups', 'Tutorials', 'Other');
 alter table public.resources add constraint resources_category_check
-  check (category in ('Typography', 'Motion Graphics', 'UI/UX', 'Media', 'Other'));
+  check (category in ('Typography', 'UI/UX', 'Motion Graphics', 'Color', 'Inspiration', 'Tools', 'Mockups', 'Tutorials', 'Other'));
 
--- The board starts empty: remove the old "GD House" starter picks if they were added.
+-- 6. Starter resources, shared by "GD House" ----------------------------------------------------
+-- Running this file again never duplicates them: each has a fixed id, and the text is refreshed.
+
+-- Remove starter picks from earlier versions of this file.
 delete from public.resources where id in (
-    '6c0de788-eb27-5e59-abf1-f505693af6f2',
     'a76cf571-7bc5-5c33-8b31-ef668ac62c0c',
     '227bf0a6-cb97-5cbf-8aac-7fe2983d327f',
     'd71a3cc2-944a-541d-a604-34b88ebbb155',
@@ -168,3 +174,23 @@ delete from public.resources where id in (
     'ec6c6d8b-0494-574d-977c-e5451386c676',
     '9e45211f-302a-5997-af73-ce45b5725751'
 );
+
+create temp table gd_house_seed (id uuid, url text, title text, description text, category text, created_at timestamptz);
+insert into gd_house_seed values
+  ('3d7657af-17d6-5fbe-95d7-5ccca0abe5c5'::uuid, 'https://www.colophon-foundry.org', 'Colophon Foundry', 'Independent type foundry with original typefaces.', 'Typography', timestamptz '2026-10-01 12:59:00+00'),
+  ('6c0de788-eb27-5e59-abf1-f505693af6f2'::uuid, 'https://fonts.google.com', 'Google Fonts', 'Free, open-source fonts for print and web.', 'Typography', timestamptz '2026-10-01 12:58:00+00'),
+  ('584e9d90-53ba-5022-b010-b276bdd016fd'::uuid, 'https://fonts.google.com/knowledge', 'Google Fonts Knowledge', 'Free guides to typography basics and type on screen.', 'Typography', timestamptz '2026-10-01 12:57:00+00'),
+  ('86bb288e-582e-5aa7-936d-94fbcf8ba19b'::uuid, 'https://lawsofux.com', 'Laws of UX', 'Key psychology principles for designing interfaces.', 'UI/UX', timestamptz '2026-10-01 12:56:00+00'),
+  ('94028912-87b1-5b56-9802-cb42489cd27f'::uuid, 'https://www.awwwards.com', 'Awwwards', 'Award-winning web design for inspiration.', 'UI/UX', timestamptz '2026-10-01 12:55:00+00'),
+  ('ff9dde86-237b-544d-8fb9-46abc3d1e974'::uuid, 'https://youtu.be/IJ3QHNQSJg8', 'Text Animators for Beginners - After Effects Type Tutorial', null, 'Motion Graphics', timestamptz '2026-10-01 12:54:00+00');
+
+update public.resources r
+   set url = s.url, title = s.title, description = s.description, category = s.category, shared_by = 'GD House'
+  from gd_house_seed s
+ where r.id = s.id;
+
+insert into public.resources (id, url, title, description, category, shared_by, created_at)
+select id, url, title, description, category, 'GD House', created_at from gd_house_seed
+on conflict do nothing;
+
+drop table gd_house_seed;

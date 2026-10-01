@@ -465,9 +465,13 @@ h1, h2, h3, p { margin: 0; }
 .res-meta .tag { margin: 0; }
 .res-domain { font-size: 13px; font-weight: 700; overflow-wrap: anywhere; text-decoration: underline; text-underline-offset: 3px; }
 .res-cat-typography { background: var(--butter); }
-.res-cat-motion-graphics { background: var(--lavender); }
 .res-cat-ui-ux { background: var(--periwinkle); }
-.res-cat-media { background: var(--blush); }
+.res-cat-motion-graphics { background: var(--lavender); }
+.res-cat-color { background: var(--blush); }
+.res-cat-inspiration { background: var(--lavender); border-style: dashed; }
+.res-cat-tools { background: var(--sage); }
+.res-cat-mockups { background: var(--periwinkle); border-style: dashed; }
+.res-cat-tutorials { background: var(--butter); border-style: dashed; }
 .res-cat-other { background: var(--cream); }
 .res-foot {
   display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 10px;

@@ -104,10 +104,11 @@ category filters. New cards appear for everyone right away (Supabase Realtime).
   5 per browser per hour (and 100 per hour overall), and Row Level Security: the website can only read rows that
   aren't hidden, add rows, and add reports. It can't edit, hide or delete anything.
 - **Report button:** adds a row to `resource_reports`, which sets `resources.reported = true` for you to review.
-- **Categories:** Typography, Motion Graphics, UI/UX, Media, Other (`CATEGORIES` in `src/lib/resources.ts` and the
+- **Categories:** Typography, UI/UX, Motion Graphics, Color, Inspiration, Tools, Mockups, Tutorials, Other (`CATEGORIES` in `src/lib/resources.ts` and the
   category check in `supabase/resources.sql`; change both together).
 - **Setup:** run `supabase/resources.sql` in Supabase → SQL Editor. It's safe to run again after changes (it updates
-  the categories). The board starts empty.
+  the categories and starter resources, never duplicating them). It seeds 6 starter resources shared by "GD House";
+  edit them in section 6 of that file. Visitors can't post as "GD House" (it becomes "Guest").
 - **Moderating:** Supabase → Table Editor → `resources`. Filter `reported` is `true` to see reports. Tick `hidden` to
   take a card down (it disappears on next open), or delete the row.
 - **Local development** reads the real board but doesn't send anything to it. Add `?liveBoard` to the dev URL to really send.

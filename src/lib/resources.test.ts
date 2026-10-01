@@ -5,7 +5,7 @@ import { CATEGORIES, checkDraft, domainOf, linkKey, parseLink, toResource, type 
 const sql = readFileSync(new URL("../../supabase/resources.sql", import.meta.url), "utf8");
 const draft = (d: Partial<Draft> = {}): Draft => ({ url: "https://example.com/type", title: "Type specimens", description: "", category: "Typography", ...d });
 const board: Resource[] = [
-  { id: "1", url: "https://coolors.co", title: "Coolors", description: "", category: "Media", sharedBy: "Niki", createdAt: "2026-10-01" },
+  { id: "1", url: "https://coolors.co", title: "Coolors", description: "", category: "Color", sharedBy: "Niki", createdAt: "2026-10-01" },
 ];
 
 describe("links", () => {
@@ -56,9 +56,9 @@ describe("checkDraft", () => {
 });
 
 describe("toResource (rows from the database)", () => {
-  const row = { id: "1", url: "https://coolors.co", title: "Coolors", description: "Palettes", category: "Media", shared_by: "Niki", created_at: "2026-10-01" };
+  const row = { id: "1", url: "https://coolors.co", title: "Coolors", description: "Palettes", category: "Color", shared_by: "Niki", created_at: "2026-10-01" };
   it("keeps good rows", () => {
-    expect(toResource(row)).toMatchObject({ title: "Coolors", sharedBy: "Niki", category: "Media" });
+    expect(toResource(row)).toMatchObject({ title: "Coolors", sharedBy: "Niki", category: "Color" });
   });
   it("drops unsafe links, hidden rows and unfriendly text", () => {
     expect(toResource({ ...row, url: "javascript:alert(1)" })).toBeNull();
@@ -74,13 +74,22 @@ describe("toResource (rows from the database)", () => {
 
 describe("database setup", () => {
   it("uses the same categories in the database check", () => {
-    expect(CATEGORIES).toEqual(["Typography", "Motion Graphics", "UI/UX", "Media", "Other"]);
+    expect(CATEGORIES).toEqual(["Typography", "UI/UX", "Motion Graphics", "Color", "Inspiration", "Tools", "Mockups", "Tutorials", "Other"]);
     const list = `category in (${CATEGORIES.map((c) => `'${c}'`).join(", ")})`;
     expect(sql).toContain(list);
-    expect(sql).not.toMatch(/'(Color|Inspiration|Tools|Mockups|Tutorials)'/);
+    expect(sql).not.toMatch(/'Media'/);
   });
-  it("adds no starter picks", () => {
-    expect(sql).not.toMatch(/insert into public\.resources/i);
+  it("seeds only the GD House starter resources, without duplicates on a re-run", () => {
+    const urls = [...sql.matchAll(/\('[0-9a-f-]{36}'::uuid, '([^']+)'/g)].map((m) => m[1]);
+    expect(urls).toEqual([
+      "https://www.colophon-foundry.org",
+      "https://fonts.google.com",
+      "https://fonts.google.com/knowledge",
+      "https://lawsofux.com",
+      "https://www.awwwards.com",
+      "https://youtu.be/IJ3QHNQSJg8",
+    ]);
+    expect(sql).toMatch(/on conflict do nothing/);
   });
   it("never lets the website update or delete resources", () => {
     expect(sql).not.toMatch(/for (update|delete|all)/i);
