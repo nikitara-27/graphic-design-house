@@ -27,8 +27,9 @@ const ALLOWED_CHARS = /^[\p{L}\p{M}\p{N} '.-]+$/u;
 
 export type NameCheck = "ok" | "empty" | "chars" | "blocked";
 
-function isOffensive(name: string): boolean {
-  const lower = name.toLowerCase();
+/** True if the text contains a blocked word. Also used for the Design Resources board's titles and descriptions. */
+export function hasBlockedWords(text: string): boolean {
+  const lower = text.toLowerCase();
   // Ignore matches that sit entirely inside an allowlisted word (e.g. the name "Dick").
   const words = [...lower.matchAll(/[\p{L}\p{M}\p{N}'.-]+/gu)].map((m) => ({ text: m[0], start: m.index!, end: m.index! + m[0].length - 1 }));
   const realHit = matcher.getAllMatches(lower).some((match) => {
@@ -48,7 +49,7 @@ export function checkName(raw: string): NameCheck {
   const name = cleanName(raw.replace(/[‘’]/g, "'"));
   if (!name) return "empty";
   // Offensive first, so disguised words like "a$$" get the friendly message, not the characters one.
-  if (isOffensive(name)) return "blocked";
+  if (hasBlockedWords(name)) return "blocked";
   if (name.length > NAME_MAX || !ALLOWED_CHARS.test(name)) return "chars";
   return "ok";
 }

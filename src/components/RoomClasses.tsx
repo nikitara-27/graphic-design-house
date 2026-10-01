@@ -4,7 +4,6 @@ const TERM = { F: "Fall", S: "Spring" } as const;
 
 const EMPTY: Record<string, string> = {
   playroom: "Classes coming soon.",
-  "living-room": "Take a break — no classes here.",
 };
 
 /** Sheet header: room name in Doto, then what the room represents. */

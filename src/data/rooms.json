@@ -834,6 +834,7 @@
         "w": 12.5,
         "h": 28.9
       },
+      "objectOpens": "resources",
       "greeter": {
         "label": "Cat on the bookshelf",
         "x": 74.4,

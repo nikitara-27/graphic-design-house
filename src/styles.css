@@ -431,6 +431,68 @@ h1, h2, h3, p { margin: 0; }
   background: none; border: 0; font-weight: 800; color: var(--plum); text-decoration: underline; text-underline-offset: 3px;
 }
 
+/* ---------- Design Resources board (Living Room) ---------- */
+
+.board { display: flex; flex-direction: column; gap: 12px; }
+.board-intro { font-size: 14px; line-height: 1.45; }
+.board-add { align-self: stretch; }
+.board-status, .board-empty { font-size: 14px; line-height: 1.45; padding: 8px 10px; background: var(--periwinkle); border-left: 4px solid var(--forest); }
+.board-empty { background: transparent; border: 0; padding: 8px 0; font-size: 15px; }
+.board-thanks { font-size: 14px; font-weight: 700; padding: 8px 10px; background: var(--sage); border-left: 4px solid var(--forest); }
+
+/* Category chips: one row that scrolls sideways on phones. */
+.chip-row {
+  display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none;
+  margin: 0 -16px; padding: 2px 16px 6px; scroll-padding-inline: 16px;
+}
+.chip-row::-webkit-scrollbar { display: none; }
+.chip {
+  flex: none; min-height: 44px; padding: 6px 12px;
+  background: var(--cream); border: 2px solid var(--forest); box-shadow: 2px 2px 0 var(--forest);
+  font-size: 14px; font-weight: 800; white-space: nowrap;
+}
+.chip[aria-pressed="true"] { background: var(--plum); border-color: var(--plum); color: var(--cream); box-shadow: 2px 2px 0 var(--forest); }
+.chip:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--forest); }
+
+.res-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.res-card { background: var(--cream); border: 2px solid var(--forest); box-shadow: 3px 3px 0 var(--forest); }
+.res-link { display: flex; flex-direction: column; gap: 6px; padding: 12px 12px 10px; color: var(--forest); text-decoration: none; }
+.res-link:hover, .res-link:active { background: var(--blush); }
+.res-link:focus-visible { outline-offset: -3px; }
+.res-title { font-family: var(--font-display); font-size: 21px; font-weight: 900; line-height: 1.15; color: var(--plum); overflow-wrap: anywhere; }
+.res-desc { font-size: 14px; line-height: 1.45; overflow-wrap: anywhere; }
+.res-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.res-meta .tag { margin: 0; }
+.res-domain { font-size: 13px; font-weight: 700; overflow-wrap: anywhere; text-decoration: underline; text-underline-offset: 3px; }
+.res-cat-typography { background: var(--butter); }
+.res-cat-color { background: var(--blush); }
+.res-cat-inspiration { background: var(--lavender); }
+.res-cat-tools { background: var(--sage); }
+.res-cat-mockups { background: var(--periwinkle); }
+.res-cat-tutorials { background: var(--butter); border-style: dashed; }
+.res-cat-other { background: var(--cream); }
+.res-foot {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 10px;
+  padding: 0 12px; min-height: 44px; border-top: 2px dashed var(--lavender); font-size: 13px; font-weight: 600;
+}
+.res-by { overflow-wrap: anywhere; }
+.res-foot .link-btn { font-size: 13px; }
+.res-confirm { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; color: var(--plum); }
+.res-reported { font-weight: 700; color: var(--plum); }
+
+.res-form { display: flex; flex-direction: column; gap: 14px; }
+.res-form .back-link { align-self: flex-start; }
+.res-form-title { font-family: var(--font-display); font-size: 24px; font-weight: 900; color: var(--plum); margin-top: -4px; }
+.field { display: flex; flex-direction: column; gap: 6px; }
+.field-label { display: flex; align-items: baseline; gap: 6px; font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; }
+.field-optional { text-transform: none; letter-spacing: 0; font-weight: 600; }
+.field-count { margin-left: auto; font-weight: 600; letter-spacing: 0; }
+.res-textarea { min-height: 88px; resize: vertical; font-size: 16px; font-weight: 600; line-height: 1.4; }
+.res-select { appearance: none; -webkit-appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--forest) 50%), linear-gradient(135deg, var(--forest) 50%, transparent 50%); background-position: calc(100% - 18px) 50%, calc(100% - 12px) 50%; background-size: 6px 6px; background-repeat: no-repeat; padding-right: 32px; }
+.res-form .name-note, .res-form .name-error { margin-top: 0; }
+.res-form-actions { display: flex; gap: 12px; justify-content: flex-end; margin-top: 4px; }
+.res-form-actions .btn { flex: 1; }
+
 /* ---------- House map (illustrated cross-section) ---------- */
 
 /* Fit the whole house in the sheet: as wide as possible without exceeding the sheet's height. */

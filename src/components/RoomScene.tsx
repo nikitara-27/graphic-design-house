@@ -41,7 +41,11 @@ export function RoomScene({ room, people, placements, pulse, onOpenClasses, onPi
           width: `max(44px, ${o.w}%)`,
           height: `max(44px, ${o.h}%)`,
         }}
-        aria-label={`${o.label}: open ${room.name} classes (${n} ${n === 1 ? "class" : "classes"})`}
+        aria-label={
+          room.objectOpens === "resources"
+            ? `${o.label}: open the Design Resources board`
+            : `${o.label}: open ${room.name} classes (${n} ${n === 1 ? "class" : "classes"})`
+        }
         onClick={onOpenClasses}
       />
     </>

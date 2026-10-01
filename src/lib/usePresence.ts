@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { RealtimeChannel, SupabaseClient } from "@supabase/supabase-js";
-import { CHANNEL, flattenPresence, presenceConfig, sessionId, type Peer, type PeerInfo } from "./presence";
+import { CHANNEL, flattenPresence, sessionId, type Peer, type PeerInfo } from "./presence";
+import { getSupabase } from "./supabase";
 
 export type PresenceStatus = "off" | "connecting" | "live" | "error";
 
@@ -47,8 +48,8 @@ export function usePresence(me: PeerInfo | null): { peers: Peer[]; status: Prese
 
   // Connect while in the house; disconnect when leaving it (e.g. Retake quiz) or closing the tab.
   useEffect(() => {
-    const config = presenceConfig();
-    if (!active || !config) {
+    const connect = active ? getSupabase() : null;
+    if (!connect) {
       setStatus("off");
       setPeers([]);
       return;
@@ -68,13 +69,10 @@ export function usePresence(me: PeerInfo | null): { peers: Peer[]; status: Prese
       }
     };
 
-    import("@supabase/supabase-js")
-      .then(({ createClient }) => {
+    connect
+      .then((c) => {
         if (cancelled) return;
-        client = createClient(config.url, config.key, {
-          auth: { persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
-          realtime: { params: { eventsPerSecond: 5 } },
-        });
+        client = c;
         const channel = client.channel(CHANNEL, { config: { presence: { key: selfId } } });
         channelRef.current = channel;
         channel.on("presence", { event: "sync" }, () => {

@@ -1,7 +1,7 @@
 # Graphic Design House
 
 An interactive map of BU's Graphic Design curriculum, shown as a house. Built from `PRD.md`.
-It's a static Vite + React + TypeScript site with no backend.
+It's a static Vite + React + TypeScript site. Live presence and the Design Resources board use Supabase (optional: without it the site still works).
 
 ```bash
 npm install
@@ -25,7 +25,7 @@ Scenes are 16:9, set by `sceneAspect`. On phones (portrait) the room fills the s
 Small arrow buttons on the left and right edges lead to the next room; you can also keep swiping past the end of the room. On every screen the room fills the space edge to edge (very wide windows trim a little from the top and bottom).
 
 **Clickable object.** Each room has exactly one: `object` in `rooms.json` (`label`, `x`, `y`, `w`, `h`, as percentages of the 1600×900 scene, measured from the top-left).
-Tapping it opens the room's class list. It glows on the first visit, and the tap target never shrinks below 44×44px. Everything else in the scene is decoration.
+Tapping it opens the room's class list (or, with `"objectOpens": "resources"`, the Design Resources board: the Living Room's pink picture). It glows on the first visit, and the tap target never shrinks below 44×44px. Everything else in the scene is decoration.
 
 **House map.** The Map panel shows the team's cross-section illustration (`public/map.webp`, made from `MAP.png` at 1234px wide).
 Each room's tappable area on it is `mapArea` in `rooms.json` (percentages of the map image). If the illustration changes,
@@ -75,7 +75,7 @@ from other visitors through live presence (those show as "Guest" if they fail, s
 While someone is inside the house, their browser shares **only** their first name, host professor, year,
 design interest, and current room on one Supabase Realtime Presence channel (`gd-house`). Everyone in a room
 sees each other as their host's avatar with their name underneath; the map shows how many people are in each room.
-There's no database and no login: the data only exists while the tab is open, and leaving the site removes it.
+Presence uses no database and no login: the data only exists while the tab is open, and leaving the site removes it.
 The name screen tells people their first name will be visible to others.
 
 Setup: copy `.env.example` to `.env.local` and fill in the project URL and the **public** anon/publishable key.
@@ -90,6 +90,26 @@ height); people further back are drawn at ~90%. Avatars stay off the clickable o
 and (when the whole room fits on screen) the arrows. Placement logic: `src/lib/crowd.ts`.
 
 For local testing without real visitors, add `?fakePeers=8` to the dev URL (development only).
+
+## Design Resources board (Living Room)
+
+Tapping the Living Room's pink picture opens a shared board of design links. Anyone can read it and add to it;
+cards show the title, optional description, category, website domain and "Shared by [name]", newest first, with
+category filters. New cards appear for everyone right away (Supabase Realtime).
+
+- **Rules (in the browser, `src/lib/resources.ts`):** link must start with http:// or https://, title ≤ 60, description ≤ 140,
+  a category, no duplicate links, at most 5 per hour, and the title, description and website go through the name filter.
+  Rows loaded from the database are checked again (bad links dropped, bad names shown as "Guest").
+- **Rules (in the database, `supabase/resources.sql`):** the same limits as checks, a unique index on the link,
+  5 per browser per hour (and 100 per hour overall), and Row Level Security: the website can only read rows that
+  aren't hidden, add rows, and add reports. It can't edit, hide or delete anything.
+- **Report button:** adds a row to `resource_reports`, which sets `resources.reported = true` for you to review.
+- **Setup:** run `supabase/resources.sql` once in Supabase → SQL Editor. It also adds 8 starter picks shared by
+  "GD House" (the same ones as `src/data/resources.json`, which the site shows if the board can't be reached).
+- **Moderating:** Supabase → Table Editor → `resources`. Filter `reported` is `true` to see reports. Tick `hidden` to
+  take a card down (it disappears on next open), or delete the row.
+- **Local development** reads the real board but doesn't send anything to it. Add `?liveBoard` to the dev URL to really send.
+- Code: `src/components/ResourceBoard.tsx`, `src/lib/useResources.ts`, `src/lib/resources.ts`.
 
 ## Still needed from the team (`TODO (team)`)
 

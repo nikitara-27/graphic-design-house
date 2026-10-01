@@ -13,6 +13,8 @@ import { CourseDetail } from "./CourseDetail";
 import { RoomClasses, RoomHeading } from "./RoomClasses";
 import { ProfileCard } from "./ProfileCard";
 import { loadFlag, saveFlag } from "../lib/storage";
+import { ResourceBoard } from "./ResourceBoard";
+import { useResources } from "../lib/useResources";
 
 /** Navigation callbacks; App turns each into a URL + history entry. */
 export interface HouseNav {
@@ -70,6 +72,10 @@ export function House({ answers, professor, roomId, panel, courseId, nav, name, 
   const course = courseId ? room.courses.find((c) => c.id === courseId) ?? null : null;
   const exit = (d: Direction) => room.exits.find((e) => e.direction === d);
   const isHome = roomId === homeRoomId;
+
+  // The Living Room's pink picture opens the shared Design Resources board instead of a class list.
+  const isBoard = room.objectOpens === "resources";
+  const board = useResources(panel === "classes" && isBoard, name);
 
   // How we arrived in this room picks the entry animation. Rooms reached any other way
   // (Back/Forward, a refresh, the map) fade in.
@@ -300,7 +306,18 @@ export function House({ answers, professor, roomId, panel, courseId, nav, name, 
         />
       </Sheet>
 
-      <Sheet open={panel === "classes"} onClose={nav.closePanel} title={<RoomHeading room={room} />} className="sheet-classes">
+      <Sheet open={panel === "classes" && isBoard} onClose={nav.closePanel} title="Design Resources" className="sheet-classes sheet-board">
+        <ResourceBoard
+          items={board.items}
+          status={board.status}
+          canShare={board.canShare}
+          name={name}
+          onAdd={board.add}
+          onReport={board.report}
+        />
+      </Sheet>
+
+      <Sheet open={panel === "classes" && !isBoard} onClose={nav.closePanel} title={<RoomHeading room={room} />} className="sheet-classes">
         {course ? (
           <>
             <button type="button" className="back-link" onClick={nav.closeCourse} autoFocus>

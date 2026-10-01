@@ -40,6 +40,8 @@ export interface Room {
   floorTop: number;
   floorBottom: number;
   object: SceneObject;
+  /** What tapping the object opens: the room's class list (default) or the shared Design Resources board. */
+  objectOpens?: "classes" | "resources";
   /** Let avatars stand in front of the clickable object (it stays tappable above them). */
   avatarsMayOverlapObject?: boolean;
   /** Something in the scene that greets the user with a speech bubble (the Living Room cat). x/y is where the bubble's tail points, in %. */
