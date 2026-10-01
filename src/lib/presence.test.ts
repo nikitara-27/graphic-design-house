@@ -17,7 +17,7 @@ describe("isPublicKey", () => {
 });
 
 describe("sanitize", () => {
-  const ok = { name: "  Niki  ", hostId: "claire-bula", year: "junior", interest: "branding", room: "kitchen" };
+  const ok = { name: "  Niki  ", hostId: "claire-bula", year: "junior", interest: "branding", program: "figma", room: "kitchen" };
   it("keeps known values and cleans the name", () => {
     expect(sanitize(ok)).toEqual({ ...ok, name: "Niki" });
   });
@@ -26,6 +26,11 @@ describe("sanitize", () => {
     expect(sanitize({ ...ok, year: "wizard" })).toBeNull();
     expect(sanitize({ ...ok, interest: 42 })).toBeNull();
     expect(sanitize("hello")).toBeNull();
+  });
+  it("keeps people from older versions that don't send a program, and drops unknown programs", () => {
+    const { program: _, ...old } = ok;
+    expect(sanitize(old)).toEqual({ ...old, name: "Niki" });
+    expect(sanitize({ ...ok, program: "<script>" })).not.toHaveProperty("program");
   });
   it("falls back for unknown hosts and empty or huge names", () => {
     expect(sanitize({ ...ok, hostId: "mallory" })?.hostId).toBe("host");

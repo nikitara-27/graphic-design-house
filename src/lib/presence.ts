@@ -11,7 +11,7 @@ import { safeName } from "./nameFilter";
 export const CHANNEL = import.meta.env.DEV ? "gd-house-dev" : "gd-house";
 
 /** What each visitor shares. Only this, nothing else. */
-export interface PeerInfo { name: string; hostId: string; year: Year; interest: Interest; room: string }
+export interface PeerInfo { name: string; hostId: string; year: Year; interest: Interest; program?: string; room: string }
 export interface Peer extends PeerInfo { id: string; self: boolean }
 
 /**
@@ -44,6 +44,7 @@ export function presenceConfig(): { url: string; key: string } | null {
 
 const years = new Set<string>(questions.year.options.map((o) => o.id));
 const interests = new Set<string>(questions.interest.options.map((o) => o.id));
+const programs = new Set<string>(questions.program.options.map((o) => o.id));
 const hostIds = new Set([hostProfessor.id, ...professors.map((p) => p.id)]);
 
 /** Other people's payloads come from strangers' browsers: accept only known values. */
@@ -56,7 +57,9 @@ export function sanitize(raw: unknown): PeerInfo | null {
   // Anyone can bypass the check in their own browser, so re-check names from others here.
   const name = typeof r.name === "string" ? safeName(r.name) : "Guest";
   const hostId = typeof r.hostId === "string" && hostIds.has(r.hostId) ? r.hostId : hostProfessor.id;
-  return { name, hostId, year: r.year as Year, interest: r.interest as Interest, room: r.room };
+  // Older versions of the site don't send a program; unknown values are dropped.
+  const program = typeof r.program === "string" && programs.has(r.program) ? r.program : undefined;
+  return { name, hostId, year: r.year as Year, interest: r.interest as Interest, ...(program && { program }), room: r.room };
 }
 
 /** Turns Supabase's presenceState() into one entry per visitor (their latest payload). */

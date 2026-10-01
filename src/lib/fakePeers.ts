@@ -17,6 +17,7 @@ export function fakePeers(room: string): Peer[] {
     hostId: professors[i % professors.length].id,
     year: questions.year.options[i % questions.year.options.length].id,
     interest: questions.interest.options[i % questions.interest.options.length].id,
+    program: questions.program.options[i % questions.program.options.length].id,
     room: i % 4 === 3 ? "attic" : room,
   }));
 }

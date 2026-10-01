@@ -83,8 +83,8 @@ from other visitors through live presence (those show as "Guest" if they fail, s
 ## Live presence (who's here right now)
 
 While someone is inside the house, their browser shares **only** their first name, host professor, year,
-design interest, and current room on one Supabase Realtime Presence channel (`gd-house`). Everyone in a room
-sees each other as their host's avatar with their name underneath; the map shows how many people are in each room.
+design interest, favorite program, and current room on one Supabase Realtime Presence channel (`gd-house`). Everyone in a room
+sees each other as their host's avatar with their name underneath (tap someone to see their interest and favorite program); the map shows how many people are in each room.
 Presence uses no database and no login: the data only exists while the tab is open, and leaving the site removes it.
 The name screen tells people their first name will be visible to others.
 

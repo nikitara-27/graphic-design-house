@@ -291,7 +291,6 @@ h1, h2, h3, p { margin: 0; }
 .person-detail-avatar { flex: none; background: var(--sage); border: 2px solid var(--forest); padding: 4px 6px 0; }
 .person-detail p { font-size: 14px; font-weight: 600; }
 .person-detail-name { font-family: var(--font-display); font-size: 22px !important; font-weight: 900 !important; color: var(--plum); line-height: 1.1; }
-.person-detail-host { color: var(--forest); opacity: 0.85; font-size: 13px !important; }
 
 /* Doors: small arrows pinned to the edges of the room, over the artwork. */
 .door {

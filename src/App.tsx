@@ -63,7 +63,7 @@ export default function App() {
   // Live presence: share where you are while you're in the house (name, host, year, interest, room).
   const inHouse = route.screen === "house" && answers ? route.roomId : null;
   const me: PeerInfo | null = useMemo(
-    () => (inHouse && answers ? { name: name || "Guest", hostId: professor.id, year: answers.year, interest: answers.interest, room: inHouse } : null),
+    () => (inHouse && answers ? { name: name || "Guest", hostId: professor.id, year: answers.year, interest: answers.interest, program: answers.program, room: inHouse } : null),
     [inHouse, answers, name, professor.id],
   );
   const { peers, selfId } = usePresence(me);

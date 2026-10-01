@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-import { hostProfessor, interestOption, professors, yearOption } from "../lib/data";
+import { hostProfessor, interestOption, professors, programOption } from "../lib/data";
 import type { Peer } from "../lib/presence";
 import { labelTop, type Placement } from "../lib/crowd";
 import { Avatar } from "./Avatar";
@@ -76,10 +76,8 @@ export function PeopleCard({ peer, onClose }: CardProps) {
         </div>
         <div>
           <p className="person-detail-name">{peer.name}</p>
-          <p>
-            {yearOption(peer.year)?.label} · {interestOption(peer.interest)?.label}
-          </p>
-          <p className="person-detail-host">Host: {hostFor(peer.hostId).name}</p>
+          <p>Into: {interestOption(peer.interest)?.label}</p>
+          {peer.program && <p>Favorite program: {programOption(peer.program)?.label}</p>}
         </div>
       </div>
     </div>
