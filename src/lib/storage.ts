@@ -1,6 +1,7 @@
 import type { Answers } from "../types";
 import { questions } from "./data";
 import { cleanName } from "./name";
+import { checkName } from "./nameFilter";
 
 // localStorage is a convenience only: every access can throw (private mode, blocked storage),
 // so each one is wrapped and the app carries on without it.
@@ -46,7 +47,7 @@ const NAME_KEY = "gd-house:name";
 export function loadName(): string {
   try {
     const raw = localStorage.getItem(NAME_KEY);
-    return typeof raw === "string" ? cleanName(raw) : "";
+    return typeof raw === "string" && checkName(raw) === "ok" ? cleanName(raw) : "";
   } catch {
     return "";
   }

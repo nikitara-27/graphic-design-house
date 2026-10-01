@@ -93,10 +93,11 @@ h1, h2, h3, p { margin: 0; }
 }
 
 .landing { justify-content: center; align-items: center; text-align: center; }
-.house-mark { display: block; width: 140px; height: auto; margin-bottom: 20px; image-rendering: pixelated; }
+.house-mark { display: block; width: 150px; height: auto; margin-bottom: 24px; image-rendering: pixelated; }
+.landing .title { margin-bottom: 8px; }
+.landing .actions { margin-top: 32px; }
 .title { font-family: var(--font-display); font-size: clamp(38px, 12vw, 56px); font-weight: 900; line-height: 1; color: var(--plum); }
 .title-sm { font-size: 28px; text-align: center; margin-bottom: 16px; }
-.lede { margin-top: 14px; font-size: 17px; line-height: 1.45; max-width: 34ch; }
 
 .quiz-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
 .progress { display: flex; align-items: center; gap: 6px; }
@@ -133,7 +134,8 @@ h1, h2, h3, p { margin: 0; }
 }
 .name-input::placeholder { color: var(--forest); opacity: 0.55; }
 .name-input:focus-visible { outline: 3px solid var(--plum); outline-offset: 2px; box-shadow: 3px 3px 0 var(--forest); }
-.name-note { font-size: 14px; line-height: 1.45; margin-top: -4px; }
+.name-note { font-family: var(--font-body); font-size: 13px; line-height: 1.45; color: var(--forest); margin-top: -6px; }
+.name-error { font-family: var(--font-body); font-size: 14px; font-weight: 700; color: var(--plum); background: var(--blush); border-left: 4px solid var(--plum); padding: 6px 10px; margin-top: -6px; }
 .name-input-sm { min-height: 44px; font-size: 16px; padding: 6px 10px; }
 .btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: var(--shadow); }
 
@@ -349,7 +351,7 @@ h1, h2, h3, p { margin: 0; }
 /* The room's one clickable object. Invisible over the artwork; a soft glow pulses on the
    first visit, and hover/focus show the same glow. */
 .room-object {
-  position: absolute; transform: translate(-50%, -50%); z-index: 2;
+  position: absolute; transform: translate(-50%, -50%); z-index: 250000; /* above the crowd, so it's always tappable */
   padding: 0; border: 0; border-radius: 10px; background: transparent; cursor: pointer;
   transition: box-shadow 160ms, background-color 160ms;
 }

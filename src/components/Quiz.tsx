@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Answers, Interest, Year } from "../types";
 import { questions } from "../lib/data";
 import { NAME_MAX, cleanName } from "../lib/name";
-import { presenceConfig } from "../lib/presence";
+import { NAME_MESSAGES, checkName } from "../lib/nameFilter";
 
 interface Props {
   initial?: Partial<Answers>;
@@ -35,10 +35,11 @@ export function Quiz({ initial = {}, initialName = "", onBack, onName, onComplet
     { key: "program" as const, prompt: questions.program.prompt, options: questions.program.options.map((o) => ({ id: o.id, label: o.label, hint: undefined })) },
   ];
 
+  const nameCheck = checkName(name);
   const submitName = (e: React.FormEvent) => {
     e.preventDefault();
-    const clean = cleanName(name);
-    if (!clean) return;
+    if (nameCheck !== "ok") return;
+    const clean = cleanName(name.replace(/[\u2018\u2019]/g, "'"));
     setName(clean);
     onName(clean);
     setStep(1);
@@ -88,17 +89,24 @@ export function Quiz({ initial = {}, initialName = "", onBack, onName, onComplet
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder="Your name"
+            placeholder="Your name or nickname"
             maxLength={NAME_MAX}
             autoComplete="given-name"
             autoCapitalize="words"
             enterKeyHint="next"
             aria-labelledby="name-prompt"
+            aria-describedby="name-help"
+            aria-invalid={nameCheck === "blocked" || nameCheck === "chars"}
           />
-          {presenceConfig() && (
-            <p className="name-note">Others exploring the house at the same time will see your first name, year, and design interest.</p>
+          {(nameCheck === "blocked" || nameCheck === "chars") && (
+            <p className="name-error" role="alert">
+              {NAME_MESSAGES[nameCheck]}
+            </p>
           )}
-          <button type="submit" className="btn btn-primary" disabled={!cleanName(name)}>
+          <p className="name-note" id="name-help">
+            This site is public. Your name will be visible to others in the house, so feel free to use a nickname.
+          </p>
+          <button type="submit" className="btn btn-primary" disabled={nameCheck !== "ok"}>
             Next
           </button>
         </form>

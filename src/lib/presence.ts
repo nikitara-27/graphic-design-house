@@ -1,6 +1,6 @@
 import type { Interest, Year } from "../types";
 import { hostProfessor, professors, questions, roomById } from "./data";
-import { cleanName } from "./name";
+import { safeName } from "./nameFilter";
 
 /**
  * Live presence: who is in which room right now. Uses Supabase Realtime Presence on one shared
@@ -53,9 +53,10 @@ export function sanitize(raw: unknown): PeerInfo | null {
   if (typeof r.room !== "string" || !roomById.has(r.room)) return null;
   if (typeof r.year !== "string" || !years.has(r.year)) return null;
   if (typeof r.interest !== "string" || !interests.has(r.interest)) return null;
-  const name = typeof r.name === "string" ? cleanName(r.name) : "";
+  // Anyone can bypass the check in their own browser, so re-check names from others here.
+  const name = typeof r.name === "string" ? safeName(r.name) : "Guest";
   const hostId = typeof r.hostId === "string" && hostIds.has(r.hostId) ? r.hostId : hostProfessor.id;
-  return { name: name || "Guest", hostId, year: r.year as Year, interest: r.interest as Interest, room: r.room };
+  return { name, hostId, year: r.year as Year, interest: r.interest as Interest, room: r.room };
 }
 
 /** Turns Supabase's presenceState() into one entry per visitor (their latest payload). */

@@ -1,0 +1,4 @@
+{
+  "_note": "Extra words or phrases to block that the library misses. Case doesn't matter. Wrap a word in |pipes| to match it only as a whole word (e.g. |jap| blocks \"Jap\" but not \"Japan\").",
+  "words": ["|jap|", "mike hunt", "mike oxlong", "hugh jass", "ben dover", "phil mccracken", "amanda hugginkiss", "|kys|"]
+}

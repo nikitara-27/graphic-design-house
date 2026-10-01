@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Answers, Professor } from "../types";
 import { interestOption, programOption, yearOption } from "../lib/data";
 import { NAME_MAX, cleanName } from "../lib/name";
+import { NAME_MESSAGES, checkName } from "../lib/nameFilter";
 import { Avatar } from "./Avatar";
 
 interface Props {
@@ -60,7 +61,8 @@ function NameRow({ name, onSave }: { name: string; onSave?: (name: string) => vo
   }, [editing]);
 
   if (editing && onSave) {
-    const clean = cleanName(value);
+    const check = checkName(value);
+    const clean = cleanName(value.replace(/[\u2018\u2019]/g, "'"));
     return (
       <div className="name-edit-row">
         <dt>
@@ -71,7 +73,7 @@ function NameRow({ name, onSave }: { name: string; onSave?: (name: string) => vo
             className="name-edit"
             onSubmit={(e) => {
               e.preventDefault();
-              if (!clean) return;
+              if (check !== "ok") return;
               onSave(clean);
               setEditing(false);
             }}
@@ -86,7 +88,8 @@ function NameRow({ name, onSave }: { name: string; onSave?: (name: string) => vo
               maxLength={NAME_MAX}
               autoComplete="given-name"
               autoCapitalize="words"
-              placeholder="Your name"
+              placeholder="Your name or nickname"
+              aria-invalid={check === "blocked" || check === "chars"}
               onKeyDown={(e) => {
                 if (e.key !== "Escape") return;
                 // Cancel the edit without closing the whole panel.
@@ -95,11 +98,16 @@ function NameRow({ name, onSave }: { name: string; onSave?: (name: string) => vo
                 setEditing(false);
               }}
             />
+            {(check === "blocked" || check === "chars") && (
+              <p className="name-error" role="alert">
+                {NAME_MESSAGES[check]}
+              </p>
+            )}
             <div className="name-edit-actions">
               <button type="button" className="btn btn-sm" onClick={() => setEditing(false)}>
                 Cancel
               </button>
-              <button type="submit" className="btn btn-sm btn-primary" disabled={!clean}>
+              <button type="submit" className="btn btn-sm btn-primary" disabled={check !== "ok"}>
                 Save
               </button>
             </div>

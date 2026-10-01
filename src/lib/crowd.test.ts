@@ -40,8 +40,8 @@ describe("placePeople", () => {
     expect(placed.get("me")!.z).toBeGreaterThan(Math.max(...others.map((p) => p.z)));
   });
 
-  it("never covers any room's clickable object, even when crowded", () => {
-    for (const room of rooms) {
+  it("never covers a room's clickable object, even when crowded (except where the room allows it)", () => {
+    for (const room of rooms.filter((r) => !r.avatarsMayOverlapObject)) {
       for (const p of placePeople(room, people(30, room.id)).values()) {
         const h = AV_HEIGHT * p.scale;
         const o = room.object;

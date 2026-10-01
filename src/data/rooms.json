@@ -347,14 +347,14 @@
       "year": "junior",
       "sceneImage": "scenes/kitchen.png",
       "sceneAlt": "A kitchen with dark green cabinets, a wide window looking out on a tree, a coffee maker, and an orange cat by its bowl.",
-      "floorTop": 92,
+      "floorTop": 91,
       "floorBottom": 98,
       "object": {
-        "label": "Cabinets below the sink",
-        "x": 30,
-        "y": 66.7,
-        "w": 28.75,
-        "h": 23.3
+        "label": "Coffee machine",
+        "x": 17.8,
+        "y": 49.5,
+        "w": 6.2,
+        "h": 14.2
       },
       "exits": [
         {
@@ -652,8 +652,8 @@
       "year": "sophomore",
       "sceneImage": "scenes/bathroom.png",
       "sceneAlt": "A bathroom with a wide mirror over a dark wood double vanity, a vase of pink flowers, a towel and a bathtub.",
-      "floorTop": 92,
-      "floorBottom": 98,
+      "floorTop": 93,
+      "floorBottom": 99,
       "object": {
         "label": "Mirror",
         "x": 25,
@@ -661,6 +661,7 @@
         "w": 43.1,
         "h": 33.3
       },
+      "avatarsMayOverlapObject": true,
       "exits": [
         {
           "toRoomId": "playroom",

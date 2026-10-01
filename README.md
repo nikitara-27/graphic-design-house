@@ -54,6 +54,18 @@ The user's first name (asked before Q1, max 30 characters) is stored under its o
 "Retake quiz" clears the answers. If storage is blocked (some private-browsing modes), the site still works,
 it just won't remember answers after a refresh. Routing logic is in `src/lib/router.ts`.
 
+## Name filter
+
+Names are checked with the [obscenity](https://www.npmjs.com/package/obscenity) library (English words plus its
+recommended tricks detection: leetspeak like "a$$", repeated letters) and an extra check for spaced-out letters.
+Only letters, numbers, spaces and `- ' .` are allowed, up to 30 characters. Two lists you can edit:
+
+- `src/data/name-allowlist.json`: real names the library blocks by mistake (e.g. "Dick", "Analise").
+- `src/data/name-blocklist.json`: extra words or phrases to block. Wrap a word in `|pipes|` to match it only as a whole word.
+
+The same check runs on the name screen, on "Edit name", on names loaded from storage, and on names received
+from other visitors through live presence (those show as "Guest" if they fail, since a browser-side check can be bypassed).
+
 ## Live presence (who's here right now)
 
 While someone is inside the house, their browser shares **only** their first name, host professor, year,

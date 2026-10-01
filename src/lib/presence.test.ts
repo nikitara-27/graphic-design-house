@@ -30,7 +30,12 @@ describe("sanitize", () => {
   it("falls back for unknown hosts and empty or huge names", () => {
     expect(sanitize({ ...ok, hostId: "mallory" })?.hostId).toBe("host");
     expect(sanitize({ ...ok, name: "   " })?.name).toBe("Guest");
-    expect(sanitize({ ...ok, name: "x".repeat(500) })?.name).toHaveLength(30);
+    expect(sanitize({ ...ok, name: "x".repeat(500) })?.name.length).toBeLessThanOrEqual(30);
+  });
+  it("shows Guest for offensive or invalid names sent by other browsers", () => {
+    expect(sanitize({ ...ok, name: "sh1t" })?.name).toBe("Guest");
+    expect(sanitize({ ...ok, name: "f u c k" })?.name).toBe("Guest");
+    expect(sanitize({ ...ok, name: "<img src=x>" })?.name).toBe("Guest");
   });
 });
 

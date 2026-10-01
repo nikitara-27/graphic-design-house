@@ -32,6 +32,8 @@ export interface Room {
   floorTop: number;
   floorBottom: number;
   object: SceneObject;
+  /** Let avatars stand in front of the clickable object (it stays tappable above them). */
+  avatarsMayOverlapObject?: boolean;
   /** Something in the scene that greets the user with a speech bubble (the Living Room cat). x/y is where the bubble's tail points, in %. */
   greeter?: { label: string; x: number; y: number };
   /** Where this room sits in the house map image, in % (top-left + size). */

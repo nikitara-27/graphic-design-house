@@ -61,7 +61,7 @@ export function placePeople(room: Room, people: { id: string; self?: boolean }[]
   const depth = (y: number) => (bottom > top ? (y - top) / (bottom - top) : 1); // 0 = back, 1 = front
   const scaleAt = (y: number) => BACK_SCALE + (1 - BACK_SCALE) * depth(y);
 
-  const avoid: Box[] = [room.object, ...(opts.obstacles ?? [])];
+  const avoid: Box[] = [...(room.avatarsMayOverlapObject ? [] : [room.object]), ...(opts.obstacles ?? [])];
   // The Living Room cat sits under its speech bubble; keep heads and names off it.
   if (room.greeter) avoid.push({ x: room.greeter.x - 7, y: room.greeter.y - 2, w: 14, h: 14 });
   const clear = (x: number, y: number) => !footprint(x, y, scaleAt(y)).some((f) => avoid.some((a) => hits(f, a)));
