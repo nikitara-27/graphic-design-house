@@ -596,7 +596,9 @@
           "active": true,
           "interests": [
             "editorial"
-          ]
+          ],
+          "credits": 2,
+          "description": "This is a hands-on, project-based introduction to editorial and publication design. Both form and content, with emphasis on use of the grid as an organizing creative principle will be utilized. Typography and image will be discussed as students design, print, and bind their own books. Students may select a topic of personal interest and explore various materials and methodologies."
         }
       ],
       "mapArea": {
