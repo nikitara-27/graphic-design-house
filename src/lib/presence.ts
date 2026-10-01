@@ -76,6 +76,7 @@ export const AV_WIDTH = 15;
 const AV_BODY_W = 12.6; // the drawn figure fills ~84% of its image width
 const AV_H = AV_WIDTH * house.sceneAspect * (2000 / 1925);
 const LABEL_H = 4; // name label above the head
+const LABEL_W = 7; // a typical first name, centred over the figure
 /** Top of an avatar's name label, in % of the scene height. */
 export const FEET_Y = 86.5; // just above the downstairs buttons
 /** Top of an avatar's name label, in % of the scene height. */
@@ -85,19 +86,24 @@ const SPACING = 13.5; // just more than a figure's width, so neighbours don't ov
 type Box = { x: number; y: number; w: number; h: number };
 const hits = (a: Box, b: Box) => a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
 
+/** Space kept free under avatars' feet for the downstairs buttons, in px. */
+export const BOTTOM_CLEARANCE_PX = 66;
+
 /**
- * Where avatars can stand in a room: spots along the floor, kept away from the edges (side
+ * Where avatars can stand in a room (feet on `floorY`, % of scene height): spots along the floor, kept away from the edges (side
  * arrows), the room's clickable object, and any greeter (the Living Room cat and its bubble).
  * Ordered from the middle outwards.
  */
-export function standingSpots(object: SceneObject, greeter?: { x: number; y: number }): number[] {
+export function standingSpots(object: SceneObject, greeter?: { x: number; y: number }, floorY = FEET_Y): number[] {
   const avoid: Box[] = [object];
   // The cat sits just under the bubble's tail; keep heads off it (the bubble itself is higher up).
   if (greeter) avoid.push({ x: greeter.x - 7, y: greeter.y - 2, w: 14, h: 14 });
   const spots: number[] = [];
   for (let x = 14; x <= 86; x += SPACING) {
-    const me = { x: x - AV_BODY_W / 2, y: FEET_Y - AV_H - LABEL_H, w: AV_BODY_W, h: AV_H + LABEL_H };
-    if (!avoid.some((b) => hits(me, b))) spots.push(x);
+    // The figure, plus the (much narrower) name label above its head.
+    const body = { x: x - AV_BODY_W / 2, y: floorY - AV_H, w: AV_BODY_W, h: AV_H };
+    const label = { x: x - LABEL_W / 2, y: floorY - AV_H - LABEL_H, w: LABEL_W, h: LABEL_H };
+    if (!avoid.some((b) => hits(body, b) || hits(label, b))) spots.push(x);
   }
   return spots.sort((a, b) => Math.abs(a - 50) - Math.abs(b - 50));
 }

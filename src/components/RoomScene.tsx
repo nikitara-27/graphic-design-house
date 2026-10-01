@@ -8,6 +8,7 @@ interface Props {
   room: Room;
   /** Everyone in this room right now, including you. */
   people: Peer[];
+  floorY: number;
   /** First visit: pulse the object so people learn it's tappable. */
   pulse: boolean;
   onOpenClasses: () => void;
@@ -19,14 +20,14 @@ interface Props {
   onDismissGreeting: () => void;
 }
 
-export function RoomScene({ room, people, pulse, onOpenClasses, onPickPerson, onMorePeople, name, greeting, onDismissGreeting }: Props) {
+export function RoomScene({ room, people, floorY, pulse, onOpenClasses, onPickPerson, onMorePeople, name, greeting, onDismissGreeting }: Props) {
   const o = room.object;
   const n = room.courses.length;
   return (
     <>
       <img className="scene-art" src={asset(room.sceneImage)} alt={room.sceneAlt} draggable={false} />
 
-      <PeopleLayer room={room} people={people} onPick={onPickPerson} onMore={onMorePeople} />
+      <PeopleLayer room={room} people={people} floorY={floorY} onPick={onPickPerson} onMore={onMorePeople} />
 
       {room.greeter && greeting && <GreeterBubble greeter={room.greeter} name={name} onDismiss={onDismissGreeting} />}
 

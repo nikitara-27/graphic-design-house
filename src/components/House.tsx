@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { Answers, Direction, Professor } from "../types";
 import type { Panel } from "../lib/router";
-import { standingSpots, type Peer } from "../lib/presence";
+import { BOTTOM_CLEARANCE_PX, FEET_Y, standingSpots, type Peer } from "../lib/presence";
 import { PeopleCard } from "./People";
 import { house, roomById, yearOption } from "../lib/data";
 import { Avatar } from "./Avatar";
@@ -114,6 +114,26 @@ export function House({ answers, professor, roomId, panel, courseId, nav, name, 
   // On phones the room is full height and wider than the screen: you scroll sideways to look around.
   // Start where you "walked in": at the left wall if you came through a right-hand door, and vice versa.
   const scroller = useRef<HTMLDivElement>(null);
+
+  // Where avatars' feet go. Normally FEET_Y, but in wide windows the art's bottom is trimmed, so
+  // lift them to stay above the downstairs buttons in the part of the room you can see.
+  const [floorY, setFloorY] = useState(FEET_Y);
+  useLayoutEffect(() => {
+    const el = scroller.current;
+    if (!el) return;
+    const measure = () => {
+      const scene = el.querySelector(".scene");
+      if (!scene) return;
+      const s = scene.getBoundingClientRect();
+      const visibleBottom = el.getBoundingClientRect().bottom - s.top - BOTTOM_CLEARANCE_PX;
+      const y = Math.min(FEET_Y, (visibleBottom / s.height) * 100);
+      setFloorY((prev) => (Math.abs(prev - y) > 0.2 ? Math.round(y * 10) / 10 : prev));
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [roomId]);
   const [pan, setPan] = useState({ x: 0, w: 1 });
   const [hintVisible, setHintVisible] = useState(() => !loadFlag(HINT_KEY));
   const startScroll = useRef(0);
@@ -129,7 +149,7 @@ export function House({ answers, professor, roomId, panel, courseId, nav, name, 
     const max = el.scrollWidth - el.clientWidth;
     // A room with a greeter (the Living Room cat) always opens on it so you see the welcome.
     // Otherwise: through a side door, start at the wall you came in by; else centre on your own avatar.
-    const focus = room.greeter?.x ?? standingSpots(room.object, room.greeter)[0] ?? 50;
+    const focus = room.greeter?.x ?? standingSpots(room.object, room.greeter, floorY)[0] ?? 50;
     const centred = Math.min(max, Math.max(0, (focus / 100) * el.scrollWidth - el.clientWidth / 2));
     el.scrollLeft = room.greeter ? centred : transition === "right" ? 0 : transition === "left" ? max : centred;
     startScroll.current = el.scrollLeft;
@@ -208,6 +228,7 @@ export function House({ answers, professor, roomId, panel, courseId, nav, name, 
               <RoomScene
                 room={room}
                 people={here}
+                floorY={floorY}
                 onPickPerson={pickPerson}
                 onMorePeople={(rest) => setCard({ list: rest })}
                 name={name}
