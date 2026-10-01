@@ -149,17 +149,26 @@
         {
           "id": "AR483",
           "code": "AR483",
-          "title": "Senior Graphic Design",
+          "title": "Senior Graphic Design: Collaboration",
           "term": "F",
           "active": true,
+          "credits": 4,
+          "prerequisites": "CFA AR 382",
+          "description": "Group collaboration and design as an agent for social change are areas that will challenge students to develop their own content, point of view and to learn their audience. Students will work in teams representing a professional studio environment. Students will manage multiple work streams through lead and supportive roles. Thesis research will complement group activities throughout the fall. Research will begin in fall semester and serve as a launching point for self-directed study during the final semester.",
           "interests": []
         },
         {
           "id": "AR484",
           "code": "AR484",
-          "title": "Senior Graphic Design",
+          "title": "Senior Graphic Design Studio",
           "term": "S",
           "active": true,
+          "credits": 4,
+          "description": "In this culminating semester, students will independently develop systems and methodologies for solving real-world, pragmatic design problems. Students start by identifying an area of research and discussing its relationship to graphic design and contemporary discourse. The idea of 'designer as author' will be emphasized through a self-motivated design project that will strengthen individual processes, problem solving capabilities, and design voice. In addition to a thesis project, students will document their design process in a thesis book and present a public exhibition. Upon graduation, students are expected to have developed a refined, intelligent, professional-grade body of work.",
+          "hubAreas": [
+            "Creativity/Innovation",
+            "Teamwork/Collaboration"
+          ],
           "interests": []
         }
       ],

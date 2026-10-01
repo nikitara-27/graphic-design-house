@@ -33,7 +33,7 @@ re-export it and update those numbers.
 
 **Class details.** Each course can also have optional `credits`, `prerequisites` (e.g. `"CFA AR 225"`), `description`,
 `hubAreas` (a list of BU Hub areas, shown as tags) and `note`. Tapping a class in a room's list shows whatever it has; classes without
-details just show their code, title, and term. The Basement, Bathroom and Kitchen classes are filled in.
+details just show their code, title, and term. The Basement, Bathroom, Kitchen and Bedroom classes are filled in.
 
 **Courses.** Each course needs a unique `id`. It's usually the code, with a suffix when a code appears twice (AR594, AR596).
 Professors refer to courses by `id`.
