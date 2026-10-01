@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { REACTIONS, REACTION_COOLDOWN_MS, type ReactionId } from "../lib/reactions";
+import { SmileyIcon } from "./SmileyIcon";
 
 interface Props {
   onSend: (type: ReactionId) => boolean;
@@ -79,33 +80,5 @@ export function ReactButton({ onSend }: Props) {
         <SmileyIcon />
       </button>
     </div>
-  );
-}
-
-// Pixel smiley on a 12×12 grid: # = forest outline/features, o = butter face.
-const SMILEY = [
-  "...######...",
-  "..#oooooo#..",
-  ".#oooooooo#.",
-  "#oooooooooo#",
-  "#ooo#oo#ooo#",
-  "#ooo#oo#ooo#",
-  "#oooooooooo#",
-  "#oo#oooo#oo#",
-  "#ooo####ooo#",
-  ".#oooooooo#.",
-  "..#oooooo#..",
-  "...######...",
-];
-
-function SmileyIcon() {
-  return (
-    <svg viewBox="0 0 12 12" width="24" height="24" aria-hidden="true" shapeRendering="crispEdges">
-      {SMILEY.flatMap((row, y) =>
-        [...row].map((c, x) =>
-          c === "." ? null : <rect key={`${x}-${y}`} x={x} y={y} width="1" height="1" fill={c === "#" ? "var(--forest)" : "var(--butter)"} />,
-        ),
-      )}
-    </svg>
   );
 }

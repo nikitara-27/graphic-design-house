@@ -285,10 +285,10 @@ h1, h2, h3, p { margin: 0; }
 .react-btn {
   width: 48px; height: 48px; display: grid; place-items: center; padding: 0;
   background: var(--cream); border: 3px solid var(--forest); box-shadow: 3px 3px 0 var(--forest);
+  color: var(--forest); transition: color 150ms;
 }
-.react-btn:hover { background: var(--butter); }
+.react-btn:hover, .react-btn[aria-expanded="true"] { color: var(--plum); }
 .react-btn:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--forest); }
-.react-btn[aria-expanded="true"] { background: var(--butter); }
 .react-picker {
   position: absolute; right: 0; bottom: calc(100% + 8px);
   display: grid; grid-template-columns: repeat(3, 44px); gap: 6px; padding: 8px;
