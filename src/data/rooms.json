@@ -772,11 +772,6 @@
         "w": 12.5,
         "h": 28.9
       },
-      "hangout": {
-        "x": 46,
-        "y": 50,
-        "w": 15
-      },
       "exits": [
         {
           "toRoomId": "playroom",

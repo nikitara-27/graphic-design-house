@@ -1,0 +1,107 @@
+import type { Interest, SceneObject, Year } from "../types";
+import { hostProfessor, professors, questions, roomById } from "./data";
+import { cleanName } from "./name";
+
+/**
+ * Live presence: who is in which room right now. Uses Supabase Realtime Presence on one shared
+ * channel. Nothing is stored in a database; each browser only shares its own little payload
+ * while the tab is open.
+ */
+export const CHANNEL = "gd-house";
+
+/** What each visitor shares. Only this, nothing else. */
+export interface PeerInfo { name: string; hostId: string; year: Year; interest: Interest; room: string }
+export interface Peer extends PeerInfo { id: string; self: boolean }
+
+/**
+ * True only for keys that are safe to ship in a public website: Supabase "publishable" keys
+ * (sb_publishable_…) or legacy "anon" JWTs. Secret / service_role keys are refused.
+ */
+export function isPublicKey(key: string): boolean {
+  if (key.startsWith("sb_publishable_")) return true;
+  if (key.startsWith("sb_secret_")) return false;
+  const parts = key.split(".");
+  if (parts.length !== 3) return false;
+  try {
+    const json = atob(parts[1].replace(/-/g, "+").replace(/_/g, "/"));
+    return JSON.parse(json).role === "anon";
+  } catch {
+    return false;
+  }
+}
+
+export function presenceConfig(): { url: string; key: string } | null {
+  const url = (import.meta.env.VITE_SUPABASE_URL ?? "").trim();
+  const key = (import.meta.env.VITE_SUPABASE_KEY ?? "").trim();
+  if (!url || !key) return null;
+  if (!isPublicKey(key)) {
+    console.error("Live presence is off: VITE_SUPABASE_KEY must be the public anon/publishable key, never a secret key.");
+    return null;
+  }
+  return { url, key };
+}
+
+const years = new Set<string>(questions.year.options.map((o) => o.id));
+const interests = new Set<string>(questions.interest.options.map((o) => o.id));
+const hostIds = new Set([hostProfessor.id, ...professors.map((p) => p.id)]);
+
+/** Other people's payloads come from strangers' browsers: accept only known values. */
+export function sanitize(raw: unknown): PeerInfo | null {
+  if (!raw || typeof raw !== "object") return null;
+  const r = raw as Record<string, unknown>;
+  if (typeof r.room !== "string" || !roomById.has(r.room)) return null;
+  if (typeof r.year !== "string" || !years.has(r.year)) return null;
+  if (typeof r.interest !== "string" || !interests.has(r.interest)) return null;
+  const name = typeof r.name === "string" ? cleanName(r.name) : "";
+  const hostId = typeof r.hostId === "string" && hostIds.has(r.hostId) ? r.hostId : hostProfessor.id;
+  return { name: name || "Guest", hostId, year: r.year as Year, interest: r.interest as Interest, room: r.room };
+}
+
+/** Turns Supabase's presenceState() into one entry per visitor (their latest payload). */
+export function flattenPresence(state: Record<string, unknown[]>, selfId: string): Peer[] {
+  const out: Peer[] = [];
+  for (const [id, metas] of Object.entries(state)) {
+    const latest = metas[metas.length - 1];
+    const info = sanitize(latest);
+    if (info) out.push({ ...info, id, self: id === selfId });
+  }
+  return out;
+}
+
+// Avatar footprint in % of the scene (about 6% wide; feet on a line 80% down, high enough that
+// name labels clear the downstairs buttons along the bottom edge).
+const AV_W = 6;
+const AV_H = 11;
+export const FEET_Y = 80;
+const LABEL_H = 4;
+
+/**
+ * Where avatars can stand in a room: spots along the floor, skipping any that would cover the
+ * room's clickable object or sit under the side arrows. Ordered from the middle outwards.
+ */
+export function standingSpots(object: SceneObject): number[] {
+  const spots: number[] = [];
+  for (let x = 12; x <= 88; x += 6.5) {
+    const left = x - AV_W / 2 - 1;
+    const right = x + AV_W / 2 + 1;
+    const top = FEET_Y - AV_H;
+    const bottom = FEET_Y + LABEL_H;
+    const overlaps = left < object.x + object.w && right > object.x && top < object.y + object.h && bottom > object.y;
+    if (!overlaps) spots.push(Math.round(x * 10) / 10);
+  }
+  return spots.sort((a, b) => Math.abs(a - 50) - Math.abs(b - 50));
+}
+
+/** Random id for this tab, kept across refreshes so a refresh doesn't look like a new visitor. */
+export function sessionId(): string {
+  const make = () => (crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2));
+  try {
+    const existing = sessionStorage.getItem("gd-house:session");
+    if (existing) return existing;
+    const id = make();
+    sessionStorage.setItem("gd-house:session", id);
+    return id;
+  } catch {
+    return make();
+  }
+}

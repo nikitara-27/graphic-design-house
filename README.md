@@ -50,10 +50,24 @@ and missing or invalid links open it too; the user's year room keeps its "Your r
 
 Quiz answers (year, interest, program) are saved in `localStorage`. The host professor is never saved;
 it's recalculated from the answers on every load, so edits to the `assignments` table apply right away.
-The user's first name (asked before Q1, max 30 characters) is stored under its own key, only in their browser;
-nothing is sent anywhere. "Retake quiz" clears the answers but keeps the name pre-filled, and the profile panel has "Edit name".
+The user's first name (asked before Q1, max 30 characters) is stored under its own key in their browser. "Retake quiz" clears the answers but keeps the name pre-filled, and the profile panel has "Edit name".
 "Retake quiz" clears the answers. If storage is blocked (some private-browsing modes), the site still works,
 it just won't remember answers after a refresh. Routing logic is in `src/lib/router.ts`.
+
+## Live presence (who's here right now)
+
+While someone is inside the house, their browser shares **only** their first name, host professor, year,
+design interest, and current room on one Supabase Realtime Presence channel (`gd-house`). Everyone in a room
+sees each other as their host's avatar with their name underneath; the map shows how many people are in each room.
+There's no database and no login: the data only exists while the tab is open, and leaving the site removes it.
+The name screen tells people their first name will be visible to others.
+
+Setup: copy `.env.example` to `.env.local` and fill in the project URL and the **public** anon/publishable key.
+For the live site, add the same values as GitHub repository **variables** `SUPABASE_URL` and `SUPABASE_KEY`.
+The build refuses secret/service_role keys. Without these values (or if Supabase is unreachable) the site works
+normally, just without other people. Code: `src/lib/presence.ts`, `src/lib/usePresence.ts`, `src/components/People.tsx`.
+
+For local testing without real visitors, add `?fakePeers=8` to the dev URL (development only).
 
 ## Still needed from the team (`TODO (team)`)
 

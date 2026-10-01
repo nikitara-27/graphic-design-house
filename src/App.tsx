@@ -8,6 +8,9 @@ import { Landing } from "./components/Landing";
 import { Quiz } from "./components/Quiz";
 import { Reveal } from "./components/Reveal";
 import { House, type HouseNav } from "./components/House";
+import { usePresence } from "./lib/usePresence";
+import { fakePeers } from "./lib/fakePeers";
+import type { Peer, PeerInfo } from "./lib/presence";
 
 const readLocation = () => ({ hash: window.location.hash, state: (window.history.state ?? null) as NavState | null });
 
@@ -56,6 +59,17 @@ export default function App() {
     () => (answers ? matchProfessor(answers, professors, assignments, hostProfessor) : hostProfessor),
     [answers],
   );
+
+  // Live presence: share where you are while you're in the house (name, host, year, interest, room).
+  const inHouse = route.screen === "house" && answers ? route.roomId : null;
+  const me: PeerInfo | null = useMemo(
+    () => (inHouse && answers ? { name: name || "Guest", hostId: professor.id, year: answers.year, interest: answers.interest, room: inHouse } : null),
+    [inHouse, answers, name, professor.id],
+  );
+  const { peers, selfId } = usePresence(me);
+  const people: Peer[] = me
+    ? [{ ...me, id: selfId, self: true }, ...peers.filter((p) => p.id !== selfId), ...(import.meta.env.DEV ? fakePeers(me.room) : [])]
+    : [];
 
   const retake = () => {
     clearAnswers();
@@ -114,6 +128,7 @@ export default function App() {
         courseId={route.courseId}
         nav={nav}
         name={name}
+        people={people}
         onSaveName={updateName}
         onRetake={retake}
       />

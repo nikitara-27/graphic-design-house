@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { Answers, Interest, Year } from "../types";
 import { questions } from "../lib/data";
 import { NAME_MAX, cleanName } from "../lib/name";
+import { presenceConfig } from "../lib/presence";
 
 interface Props {
   initial?: Partial<Answers>;
@@ -94,6 +95,9 @@ export function Quiz({ initial = {}, initialName = "", onBack, onName, onComplet
             enterKeyHint="next"
             aria-labelledby="name-prompt"
           />
+          {presenceConfig() && (
+            <p className="name-note">Others exploring the house at the same time will see your first name, year, and design interest.</p>
+          )}
           <button type="submit" className="btn btn-primary" disabled={!cleanName(name)}>
             Next
           </button>

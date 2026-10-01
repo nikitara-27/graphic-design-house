@@ -1,30 +1,27 @@
-import type { Answers, Professor, Room } from "../types";
+import type { Room } from "../types";
+import type { Peer } from "../lib/presence";
 import { asset } from "../lib/data";
-import { Avatar } from "./Avatar";
+import { PeopleLayer } from "./People";
 
 interface Props {
   room: Room;
-  professor: Professor;
-  answers: Answers;
-  name: string;
+  /** Everyone in this room right now, including you. */
+  people: Peer[];
   /** First visit: pulse the object so people learn it's tappable. */
   pulse: boolean;
   onOpenClasses: () => void;
+  onPickPerson: (p: Peer) => void;
+  onMorePeople: (rest: Peer[]) => void;
 }
 
-export function RoomScene({ room, professor, name, pulse, onOpenClasses }: Props) {
+export function RoomScene({ room, people, pulse, onOpenClasses, onPickPerson, onMorePeople }: Props) {
   const o = room.object;
   const n = room.courses.length;
   return (
     <>
       <img className="scene-art" src={asset(room.sceneImage)} alt={room.sceneAlt} draggable={false} />
 
-      {room.hangout && (
-        <div className="hangout" style={{ left: `${room.hangout.x}%`, top: `${room.hangout.y}%`, width: `${room.hangout.w}%` }}>
-          <Avatar professor={professor} decorative />
-          <span className="speech">{name ? `Hi ${name}, welcome to the GD House!` : "Welcome to the GD House!"}</span>
-        </div>
-      )}
+      <PeopleLayer room={room} people={people} onPick={onPickPerson} onMore={onMorePeople} />
 
       {/* Positioned by its center so the 44px minimum grows evenly around small objects. */}
       <button

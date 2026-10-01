@@ -28,8 +28,6 @@ export interface Room {
   /** Path under /public, e.g. "scenes/kitchen.png". Empty = generated placeholder scene. */
   sceneImage: string;
   sceneAlt: string;
-  /** Where the user's avatar hangs out in the scene (% of scene; height follows the avatar's aspect). */
-  hangout?: { x: number; y: number; w: number };
   object: SceneObject;
   /** Where this room sits in the house map image, in % (top-left + size). */
   mapArea: { x: number; y: number; w: number; h: number };

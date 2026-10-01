@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { Answers, Direction, Professor } from "../types";
 import type { Panel } from "../lib/router";
+import { standingSpots, type Peer } from "../lib/presence";
+import { PeopleCard } from "./People";
 import { house, roomById, yearOption } from "../lib/data";
 import { Avatar } from "./Avatar";
 import { Sheet } from "./Sheet";
@@ -30,6 +32,8 @@ interface Props {
   courseId?: string;
   nav: HouseNav;
   name: string;
+  /** Everyone in the house right now (including you), from live presence. */
+  people: Peer[];
   onSaveName: (name: string) => void;
   onRetake: () => void;
 }
@@ -39,7 +43,7 @@ const ARROWS: Record<string, Direction> = { ArrowLeft: "left", ArrowRight: "righ
 const PULSE_MS = 2600;
 const HINT_KEY = "look-hint-seen";
 
-export function House({ answers, professor, roomId, panel, courseId, nav, name, onSaveName, onRetake }: Props) {
+export function House({ answers, professor, roomId, panel, courseId, nav, name, people, onSaveName, onRetake }: Props) {
   const year = yearOption(answers.year)!;
   const homeRoomId = year.homeRoomId;
 
@@ -47,6 +51,16 @@ export function House({ answers, professor, roomId, panel, courseId, nav, name, 
   const [pulsing, setPulsing] = useState(false);
 
   const room = roomById.get(roomId)!;
+  const here = people.filter((p) => p.room === roomId);
+  const counts: Record<string, number> = {};
+  for (const p of people) counts[p.room] = (counts[p.room] ?? 0) + 1;
+
+  // Tapping someone: a small card with their details (or the "+N more" list).
+  const [card, setCard] = useState<{ peerId?: string; list?: Peer[] } | null>(null);
+  const closeCard = useCallback(() => setCard(null), []);
+  useEffect(() => setCard(null), [roomId]);
+  const cardPeer = card?.peerId ? here.find((p) => p.id === card.peerId) : undefined;
+  const pickPerson = (p: Peer) => (p.self ? (setCard(null), nav.openPanel("profile")) : setCard({ peerId: p.id }));
   const course = courseId ? room.courses.find((c) => c.id === courseId) ?? null : null;
   const exit = (d: Direction) => room.exits.find((e) => e.direction === d);
   const isHome = roomId === homeRoomId;
@@ -108,7 +122,10 @@ export function House({ answers, professor, roomId, panel, courseId, nav, name, 
     const el = scroller.current;
     if (!el) return;
     const max = el.scrollWidth - el.clientWidth;
-    el.scrollLeft = transition === "right" ? 0 : transition === "left" ? max : max / 2;
+    // Through a side door: start at the wall you came in by. Otherwise: centre on your own avatar.
+    const you = standingSpots(room.object)[0] ?? 50;
+    const centred = Math.min(max, Math.max(0, (you / 100) * el.scrollWidth - el.clientWidth / 2));
+    el.scrollLeft = transition === "right" ? 0 : transition === "left" ? max : centred;
     startScroll.current = el.scrollLeft;
     measure();
   }, [roomId, transition]);
@@ -184,9 +201,9 @@ export function House({ answers, professor, roomId, panel, courseId, nav, name, 
             <div className="scene" role="group" aria-label={`${room.name} scene`}>
               <RoomScene
                 room={room}
-                answers={answers}
-                name={name}
-                professor={professor}
+                people={here}
+                onPickPerson={pickPerson}
+                onMorePeople={(rest) => setCard({ list: rest })}
                 pulse={pulsing}
                 onOpenClasses={nav.openClasses}
               />
@@ -212,6 +229,8 @@ export function House({ answers, professor, roomId, panel, courseId, nav, name, 
           </div>
         )}
 
+        {card && (cardPeer || card.list) && <PeopleCard peer={cardPeer} list={card.list} onPick={pickPerson} onClose={closeCard} />}
+
         <div className="stage-bottom">
           {pans && (
             <div className="pan-track" aria-hidden="true">
@@ -236,6 +255,7 @@ export function House({ answers, professor, roomId, panel, courseId, nav, name, 
         <AerialMap
           currentRoomId={roomId}
           homeRoomId={homeRoomId}
+          counts={counts}
           onJump={(id) => (id === roomId ? nav.closePanel() : go(id, "fade"))}
         />
       </Sheet>
