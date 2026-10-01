@@ -31,6 +31,10 @@ Tapping it opens the room's class list. It glows on the first visit, and the tap
 Each room's tappable area on it is `mapArea` in `rooms.json` (percentages of the map image). If the illustration changes,
 re-export it and update those numbers.
 
+**Class details.** Each course can also have optional `credits`, `description`, `hubAreas` (a list of BU Hub
+areas, shown as tags) and `note`. Tapping a class in a room's list shows whatever it has; classes without
+details just show their code, title, and term. The two Basement classes are filled in as examples.
+
 **Courses.** Each course needs a unique `id`. It's usually the code, with a suffix when a code appears twice (AR594, AR596).
 Professors refer to courses by `id`.
 

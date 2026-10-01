@@ -23,6 +23,17 @@ describe("content", () => {
       expect(r.exits.filter((e) => e.direction === "right").length).toBeLessThanOrEqual(1);
     }
   });
+  it("has full details for the Basement classes", () => {
+    const basement = rooms.find((r) => r.id === "basement")!.courses;
+    const ar545 = basement.find((c) => c.id === "AR545")!;
+    const ar587 = basement.find((c) => c.id === "AR587")!;
+    expect(ar545.title).toBe("Performative Text and Design");
+    expect(ar545.credits).toBe(4);
+    expect(ar545.hubAreas).toHaveLength(3);
+    expect(ar545.description).toContain("ideas--asking about the political potential");
+    expect(ar587.credits).toBe(2);
+    expect(ar587.note).toBe("Open to undergraduate and graduate graphic design students.");
+  });
   it("marks every basement course inactive and nothing else", () => {
     for (const r of rooms) for (const c of r.courses) expect(c.active).toBe(r.id !== "basement");
   });

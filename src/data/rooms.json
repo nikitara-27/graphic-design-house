@@ -936,8 +936,15 @@
         {
           "id": "AR545",
           "code": "AR545",
-          "title": "Performative Text",
+          "title": "Performative Text and Design",
           "active": false,
+          "credits": 4,
+          "description": "Intersections of text, design, performance, publishing, and activism. Examinations of techniques, forms, media, and theoretical ideas--asking about the political potential of such practices. Students develop an interdisciplinary approach to thinking about the form a text might take as a spatial appearance (page or environment), through materials (costume, flags) or how it might be used as a performative object. Themes include: labour, liveness and documentation, ephemeral vs. permanent, alternative publishing, activist archiving. Lectures, project based, field trips, and studio visits.",
+          "hubAreas": [
+            "Creativity/Innovation",
+            "Digital/Multimedia Expression",
+            "Philosophical Inquiry and Life's Meanings"
+          ],
           "interests": []
         },
         {
@@ -945,6 +952,9 @@
           "code": "AR587",
           "title": "Information Design",
           "active": false,
+          "credits": 2,
+          "description": "This course explores ways of graphically structuring information. Students will learn process, organize and ultimately symbolize and visualize complex and quantitative information. Focus is on information graphics that reveal multiple hierarchies of data, through which new relationships are made visible. Representation (determining an appropriate form language for an idea) and narrative structure (main organizing principle) are the frameworks that will be studied in order to create precise, clear, legible and efficient communication.",
+          "note": "Open to undergraduate and graduate graphic design students.",
           "interests": []
         }
       ],

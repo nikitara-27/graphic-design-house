@@ -9,7 +9,13 @@ export interface Course {
   title: string;
   term?: "F" | "S";
   active: boolean;
+  /** Optional details, shown when a class is tapped in the class list. */
+  credits?: number;
   description?: string;
+  /** BU Hub areas, shown as small tags. */
+  hubAreas?: string[];
+  /** Extra note, e.g. who the class is open to. */
+  note?: string;
   interests: Interest[];
 }
 

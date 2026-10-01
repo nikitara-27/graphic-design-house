@@ -393,12 +393,19 @@ h1, h2, h3, p { margin: 0; }
 .heading-room { font-family: var(--font-display); }
 .heading-sub { font-family: var(--font-body); font-size: 16px; font-weight: 700; color: var(--forest); white-space: nowrap; }
 
+.course-heading { display: flex; flex-direction: column; gap: 2px; margin: 0 0 4px; }
 .course-code { font-family: var(--font-display); font-size: 22px; font-weight: 900; color: var(--plum); }
-.course-title { font-size: 20px; font-weight: 800; color: var(--forest); }
+.course-heading .course-title { font-family: var(--font-display); font-size: 24px; font-weight: 900; line-height: 1.15; color: var(--plum); }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
 .chips .tag { margin: 0; }
 .facts { margin: 0; display: grid; gap: 8px; padding: 10px 0; border-block: 2px dashed var(--lavender); }
-.course-desc { margin-top: 12px; line-height: 1.5; color: var(--forest); }
+.course-desc { margin-top: 12px; font-family: var(--font-body); font-size: 15px; line-height: 1.55; color: var(--forest); }
+.course-hub { margin-top: 14px; }
+.course-hub h4 { margin: 0 0 6px; font-size: 12px; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; color: var(--forest); }
+.course-hub ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.course-hub .tag { margin: 0; white-space: normal; }
+.tag-hub { background: var(--periwinkle); border-color: var(--forest); color: var(--forest); }
+.course-note { margin-top: 12px; padding: 8px 10px; font-size: 14px; line-height: 1.45; color: var(--forest); background: var(--sage); border-left: 4px solid var(--forest); }
 
 .empty-classes { font-size: 17px; line-height: 1.5; padding: 12px 0; }
 .class-list { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--sage); }
