@@ -71,7 +71,10 @@
           "active": true,
           "interests": [
             "history"
-          ]
+          ],
+          "term": "S",
+          "credits": 2,
+          "description": "Utilizing their understanding of design history, principles, and approaches, students enhance their lexicon for critical design. By observing, defining, and analyzing various design disciplines including typography and typeface design, visual identity, experience design, information design, sustainability, decoloniality, and anthropology. Through a blend of writing, reading, discourse, and imaginative tasks, students engage with substantial writings by designers, critics, and theoreticians. This class equips students with the skills necessary to conceptualize a unique thesis project or self-directed body of work."
         },
         {
           "id": "AR572",
@@ -907,10 +910,12 @@
         {
           "id": "AR881",
           "code": "AR881",
-          "title": "MFA 1 Graphic Design",
+          "title": "Graduate Graphic Design 1",
           "term": "F",
           "active": true,
-          "interests": []
+          "interests": [],
+          "credits": 8,
+          "description": "Comprehensive exercises in graphic design leading to the solution of advanced visual problems through a structured curriculum of both theoretical and practical studies. In addition to computer-aided graphic design, traditional methods, such as letterpress and photography are emphasized. The program is conceived to enable graduates to function in a constantly changing and expanding field."
         },
         {
           "id": "AR601",
@@ -920,25 +925,33 @@
           "active": true,
           "interests": [
             "typography"
-          ]
+          ],
+          "credits": 4,
+          "description": "The ability to communicate graphically and typographically sits at the forefront of a successful graphic design practice. Graduate typography presents an opportunity for advanced study of the relationship between form and language in order to develop a strong typographic acumen for print and screen. Students will build upon fundamental elements of typography to explore advanced practical and hypothetical applications. Projects rely on a mastery of traditional typographic methods as a basis to discover innovative typographic forms and concepts for print and screen.",
+          "note": "3 contact hours per week. Fall or spring semester."
         },
         {
           "id": "AR882",
           "code": "AR882",
-          "title": "MFA 1 Graphic Design",
+          "title": "Graduate Graphic Design 1",
           "term": "S",
           "active": true,
-          "interests": []
+          "interests": [],
+          "credits": 8,
+          "prerequisites": "CFA AR 881",
+          "description": "A continuation of CFA AR 881. Comprehensive exercises in graphic design leading to the solution of advanced visual problems through a structured curriculum of both theoretical and practical studies. In addition to computer-aided graphic design, traditional methods, such as letterpress and photography are emphasized. The program is conceived to enable graduates to function in a constantly changing and expanding field."
         },
         {
           "id": "AR594-theory-1",
           "code": "AR594",
-          "title": "Graphic Design Theory 1",
+          "title": "Graphic Design Theory",
           "term": "S",
           "active": true,
           "interests": [
             "history"
-          ]
+          ],
+          "credits": 2,
+          "description": "Utilizing their understanding of design history, principles, and approaches, students enhance their lexicon for critical design. By observing, defining, and analyzing various design disciplines including typography and typeface design, visual identity, experience design, information design, sustainability, decoloniality, and anthropology. Through a blend of writing, reading, discourse, and imaginative tasks, students engage with substantial writings by designers, critics, and theoreticians. This class equips students with the skills necessary to conceptualize a unique thesis project or self-directed body of work."
         }
       ],
       "mapArea": {
