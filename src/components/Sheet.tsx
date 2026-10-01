@@ -12,6 +12,12 @@ export function Sheet({ open, onClose, title, children, className = "" }: Props)
   const ref = useRef<HTMLDialogElement>(null);
   const bodyRef = useRef<HTMLDivElement>(null);
   const titleId = useId();
+  // When the URL closes the sheet (e.g. Back), `open` is already false: don't navigate again.
+  const openRef = useRef(open);
+  openRef.current = open;
+  const requestClose = () => {
+    if (openRef.current) onClose();
+  };
 
   useEffect(() => {
     const d = ref.current;
@@ -42,7 +48,7 @@ export function Sheet({ open, onClose, title, children, className = "" }: Props)
     if (!el) return;
     el.style.transition = "";
     el.style.transform = "";
-    if (d && d.dy > CLOSE_DRAG_PX) onClose();
+    if (d && d.dy > CLOSE_DRAG_PX) requestClose();
   };
 
   return (
@@ -50,8 +56,8 @@ export function Sheet({ open, onClose, title, children, className = "" }: Props)
       ref={ref}
       className={`sheet ${className}`}
       aria-labelledby={titleId}
-      onClose={onClose}
-      onClick={(e) => e.target === ref.current && onClose()}
+      onClose={requestClose}
+      onClick={(e) => e.target === ref.current && requestClose()}
       onTouchStart={onTouchStart}
       onTouchMove={onTouchMove}
       onTouchEnd={onTouchEnd}
@@ -60,7 +66,7 @@ export function Sheet({ open, onClose, title, children, className = "" }: Props)
       <div className="sheet-grab" aria-hidden="true" />
       <header className="sheet-header">
         <h2 id={titleId}>{title}</h2>
-        <button type="button" className="icon-btn" onClick={onClose} aria-label="Close">
+        <button type="button" className="icon-btn" onClick={requestClose} aria-label="Close">
           ✕
         </button>
       </header>

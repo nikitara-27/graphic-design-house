@@ -37,6 +37,17 @@ Exits sit at the screen edge and toolbar, so no coordinates are needed.
 Q3 is only used for this; there are no program badges. `npm test` fails if any interest + program pair is missing a host.
 The logic is in `src/lib/match.ts`. Q1 (year) sets the home room and is kept for the future freshman hat.
 
+## URLs and saved progress
+
+The current view lives in the URL hash, so refreshing or sharing a link opens the same place:
+`#/room/kitchen`, `#/room/kitchen/classes`, `#/room/kitchen/classes/AR381`, `#/map`, `#/profile`, `#/quiz`, `#/welcome`.
+Hash routes never 404 on GitHub Pages. Invalid links fall back to the user's home room.
+
+Quiz answers (year, interest, program) are saved in `localStorage`. The host professor is never saved;
+it's recalculated from the answers on every load, so edits to the `assignments` table apply right away.
+"Retake quiz" clears the answers. If storage is blocked (some private-browsing modes), the site still works,
+it just won't remember answers after a refresh. Routing logic is in `src/lib/router.ts`.
+
 ## Still needed from the team (`TODO (team)`)
 
 - **The 8th host professor.** The spec says 8 but lists 7, and the assignment table only uses those 7.

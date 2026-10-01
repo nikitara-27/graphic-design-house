@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
-import type { Answers, Course, Direction, Professor } from "../types";
+import type { Answers, Direction, Professor } from "../types";
+import type { Panel } from "../lib/router";
 import { house, roomById, yearOption } from "../lib/data";
 import { Avatar } from "./Avatar";
 import { Sheet } from "./Sheet";
@@ -10,34 +11,56 @@ import { RoomClasses, RoomHeading } from "./RoomClasses";
 import { ProfileCard } from "./ProfileCard";
 import { loadFlag, saveFlag } from "../lib/storage";
 
-interface Props { answers: Answers; professor: Professor; onRetake: () => void }
+/** Navigation callbacks; App turns each into a URL + history entry. */
+export interface HouseNav {
+  goRoom: (id: string) => void;
+  jumpTo: (id: string) => void;
+  openPanel: (p: "map" | "profile") => void;
+  openClasses: () => void;
+  openCourse: (courseId: string) => void;
+  closeCourse: () => void;
+  closePanel: () => void;
+}
+
+interface Props {
+  answers: Answers;
+  professor: Professor;
+  roomId: string;
+  panel: Panel | null;
+  courseId?: string;
+  nav: HouseNav;
+  onRetake: () => void;
+}
 
 type Transition = Direction | "fade";
 const ARROWS: Record<string, Direction> = { ArrowLeft: "left", ArrowRight: "right", ArrowUp: "up", ArrowDown: "down" };
 const PULSE_MS = 2600;
 const HINT_KEY = "look-hint-seen";
 
-export function House({ answers, professor, onRetake }: Props) {
+export function House({ answers, professor, roomId, panel, courseId, nav, onRetake }: Props) {
   const year = yearOption(answers.year)!;
   const homeRoomId = year.homeRoomId;
 
-  const [roomId, setRoomId] = useState(homeRoomId);
-  const [transition, setTransition] = useState<Transition>("fade");
   const [visited] = useState(() => new Set<string>());
   const [pulsing, setPulsing] = useState(false);
-  const [classesOpen, setClassesOpen] = useState(false);
-  const [mapOpen, setMapOpen] = useState(false);
-  const [profileOpen, setProfileOpen] = useState(false);
-  const [course, setCourse] = useState<Course | null>(null);
 
   const room = roomById.get(roomId)!;
+  const course = courseId ? room.courses.find((c) => c.id === courseId) ?? null : null;
   const exit = (d: Direction) => room.exits.find((e) => e.direction === d);
   const isHome = roomId === homeRoomId;
 
-  const go = useCallback((to: string, how: Transition) => {
-    setTransition(how);
-    setRoomId(to);
-  }, []);
+  // How we arrived in this room picks the entry animation. Rooms reached any other way
+  // (Back/Forward, a refresh, the map) fade in.
+  const lastMove = useRef<{ to: string; how: Transition } | null>(null);
+  const transition: Transition = lastMove.current?.to === roomId ? lastMove.current.how : "fade";
+  const go = useCallback(
+    (to: string, how: Transition) => {
+      lastMove.current = { to, how };
+      if (how === "fade") nav.jumpTo(to);
+      else nav.goRoom(to);
+    },
+    [nav],
+  );
 
   // First visit: pulse the object so people learn what's tappable.
   useEffect(() => {
@@ -132,7 +155,7 @@ export function House({ answers, professor, onRetake }: Props) {
   return (
     <div className="house">
       <header className="hud">
-        <button type="button" className="hud-btn" onClick={() => setMapOpen(true)}>
+        <button type="button" className="hud-btn" onClick={() => nav.openPanel("map")}>
           <MapIcon /> <span>Map</span>
         </button>
         <div className="hud-title">
@@ -145,7 +168,7 @@ export function House({ answers, professor, onRetake }: Props) {
         <button
           type="button"
           className="hud-profile"
-          onClick={() => setProfileOpen(true)}
+          onClick={() => nav.openPanel("profile")}
           aria-label={`Your profile: host professor ${professor.name}`}
         >
           <Avatar professor={professor} size="sm" decorative />
@@ -162,7 +185,7 @@ export function House({ answers, professor, onRetake }: Props) {
                 answers={answers}
                 professor={professor}
                 pulse={pulsing}
-                onOpenClasses={() => setClassesOpen(true)}
+                onOpenClasses={nav.openClasses}
               />
             </div>
             {right ? <Door side="right" label={right.label} onClick={() => go(right.toRoomId, "right")} /> : <div className="wall-end" />}
@@ -202,43 +225,32 @@ export function House({ answers, professor, onRetake }: Props) {
         </p>
       </main>
 
-      <Sheet open={mapOpen} onClose={() => setMapOpen(false)} title="House map" className="sheet-map">
+      <Sheet open={panel === "map"} onClose={nav.closePanel} title="House map" className="sheet-map">
         <AerialMap
           currentRoomId={roomId}
           homeRoomId={homeRoomId}
-          onJump={(id) => {
-            setMapOpen(false);
-            if (id !== roomId) go(id, "fade");
-          }}
+          onJump={(id) => (id === roomId ? nav.closePanel() : go(id, "fade"))}
         />
       </Sheet>
 
-      <Sheet
-        open={classesOpen}
-        onClose={() => {
-          setClassesOpen(false);
-          setCourse(null);
-        }}
-        title={<RoomHeading room={room} />}
-        className="sheet-classes"
-      >
+      <Sheet open={panel === "classes"} onClose={nav.closePanel} title={<RoomHeading room={room} />} className="sheet-classes">
         {course ? (
           <>
-            <button type="button" className="back-link" onClick={() => setCourse(null)} autoFocus>
+            <button type="button" className="back-link" onClick={nav.closeCourse} autoFocus>
               ← All {room.name} classes
             </button>
             <CourseDetail course={course} room={room} answers={answers} />
           </>
         ) : (
-          <RoomClasses room={room} answers={answers} onPick={setCourse} />
+          <RoomClasses room={room} answers={answers} onPick={(c) => nav.openCourse(c.id)} />
         )}
       </Sheet>
 
-      <Sheet open={profileOpen} onClose={() => setProfileOpen(false)} title="Your profile">
+      <Sheet open={panel === "profile"} onClose={nav.closePanel} title="Your profile">
         <ProfileCard answers={answers} professor={professor} />
         <div className="actions">
           {!isHome && (
-            <button type="button" className="btn btn-primary" onClick={() => { setProfileOpen(false); go(homeRoomId, "fade"); }}>
+            <button type="button" className="btn btn-primary" onClick={() => go(homeRoomId, "fade")}>
               Go to your room
             </button>
           )}

@@ -1,25 +1,38 @@
 import type { Answers } from "../types";
+import { questions } from "./data";
 
-const KEY = "gd-house:v1";
+// localStorage is a convenience only: every access can throw (private mode, blocked storage),
+// so each one is wrapped and the app carries on without it.
+const KEY = "gd-house:answers";
+const OLD_KEYS = ["gd-house:v1"];
 
-export interface Saved { answers: Answers; professorId: string }
-
-// localStorage is a convenience only: every access can throw (private mode, blocked storage).
-export function loadSaved(): Saved | null {
+/** Saved quiz answers, if any. The host professor is never stored; it's recalculated from these. */
+export function loadAnswers(): Answers | null {
   try {
-    const raw = localStorage.getItem(KEY);
-    if (!raw) return null;
-    const s = JSON.parse(raw) as Saved;
-    if (!s?.answers?.year || !s.answers.interest || !s.answers.program || !s.professorId) return null;
-    return s;
+    const a = JSON.parse(localStorage.getItem(KEY) ?? "null") as Answers | null;
+    const valid =
+      a &&
+      questions.year.options.some((o) => o.id === a.year) &&
+      questions.interest.options.some((o) => o.id === a.interest) &&
+      questions.program.options.some((o) => o.id === a.program);
+    return valid ? { year: a.year, interest: a.interest, program: a.program } : null;
   } catch {
     return null;
   }
 }
 
-export function save(s: Saved) {
+export function saveAnswers(a: Answers) {
   try {
-    localStorage.setItem(KEY, JSON.stringify(s));
+    localStorage.setItem(KEY, JSON.stringify(a));
+  } catch {
+    /* app works without storage */
+  }
+}
+
+export function clearAnswers() {
+  try {
+    localStorage.removeItem(KEY);
+    for (const k of OLD_KEYS) localStorage.removeItem(k);
   } catch {
     /* app works without storage */
   }
