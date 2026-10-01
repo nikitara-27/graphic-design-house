@@ -1,11 +1,12 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import starter from "../data/resources.json";
-import { CATEGORIES, checkDraft, domainOf, linkKey, parseLink, starterResources, toResource, type Draft, type Resource } from "./resources";
+import { CATEGORIES, checkDraft, domainOf, linkKey, parseLink, toResource, type Draft, type Resource } from "./resources";
 
 const sql = readFileSync(new URL("../../supabase/resources.sql", import.meta.url), "utf8");
 const draft = (d: Partial<Draft> = {}): Draft => ({ url: "https://example.com/type", title: "Type specimens", description: "", category: "Typography", ...d });
-const board: Resource[] = starterResources;
+const board: Resource[] = [
+  { id: "1", url: "https://coolors.co", title: "Coolors", description: "", category: "Media", sharedBy: "Niki", createdAt: "2026-10-01" },
+];
 
 describe("links", () => {
   it("only accepts full http(s) links", () => {
@@ -55,9 +56,9 @@ describe("checkDraft", () => {
 });
 
 describe("toResource (rows from the database)", () => {
-  const row = { id: "1", url: "https://coolors.co", title: "Coolors", description: "Palettes", category: "Color", shared_by: "Niki", created_at: "2026-10-01" };
+  const row = { id: "1", url: "https://coolors.co", title: "Coolors", description: "Palettes", category: "Media", shared_by: "Niki", created_at: "2026-10-01" };
   it("keeps good rows", () => {
-    expect(toResource(row)).toMatchObject({ title: "Coolors", sharedBy: "Niki", category: "Color" });
+    expect(toResource(row)).toMatchObject({ title: "Coolors", sharedBy: "Niki", category: "Media" });
   });
   it("drops unsafe links, hidden rows and unfriendly text", () => {
     expect(toResource({ ...row, url: "javascript:alert(1)" })).toBeNull();
@@ -71,18 +72,15 @@ describe("toResource (rows from the database)", () => {
   });
 });
 
-describe("starter picks and database setup", () => {
-  it("has 6–8 starter picks shared by GD House, all valid", () => {
-    expect(starterResources.length).toBe(starter.resources.length);
-    expect(starterResources.length).toBeGreaterThanOrEqual(6);
-    expect(starterResources.length).toBeLessThanOrEqual(8);
-    for (const r of starterResources) expect(r.sharedBy).toBe("GD House");
-  });
-  it("seeds the same picks in supabase/resources.sql", () => {
-    for (const r of starter.resources) expect(sql).toContain(`('${r.id}', '${r.url}'`);
-  });
+describe("database setup", () => {
   it("uses the same categories in the database check", () => {
-    expect(sql).toContain(`category in (${CATEGORIES.map((c) => `'${c}'`).join(", ")})`);
+    expect(CATEGORIES).toEqual(["Typography", "Motion Graphics", "UI/UX", "Media", "Other"]);
+    const list = `category in (${CATEGORIES.map((c) => `'${c}'`).join(", ")})`;
+    expect(sql).toContain(list);
+    expect(sql).not.toMatch(/'(Color|Inspiration|Tools|Mockups|Tutorials)'/);
+  });
+  it("adds no starter picks", () => {
+    expect(sql).not.toMatch(/insert into public\.resources/i);
   });
   it("never lets the website update or delete resources", () => {
     expect(sql).not.toMatch(/for (update|delete|all)/i);

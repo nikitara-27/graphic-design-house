@@ -1,4 +1,3 @@
-import starter from "../data/resources.json";
 import { hasBlockedWords, safeName } from "./nameFilter";
 
 /**
@@ -6,7 +5,7 @@ import { hasBlockedWords, safeName } from "./nameFilter";
  * set up by supabase/resources.sql); this file holds the rules both sides agree on.
  */
 
-export const CATEGORIES = ["Typography", "Color", "Inspiration", "Tools", "Mockups", "Tutorials", "Other"] as const;
+export const CATEGORIES = ["Typography", "Motion Graphics", "UI/UX", "Media", "Other"] as const;
 export type Category = (typeof CATEGORIES)[number];
 
 export const TITLE_MAX = 60;
@@ -93,9 +92,6 @@ export function toResource(raw: unknown): Resource | null {
 
 export const newestFirst = (list: Resource[]) => [...list].sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 
-export const starterResources: Resource[] = newestFirst(
-  starter.resources.map(toResource).filter((r): r is Resource => r !== null),
-);
 
 export interface Draft { url: string; title: string; description: string; category: Category | "" }
 export type DraftError = "url" | "title" | "description" | "category" | "blocked" | "duplicate" | "rate";

@@ -67,8 +67,8 @@ export function ResourceBoard({ items, status, canShare, name, onAdd, onReport }
       >
         + Add a resource
       </button>
-      {status === "offline" && <p className="board-status">Sharing isn't available right now. Here are some starter picks.</p>}
-      {status === "error" && <p className="board-status">Couldn't load the board. Here are some starter picks.</p>}
+      {status === "offline" && <p className="board-status">The board isn't available right now.</p>}
+      {status === "error" && <p className="board-status">Couldn't load the board. Please try again later.</p>}
       {thanks && (
         <p className="board-thanks" role="status">
           Thanks! Your resource is on the board.
@@ -83,7 +83,7 @@ export function ResourceBoard({ items, status, canShare, name, onAdd, onReport }
         ))}
       </div>
 
-      {status === "loading" && items.length === 0 ? (
+      {(status === "offline" || status === "error") && items.length === 0 ? null : status === "loading" && items.length === 0 ? (
         <p className="board-empty">Loading…</p>
       ) : shown.length === 0 ? (
         <p className="board-empty">{filter === "All" ? "Nothing here yet. Be the first to share a link!" : `No ${filter} links yet.`}</p>
@@ -98,7 +98,7 @@ export function ResourceBoard({ items, status, canShare, name, onAdd, onReport }
   );
 }
 
-const slug = (c: string) => c.toLowerCase();
+const slug = (c: string) => c.toLowerCase().replace(/[^a-z]+/g, "-");
 
 function ResourceCard({ resource: r, onReport, canReport }: { resource: Resource; onReport: (id: string) => Promise<boolean>; canReport: boolean }) {
   const [report, setReport] = useState<"idle" | "confirm" | "sending" | "done" | "failed">(() => (reportedIds().has(r.id) ? "done" : "idle"));

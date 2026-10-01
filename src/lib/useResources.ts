@@ -9,7 +9,6 @@ import {
   recentPostCount,
   recordPost,
   recordReport,
-  starterResources,
   submitterId,
   toResource,
   type Draft,
@@ -18,8 +17,8 @@ import {
 } from "./resources";
 
 /**
- * "offline": Supabase isn't configured (starter picks only, no sharing).
- * "error": the board couldn't be loaded (e.g. the table isn't set up yet); starter picks are shown.
+ * "offline": Supabase isn't configured (no board, no sharing).
+ * "error": the board couldn't be loaded (e.g. the table isn't set up yet).
  */
 export type BoardStatus = "offline" | "loading" | "live" | "error";
 export type AddResult = { ok: true } | { ok: false; error: DraftError | "busy" | "network" };
@@ -30,7 +29,7 @@ const SENDS = !import.meta.env.DEV || new URLSearchParams(window.location.search
 
 /** The Design Resources board. Loads (and listens for new cards) only while `open`. */
 export function useResources(open: boolean, name: string) {
-  const [items, setItems] = useState<Resource[]>(starterResources);
+  const [items, setItems] = useState<Resource[]>([]);
   const [status, setStatus] = useState<BoardStatus>(() => (getSupabase() ? "loading" : "offline"));
   const clientRef = useRef<SupabaseClient | null>(null);
   const itemsRef = useRef(items);
@@ -72,7 +71,6 @@ export function useResources(open: boolean, name: string) {
           setStatus("error");
           return;
         }
-        // The database is the source of truth (you may have hidden a starter pick).
         setItems(newestFirst(data.map(toResource).filter((r): r is Resource => r !== null)));
         setStatus("live");
       })

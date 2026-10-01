@@ -16,7 +16,7 @@ create table if not exists public.resources (
   url         text not null check (url ~* '^https?://[^/\s]+' and url !~ '\s' and char_length(url) <= 500),
   title       text not null check (char_length(btrim(title)) between 1 and 60),
   description text check (description is null or char_length(description) <= 140),
-  category    text not null check (category in ('Typography', 'Color', 'Inspiration', 'Tools', 'Mockups', 'Tutorials', 'Other')),
+  category    text not null check (category in ('Typography', 'Motion Graphics', 'UI/UX', 'Media', 'Other')),
   shared_by   text not null default 'Guest' check (char_length(shared_by) between 1 and 30),
   created_at  timestamptz not null default now(),
   hidden      boolean not null default false,
@@ -148,15 +148,23 @@ exception when duplicate_object then null;
 end;
 $$;
 
--- 5. Starter picks, shared by "GD House" --------------------------------------------------------
+-- 5. Categories and cleanup (for a board created with an earlier version of this file) ----------
 
-insert into public.resources (id, url, title, description, category, shared_by, created_at) values
-  ('6c0de788-eb27-5e59-abf1-f505693af6f2', 'https://fonts.google.com', 'Google Fonts', 'Hundreds of free, open-source typefaces for web and print, with type testers and pairing ideas.', 'Typography', 'GD House', '2026-10-01T12:59:00Z'),
-  ('a76cf571-7bc5-5c33-8b31-ef668ac62c0c', 'https://coolors.co', 'Coolors', 'Fast color palette generator: lock the colors you like and spin for the rest.', 'Color', 'GD House', '2026-10-01T12:58:00Z'),
-  ('227bf0a6-cb97-5cbf-8aac-7fe2983d327f', 'https://unsplash.com', 'Unsplash', 'Free high-resolution photos you can use in your projects.', 'Other', 'GD House', '2026-10-01T12:57:00Z'),
-  ('d71a3cc2-944a-541d-a604-34b88ebbb155', 'https://fontsinuse.com', 'Fonts In Use', 'A searchable archive of real-world typography, organized by typeface, format and period.', 'Typography', 'GD House', '2026-10-01T12:56:00Z'),
-  ('b7d68fbf-c400-5723-8754-a30e5ecf5851', 'https://www.behance.net', 'Behance', 'Portfolios and case studies from designers around the world. Good for seeing whole projects.', 'Inspiration', 'GD House', '2026-10-01T12:55:00Z'),
-  ('465a08cc-0f36-5b04-9e3f-53f21be2c220', 'https://www.figma.com/community', 'Figma Community', 'Free Figma files, UI kits, plugins and templates shared by other designers.', 'Tools', 'GD House', '2026-10-01T12:54:00Z'),
-  ('ec6c6d8b-0494-574d-977c-e5451386c676', 'https://www.mockupworld.co', 'Mockup World', 'Free photorealistic mockups for packaging, print, screens and more.', 'Mockups', 'GD House', '2026-10-01T12:53:00Z'),
-  ('9e45211f-302a-5997-af73-ce45b5725751', 'https://practicaltypography.com', 'Practical Typography', 'A free online book on typography basics: line length, spacing, hierarchy and more.', 'Tutorials', 'GD House', '2026-10-01T12:52:00Z')
-on conflict do nothing;
+-- Categories: Typography, Motion Graphics, UI/UX, Media, Other. Cards in a category that no
+-- longer exists move to Other.
+alter table public.resources drop constraint if exists resources_category_check;
+update public.resources set category = 'Other' where category not in ('Typography', 'Motion Graphics', 'UI/UX', 'Media', 'Other');
+alter table public.resources add constraint resources_category_check
+  check (category in ('Typography', 'Motion Graphics', 'UI/UX', 'Media', 'Other'));
+
+-- The board starts empty: remove the old "GD House" starter picks if they were added.
+delete from public.resources where id in (
+    '6c0de788-eb27-5e59-abf1-f505693af6f2',
+    'a76cf571-7bc5-5c33-8b31-ef668ac62c0c',
+    '227bf0a6-cb97-5cbf-8aac-7fe2983d327f',
+    'd71a3cc2-944a-541d-a604-34b88ebbb155',
+    'b7d68fbf-c400-5723-8754-a30e5ecf5851',
+    '465a08cc-0f36-5b04-9e3f-53f21be2c220',
+    'ec6c6d8b-0494-574d-977c-e5451386c676',
+    '9e45211f-302a-5997-af73-ce45b5725751'
+);
