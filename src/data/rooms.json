@@ -491,19 +491,32 @@
         {
           "id": "CS103",
           "code": "CS103",
-          "title": "Intro to Web Programming",
+          "title": "Introduction to Internet Technologies and Web Programming",
           "active": true,
           "interests": [
             "interactive"
+          ],
+          "credits": 4,
+          "description": "Introduction to the basic architecture and protocols underlying the operation of the Internet with an emphasis on Web design, Web application programming, and algorithmic thinking. General familiarity with the Internet is assumed.",
+          "hubAreas": [
+            "Quantitative Reasoning II",
+            "Digital/Multimedia Expression"
           ]
         },
         {
           "id": "AR580",
           "code": "AR580",
-          "title": "Graphic Design History",
+          "title": "History of Graphic Design",
           "active": true,
           "interests": [
             "history"
+          ],
+          "credits": 4,
+          "prerequisites": "First-Year Writing Course (CAS WR 120 or equivalent)",
+          "description": "This foundational course presents a chronological and thematic survey of graphic design and design culture from the Industrial Revolution to the present. Through slide lecture, reading and writing assignments, and discussion groups, students actively investigate how graphic design responded to and influenced the social, political and technological world around it. While, emphasis had been on European and American design histories, as well as major movements in Russia and the East this course will implement a plural pedagogy as a method to include more multicultural voices. Particular effort will be made toward showing, discussing, and including artists, designers, and writers who represent people, cultures, and aesthetics historically excluded from Eurocentric narratives about art and design. Comparative and symbiotic relationships between graphic design and other visual arts and design disciplines such as architecture and industrial design will be analyzed.",
+          "hubAreas": [
+            "Historical Consciousness",
+            "Global Citizenship and Intercultural Literacy"
           ]
         },
         {
@@ -511,7 +524,9 @@
           "code": "AR523",
           "title": "Graphic Design Studio Practice",
           "active": true,
-          "interests": []
+          "interests": [],
+          "credits": 2,
+          "description": "Graphic Design Studio Practice offers a balance of studio projects and practical business skills through hands-on experience in a simulated design studio environment. Students engage directly with real clients, honing their skills in proposal creation, workload scoping, client meetings, and professional communication. Throughout the course, students will work on refining their skills to present themselves professionally, preparing for the job or freelance market. Key topics include content development, writing for design, and design production techniques. Additionally, students gain knowledge through a series of guest speakers invited to share their experience working in the design world."
         }
       ],
       "mapArea": {
@@ -806,9 +821,14 @@
         {
           "id": "AR123",
           "code": "AR123",
-          "title": "Intro to Graphic Design",
+          "title": "Foundation Design: Introductory Principles, Practices",
           "active": true,
-          "interests": []
+          "interests": [],
+          "credits": 2,
+          "description": "This course introduces the basic principles of design, composition, and form making. We will investigate these principles holistically, beginning with their historical origination, spanning to contemporary usage, and finally in the context of your own visual arts practice. Digital and multimedia tools are introduced, and students will select the most appropriate tools for the specific design expression. Projects and class meetings will be structured to help you develop a design process and critique skills.",
+          "hubAreas": [
+            "Digital/Multimedia Expression"
+          ]
         }
       ],
       "mapArea": {

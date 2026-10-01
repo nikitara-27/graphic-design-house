@@ -2,10 +2,6 @@ import type { Answers, Course, Room } from "../types";
 
 const TERM = { F: "Fall", S: "Spring" } as const;
 
-const EMPTY: Record<string, string> = {
-  playroom: "Classes coming soon.",
-};
-
 /** Sheet header: room name in Doto, then what the room represents. */
 export function RoomHeading({ room }: { room: Room }) {
   return (
@@ -20,7 +16,7 @@ interface Props { room: Room; answers: Answers; onPick: (c: Course) => void }
 
 export function RoomClasses({ room, answers, onPick }: Props) {
   if (room.courses.length === 0) {
-    return <p className="empty-classes">{EMPTY[room.id] ?? "Classes coming soon."}</p>;
+    return <p className="empty-classes">No classes here yet.</p>;
   }
   return (
     <ul className="class-list">
