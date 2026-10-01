@@ -5,6 +5,12 @@ import { FEET_Y, standingSpots, type Peer } from "../lib/presence";
 import { Avatar } from "./Avatar";
 
 const MAX_SHOWN = 6;
+/**
+ * Feet sit on the floor line, but never lower than just above the downstairs buttons in the part
+ * of the room you can actually see. (In wide windows the art's top and bottom are trimmed: the
+ * visible bottom edge is the scene's middle plus half the stage height, i.e. 50% + 50cqh.)
+ */
+const floorLine = `min(${FEET_Y}%, calc(50% + 50cqh - 66px))`;
 export const hostFor = (id: string) => professors.find((p) => p.id === id) ?? hostProfessor;
 
 /** Sort so you come first, then everyone else alphabetically (stable as people come and go). */
@@ -19,7 +25,7 @@ interface LayerProps {
 
 /** Everyone in this room, standing along the floor. Crowds collapse into a "+N" bubble. */
 export function PeopleLayer({ room, people, onPick, onMore }: LayerProps) {
-  const spots = standingSpots(room.object);
+  const spots = standingSpots(room.object, room.greeter);
   const sorted = [...people].sort(order);
   const capacity = Math.min(spots.length, MAX_SHOWN);
   const overflow = sorted.length > capacity;
@@ -33,7 +39,7 @@ export function PeopleLayer({ room, people, onPick, onMore }: LayerProps) {
           key={p.id}
           type="button"
           className={`person${p.self ? " is-self" : ""}`}
-          style={{ left: `${spots[i]}%`, top: `${FEET_Y}%` }}
+          style={{ left: `${spots[i]}%`, top: floorLine }}
           onClick={() => onPick(p)}
           aria-label={p.self ? `You (${p.name}): open your profile` : `${p.name}: show details`}
         >
@@ -45,7 +51,7 @@ export function PeopleLayer({ room, people, onPick, onMore }: LayerProps) {
         <button
           type="button"
           className="person-more"
-          style={{ left: `${spots[capacity - 1]}%`, top: `${FEET_Y}%` }}
+          style={{ left: `${spots[capacity - 1]}%`, top: floorLine }}
           onClick={() => onMore(rest)}
           aria-label={`${rest.length} more people here: show the list`}
         >

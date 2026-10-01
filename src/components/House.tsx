@@ -129,7 +129,7 @@ export function House({ answers, professor, roomId, panel, courseId, nav, name, 
     const max = el.scrollWidth - el.clientWidth;
     // A room with a greeter (the Living Room cat) always opens on it so you see the welcome.
     // Otherwise: through a side door, start at the wall you came in by; else centre on your own avatar.
-    const focus = room.greeter?.x ?? standingSpots(room.object)[0] ?? 50;
+    const focus = room.greeter?.x ?? standingSpots(room.object, room.greeter)[0] ?? 50;
     const centred = Math.min(max, Math.max(0, (focus / 100) * el.scrollWidth - el.clientWidth / 2));
     el.scrollLeft = room.greeter ? centred : transition === "right" ? 0 : transition === "left" ? max : centred;
     startScroll.current = el.scrollLeft;

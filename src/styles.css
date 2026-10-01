@@ -235,13 +235,13 @@ h1, h2, h3, p { margin: 0; }
   animation: person-in 260ms ease-out;
 }
 @keyframes person-in { from { opacity: 0; transform: translate(-50%, calc(-100% + 8px)); } }
-.person { display: flex; flex-direction: column; align-items: center; width: max(44px, 5.5cqi); }
+.person { display: flex; flex-direction: column; align-items: center; width: max(44px, 15cqi); } /* 15% of the room's width = AV_WIDTH */
 .person .avatar { width: 100%; filter: drop-shadow(0 3px 0 rgba(56, 91, 72, 0.35)); }
 .person-name {
   position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 3px;
   max-width: 16ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  padding: 1px 6px; background: rgba(243, 237, 232, 0.94); border: 1.5px solid var(--forest);
-  font-size: 11px; font-weight: 800; line-height: 1.3; color: var(--forest);
+  padding: 1px 7px; background: rgba(243, 237, 232, 0.94); border: 1.5px solid var(--forest);
+  font-size: clamp(11px, 1.15cqi, 14px); font-weight: 800; line-height: 1.3; color: var(--forest);
 }
 .person.is-self .person-name { background: var(--plum); border-color: var(--plum); color: var(--cream); }
 .person.is-self .avatar { filter: drop-shadow(0 0 0 var(--plum)) drop-shadow(2px 0 0 var(--plum)) drop-shadow(-2px 0 0 var(--plum)) drop-shadow(0 2px 0 var(--plum)); }

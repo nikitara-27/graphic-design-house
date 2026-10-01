@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { flattenPresence, isPublicKey, sanitize, standingSpots } from "./presence";
+import { AVATAR_TOP, flattenPresence, isPublicKey, sanitize, standingSpots } from "./presence";
 
 const b64 = (o: object) => btoa(JSON.stringify(o)).replace(/=+$/, "");
 const jwt = (role: string) => `${b64({ alg: "HS256" })}.${b64({ role, iss: "supabase" })}.sig`;
@@ -52,7 +52,20 @@ describe("standingSpots", () => {
   it("never puts an avatar over the clickable object", () => {
     const object = { label: "Stool", x: 25, y: 70, w: 10.6, h: 22.2 };
     const spots = standingSpots(object);
-    expect(spots.length).toBeGreaterThan(5);
-    for (const x of spots) expect(x + 4 <= object.x || x - 4 >= object.x + object.w).toBe(true);
+    expect(spots.length).toBeGreaterThanOrEqual(3);
+    for (const x of spots) expect(x + 6.3 <= object.x || x - 6.3 >= object.x + object.w).toBe(true);
+  });
+  it("spaces avatars so neighbours don't overlap", () => {
+    const spots = standingSpots({ label: "x", x: 0, y: 0, w: 1, h: 1 }).sort((a, b) => a - b);
+    for (let i = 1; i < spots.length; i++) expect(spots[i] - spots[i - 1]).toBeGreaterThanOrEqual(12.6);
+  });
+  it("keeps avatars off the Living Room cat (anyone below it keeps their head and name clear)", () => {
+    const picture = { label: "Pink picture", x: 32.5, y: 25.6, w: 12.5, h: 28.9 };
+    const cat = { x: 74.4, y: 42.5 };
+    for (const x of standingSpots(picture, cat)) {
+      const besideCat = Math.abs(x - cat.x) >= 7 + 6.3;
+      const belowCat = AVATAR_TOP >= cat.y - 2 + 14;
+      expect(besideCat || belowCat).toBe(true);
+    }
   });
 });
