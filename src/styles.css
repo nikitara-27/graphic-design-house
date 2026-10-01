@@ -242,16 +242,29 @@ h1, h2, h3, p { margin: 0; }
   background: rgba(243, 237, 232, 0.8); border: 2px solid var(--forest); pointer-events: none;
 }
 .pan-track i { position: absolute; top: 0; bottom: 0; background: var(--forest); }
-.toolbar-row { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); gap: 6px; align-items: end; }
-.toolbar-row > :first-child { justify-self: start; }
-.toolbar-row > :last-child { justify-self: end; }
-.pill {
-  min-height: 44px; max-width: 100%; padding: 6px 12px;
-  background: var(--cream); border: 3px solid var(--forest); box-shadow: 3px 3px 0 var(--forest);
-  font-size: 14px; font-weight: 800; line-height: 1.15; text-align: center;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+/* Stairs: up arrows along the top edge of the room, down arrows along the bottom.
+   Several in one direction sit side by side (wrapping on narrow screens). */
+.stairs { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.stairs-up {
+  position: absolute; top: 10px; left: 0; right: 0; z-index: 4;
+  padding: 0 calc(10px + var(--safe-r)) 0 calc(10px + var(--safe-l)); pointer-events: none;
 }
-.pill:active { transform: translate(2px, 2px); box-shadow: 1px 1px 0 var(--forest); }
+.stairs-up > * { pointer-events: auto; }
+.stair {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 44px; min-width: 44px; padding: 6px 12px;
+  background: rgba(243, 237, 232, 0.94); border: 2px solid var(--forest); box-shadow: 2px 2px 0 var(--forest);
+  color: var(--plum);
+}
+.stair:hover, .stair:focus-visible { background: var(--butter); }
+.stair:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--forest); }
+.stair-arrow { font-size: 18px; font-weight: 800; line-height: 1; color: var(--forest); }
+.stair-label { font-family: var(--font-display); font-size: 15px; font-weight: 900; line-height: 1.05; white-space: nowrap; }
+/* Narrow screens with 3+ stairs one way (Attic, Basement): stack arrow over label so they fit in one row. */
+@media (max-width: 600px) {
+  .stairs-many { flex-wrap: nowrap; gap: 6px; }
+  .stairs-many .stair { flex-direction: column; justify-content: center; gap: 2px; min-width: 64px; max-width: 96px; padding: 6px 8px; }
+  .stairs-many .stair-label { font-size: 13px; white-space: normal; text-align: center; }
+}
 
 /* The room's one clickable object. Invisible over the artwork; a soft glow pulses on the
    first visit, and hover/focus show the same glow. */
@@ -379,7 +392,6 @@ h1, h2, h3, p { margin: 0; }
   .hud-title p { font-size: 14px; }
   .door { width: 64px; }
   .door-label { font-size: 11px; }
-  .toolbar-row { max-width: 640px; width: 100%; margin: 0 auto; }
   .map-room-name { font-size: 17px; }
   .map-room-sub { font-size: 12px; }
 }

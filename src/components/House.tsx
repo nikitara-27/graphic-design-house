@@ -146,8 +146,9 @@ export function House({ answers, professor, roomId, panel, courseId, nav, onReta
     if (target) go(target.toRoomId, dir);
   };
 
-  const up = exit("up");
-  const down = exit("down");
+  // A room can have several staircases each way (e.g. the Attic goes down to three rooms).
+  const ups = room.exits.filter((e) => e.direction === "up");
+  const downs = room.exits.filter((e) => e.direction === "down");
   const left = exit("left");
   const right = exit("right");
   const pans = pan.w < 0.98;
@@ -193,6 +194,14 @@ export function House({ answers, professor, roomId, panel, courseId, nav, onReta
         {left && <Door side="left" label={left.label} onClick={() => go(left.toRoomId, "left")} />}
         {right && <Door side="right" label={right.label} onClick={() => go(right.toRoomId, "right")} />}
 
+        {ups.length > 0 && (
+          <nav className={`stairs stairs-up${ups.length > 2 ? " stairs-many" : ""}`} aria-label="Upstairs">
+            {ups.map((e) => (
+              <Stairs key={e.toRoomId} direction="up" label={e.label} onClick={() => go(e.toRoomId, "up")} />
+            ))}
+          </nav>
+        )}
+
         {hintVisible && pans && (
           <div className="look-hint" aria-hidden="true">
             <span className="look-arrows">← →</span>
@@ -206,19 +215,13 @@ export function House({ answers, professor, roomId, panel, courseId, nav, onReta
               <i style={{ left: `${pan.x * 100}%`, width: `${pan.w * 100}%` }} />
             </div>
           )}
-          <div className="toolbar-row">
-            {up ? (
-              <button type="button" className="pill" onClick={() => go(up.toRoomId, "up")} aria-label={`Upstairs to ${up.label}`}>
-                <span aria-hidden="true">↑</span> {up.label}
-              </button>
-            ) : <span />}
-            <span />
-            {down ? (
-              <button type="button" className="pill" onClick={() => go(down.toRoomId, "down")} aria-label={`Downstairs to ${down.label}`}>
-                <span aria-hidden="true">↓</span> {down.label}
-              </button>
-            ) : <span />}
-          </div>
+          {downs.length > 0 && (
+            <nav className={`stairs stairs-down${downs.length > 2 ? " stairs-many" : ""}`} aria-label="Downstairs">
+              {downs.map((e) => (
+                <Stairs key={e.toRoomId} direction="down" label={e.label} onClick={() => go(e.toRoomId, "down")} />
+              ))}
+            </nav>
+          )}
         </div>
 
         <p className="sr-only" aria-live="polite">
@@ -269,6 +272,15 @@ function Door({ side, label, onClick }: { side: "left" | "right"; label: string;
     <button type="button" className={`door door-${side}`} onClick={onClick} aria-label={`Go ${side} to ${label}`}>
       <span className="door-arrow" aria-hidden="true">{side === "left" ? "←" : "→"}</span>
       <span className="door-label" aria-hidden="true">{label}</span>
+    </button>
+  );
+}
+
+function Stairs({ direction, label, onClick }: { direction: "up" | "down"; label: string; onClick: () => void }) {
+  return (
+    <button type="button" className="stair" onClick={onClick} aria-label={`${direction === "up" ? "Upstairs" : "Downstairs"} to ${label}`}>
+      <span className="stair-arrow" aria-hidden="true">{direction === "up" ? "↑" : "↓"}</span>
+      <span className="stair-label" aria-hidden="true">{label}</span>
     </button>
   );
 }
