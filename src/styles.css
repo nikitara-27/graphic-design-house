@@ -139,15 +139,14 @@ h1, h2, h3, p { margin: 0; }
 .name-input-sm { min-height: 44px; font-size: 16px; padding: 6px 10px; }
 .btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; box-shadow: var(--shadow); }
 
-/* Name row in the profile */
-.name-value { display: flex; align-items: center; justify-content: flex-end; gap: 10px; flex-wrap: wrap; }
+/* The user's name heading in the profile panel */
+.profile-who { display: flex; flex-direction: column; align-items: center; }
+.profile-who .profile-name { overflow-wrap: anywhere; }
 .link-btn {
   min-height: 44px; padding: 0 2px; background: none; border: 0;
   font-size: 14px; font-weight: 800; color: var(--plum); text-decoration: underline; text-underline-offset: 3px;
 }
-.profile-facts .name-edit-row { flex-direction: column; align-items: stretch; gap: 6px; }
-.name-edit-row dd { text-align: left; }
-.name-edit { display: flex; flex-direction: column; gap: 8px; }
+.name-edit { display: flex; flex-direction: column; gap: 8px; width: 100%; text-align: left; }
 .name-edit-actions { display: flex; justify-content: flex-end; gap: 8px; }
 
 /* ---------- Avatar, profile ---------- */

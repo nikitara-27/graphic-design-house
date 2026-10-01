@@ -331,7 +331,7 @@ export function House({ answers, professor, roomId, panel, courseId, nav, name, 
       </Sheet>
 
       <Sheet open={panel === "profile"} onClose={nav.closePanel} title="Your profile">
-        <ProfileCard answers={answers} professor={professor} name={name} onSaveName={onSaveName} />
+        <ProfileCard answers={answers} professor={professor} name={name} onSaveName={onSaveName} variant="profile" />
         <div className="actions">
           {!isHome && (
             <button type="button" className="btn btn-primary" onClick={() => go(homeRoomId, "fade")}>
