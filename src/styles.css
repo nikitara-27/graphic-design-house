@@ -93,7 +93,7 @@ h1, h2, h3, p { margin: 0; }
 }
 
 .landing { justify-content: center; align-items: center; text-align: center; }
-.house-mark { width: 140px; height: auto; margin-bottom: 20px; }
+.house-mark { display: block; width: 140px; height: auto; margin-bottom: 20px; image-rendering: pixelated; }
 .title { font-family: var(--font-display); font-size: clamp(38px, 12vw, 56px); font-weight: 900; line-height: 1; color: var(--plum); }
 .title-sm { font-size: 28px; text-align: center; margin-bottom: 16px; }
 .lede { margin-top: 14px; font-size: 17px; line-height: 1.45; max-width: 34ch; }
