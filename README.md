@@ -134,7 +134,9 @@ category filters. New cards appear for everyone right away (Supabase Realtime).
 
 ## Still needed from the team (`TODO (team)`)
 
-- **The 8th host professor.** The spec says 8 but lists 7, and the assignment table only uses those 7.
+- **Mary Yang's avatar.** `public/professors/mary-yang.png` is a placeholder (a lavender silhouette with a "?").
+  Replace that file with her artwork (same name), then remove `"placeholder"` and `"_imageNote"` from her entry in `professors.json`.
+- **Canva + Branding & Identity** still goes to Claire Bula. A "Jesse" override was mentioned, but there's no Jesse in the host list yet.
 - **Host bios** (`professors.json` → `bio`), and each professor's permission to use their name and likeness.
 - **Course descriptions**, plus the content questions in PRD §6 (AR594/AR596 duplicates, AR545's full title).
 - **Later:** the yellow freshman hat.

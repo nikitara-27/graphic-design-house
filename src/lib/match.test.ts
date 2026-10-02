@@ -8,12 +8,19 @@ const pick = (interest: Answers["interest"], program: string) =>
 
 describe("matchProfessor", () => {
   it("follows the team's assignment table", () => {
-    expect(pick("branding", "illustrator")).toBe("claire-bula");
+    expect(pick("branding", "illustrator")).toBe("mary-yang");
     expect(pick("branding", "figma")).toBe("nick-rock");
     expect(pick("motion", "photoshop")).toBe("james-grady");
     expect(pick("interactive", "procreate")).toBe("halim-lee");
     expect(pick("typography", "indesign")).toBe("christopher-sleboda");
     expect(pick("exhibition", "blender")).toBe("brockett-horne");
+  });
+  it("uses the updated Branding & Identity table, with Mary Yang", () => {
+    const expected = {
+      illustrator: "mary-yang", photoshop: "mary-yang", indesign: "nick-rock", "after-effects": "nick-rock",
+      figma: "nick-rock", blender: "claire-bula", procreate: "claire-bula", other: "mary-yang",
+    };
+    for (const [program, host] of Object.entries(expected)) expect(pick("branding", program), program).toBe(host);
   });
   it("gives one professor for every program in editorial and history", () => {
     for (const p of ["illustrator", "canva", "other"]) {

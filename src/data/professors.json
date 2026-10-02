@@ -82,20 +82,32 @@
         "history"
       ],
       "courses": []
+    },
+    {
+      "id": "mary-yang",
+      "name": "Mary Yang",
+      "image": "professors/mary-yang.png",
+      "bio": "",
+      "specialties": [
+        "branding"
+      ],
+      "courses": [],
+      "placeholder": true,
+      "_imageNote": "PLACEHOLDER avatar (lavender silhouette with a ?). Replace public/professors/mary-yang.png with her artwork (same file name), then remove \"placeholder\" and this note."
     }
   ],
   "_assignmentsNote": "Design interest (Q2) -> favorite program (Q3) -> professor id. Every interest needs all 9 programs.",
   "assignments": {
     "branding": {
-      "illustrator": "claire-bula",
-      "photoshop": "claire-bula",
+      "illustrator": "mary-yang",
+      "photoshop": "mary-yang",
       "indesign": "nick-rock",
       "after-effects": "nick-rock",
       "figma": "nick-rock",
       "blender": "claire-bula",
       "canva": "claire-bula",
       "procreate": "claire-bula",
-      "other": "nick-rock"
+      "other": "mary-yang"
     },
     "motion": {
       "illustrator": "brockett-horne",
